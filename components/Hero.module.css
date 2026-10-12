@@ -1,0 +1,25 @@
+.hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; color: var(--color-white); background: var(--color-ink); }
+.photo { position: absolute; inset: 0; }
+.photo img { object-position: 50% 53%; }
+.scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(0 0 0 / .50) 0%, rgb(0 0 0 / .24) 48%, transparent 80%), linear-gradient(0deg, rgb(0 0 0 / .38), transparent 48%); }
+.content { position: absolute; z-index: 1; left: max(var(--gutter), calc((100vw - var(--container)) / 2)); bottom: clamp(5.5rem, 8vh, 8rem); width: min(740px, calc(100% - 2 * var(--gutter))); }
+.eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
+.content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: -.035em; text-wrap: balance; margin-bottom: 1.7rem; max-width: 720px; }
+.description { max-width: 440px; font-size: var(--text-lead); line-height: 1.52; margin-bottom: 1.6rem; }
+.link { display: inline-flex; align-items: center; gap: 1rem; min-height: var(--target-min); text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--jost-500), sans-serif; font-size: .94rem; }
+.link span { transition: transform var(--dur-fast) var(--ease-out); }
+.link:hover span { transform: translate(4px,-4px); }
+.scroll { position: absolute; right: var(--gutter); bottom: 3rem; z-index: 1; display: flex; gap: 1.5rem; align-items: center; text-decoration: none; font-size: .75rem; letter-spacing: .12em; writing-mode: vertical-rl; }
+.scroll span { width: 1px; height: 50px; background: currentColor; }
+.hero :focus-visible { outline-color: var(--color-white); }
+@media (max-width: 767px) {
+  .hero { min-height: 600px; }
+  .photo img { object-position: 50% 57%; }
+  .scrim { background: linear-gradient(0deg, rgb(0 0 0 / .72) 0%, rgb(0 0 0 / .45) 34%, transparent 72%), linear-gradient(180deg, rgb(0 0 0 / .35), transparent 28%); }
+  .content { bottom: clamp(2.5rem, 6vh, 4rem); }
+  .content h1 { font-size: clamp(2.75rem, 10.4vw, 4.7rem); max-width: 600px; margin-bottom: 1.1rem; }
+  .description { font-size: 1rem; max-width: 340px; margin-bottom: 1.2rem; }
+  .eyebrow { font-size: .63rem; margin-bottom: .8rem; }
+  .scroll { display: none; }
+}
+@media (max-width: 360px) { .content h1 { font-size: 2.65rem; } }

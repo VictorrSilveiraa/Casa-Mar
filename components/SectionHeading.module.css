@@ -1,0 +1,4 @@
+.heading { max-width: 760px; }
+.eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); color: var(--color-olive-deep); margin-bottom: 1.3rem; }
+.heading h2 { font-family: var(--jost-300), sans-serif; font-size: var(--text-h2); font-weight: 300; line-height: var(--leading-heading); letter-spacing: -.025em; text-wrap: balance; margin-bottom: 1.5rem; }
+.description { max-width: var(--container-text); line-height: var(--leading-body); margin-bottom: 0; }
