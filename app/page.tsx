@@ -44,10 +44,13 @@ export default function Home() {
 
       <SuitesShowcase />
 
-      <section className={styles.features} aria-label="Diferenciais da casa">
-        <div className={styles.container}>
-          <SectionHeading eyebrow={content.features.eyebrow} title={content.features.title} className={styles.featureHeading} />
-          <div className={styles.featureGrid}>{content.features.items.map((item) => <div className={styles.feature} key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>
+      <section id="diferenciais" className={styles.features} aria-labelledby="features-title">
+        <div className={`${styles.container} ${styles.featuresLayout}`}>
+          <div className={styles.featureImage}><ResponsiveImage image="featuresPortrait" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 34vw, 28vw" /></div>
+          <div className={styles.featureContent}>
+            <SectionHeading id="features-title" eyebrow={content.features.eyebrow} title={content.features.title} className={styles.featureHeading} />
+            <div className={styles.featureGrid}>{content.features.items.map((item) => <article className={styles.feature} data-feature-item key={item.title}><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+          </div>
         </div>
       </section>
 
