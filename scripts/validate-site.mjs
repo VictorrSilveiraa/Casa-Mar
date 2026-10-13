@@ -4,7 +4,7 @@ import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const output = resolve(import.meta.dirname, "../docs/screenshots");
-const baseUrl = process.env.BASE_URL ?? "http://127.0.0.1:3000";
+const baseUrl = process.env.BASE_URL ?? process.argv[2] ?? "http://127.0.0.1:3000";
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
@@ -27,8 +27,9 @@ for (const width of widths) {
   if (size.scroll > size.inner) problems.push(`${width}px overflow ${size.scroll - size.inner}px`);
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator("#topo #reservas").count(), 0);
-  assert.equal(await page.locator("#acomodacoes").count(), 0);
-  assert.equal(await page.locator('a[href="#acomodacoes"]').count(), 0);
+  assert.equal(await page.locator("#suites").count(), 1);
+  assert.equal(await page.locator("#suites img").count(), 5);
+  assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {
       const read = (element) => {
@@ -112,6 +113,11 @@ await page.keyboard.press("Escape");
 assert.equal(await page.getByRole("button", { name: "Abrir menu" }).getAttribute("aria-expanded"), "false");
 assert.equal(await page.locator("main").getAttribute("inert"), null);
 assert.equal(await page.locator(":focus").getAttribute("aria-label"), "Abrir menu");
+const suites = page.getByRole("region", { name: "Suítes da Casa Praiamar" });
+await suites.getByRole("button", { name: "Próxima suíte" }).click();
+await suites.getByText("02 / 05").waitFor({ state: "visible" });
+await suites.getByRole("button", { name: "Suíte anterior" }).click();
+await suites.getByText("01 / 05").waitFor({ state: "visible" });
 await page.locator("details summary").first().focus();
 await page.keyboard.press("Enter");
 assert.equal(await page.locator("details").first().getAttribute("open"), "");

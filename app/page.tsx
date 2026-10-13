@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Lightbox } from "@/components/Lightbox";
 import { FaqList } from "@/components/FaqList";
 import { StickyCTA } from "@/components/StickyCTA";
+import { SuitesShowcase } from "@/components/SuitesShowcase";
 import styles from "./page.module.css";
 
 const jsonLd = {
@@ -40,6 +41,8 @@ export default function Home() {
           <div className={styles.essenceImage}><ResponsiveImage image="garden" sizes="(max-width: 767px) 100vw, 45vw" /></div>
         </div>
       </section>
+
+      <SuitesShowcase />
 
       <section className={styles.features} aria-label="Diferenciais da casa">
         <div className={styles.container}>

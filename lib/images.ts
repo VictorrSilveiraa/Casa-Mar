@@ -11,6 +11,11 @@ export const images = {
   dusk: { source: "Imagem do ChatGPT 12 de out. de 2026, 13_48_02-3.png", slug: "patio-entardecer", width: 1629, height: 965, alt: "Pátio com piscina e fachada da casa sob céu de fim de tarde", desktop: "53% 50%", mobile: "58% 53%" },
   socialPortrait: { source: "SnapInsta.to_844417434_18629952292046998_5549541857437428914_n.jpg", slug: "rede-social", width: 1080, height: 1919, alt: "Rede vermelha em ambiente social coberto por madeira", desktop: "54% 52%", mobile: "51% 49%" },
   lawnPortrait: { source: "SnapInsta.to_845902731_18629952928046998_4620714375917682651_n.jpg", slug: "gramado-entardecer", width: 1080, height: 1919, alt: "Espreguiçadeiras no gramado ao lado da casa ao entardecer", desktop: "53% 56%", mobile: "52% 54%" },
+  suiteNordestina: { source: "assets/suites/vila-nordestina-carmel-04-02.jpg", slug: "suite-nordestina", width: 2100, height: 995, alt: "Suíte ampla revestida em madeira, integrada a um jardim interno", desktop: "58% 52%", mobile: "65% 52%" },
+  suitePassaro: { source: "assets/suites/vila-passaro-06-02.jpg", slug: "suite-passaro", width: 2100, height: 995, alt: "Suíte com estar integrado e abertura para piscina entre coqueiros", desktop: "63% 50%", mobile: "70% 50%" },
+  suiteArvoreLoft: { source: "assets/suites/vila-arvore-loft-04-02.jpg", slug: "suite-arvore-loft", width: 2100, height: 995, alt: "Suíte contemporânea com madeira, área de estar e banheiro envidraçado", desktop: "54% 52%", mobile: "61% 52%" },
+  suiteArvore: { source: "assets/suites/vila-arvore-03-02.jpg", slug: "suite-arvore", width: 2100, height: 995, alt: "Suíte revestida em madeira com cama ampla e banheiro integrado", desktop: "43% 52%", mobile: "38% 52%" },
+  suiteRenda: { source: "assets/suites/vila-renda-02-02.jpg", slug: "suite-renda", width: 2100, height: 995, alt: "Suíte em madeira aberta para varanda e jardim privativo", desktop: "60% 52%", mobile: "67% 52%" },
 } as const;
 
 export const imageWidths = (width: number) => [...new Set([640, 960, 1440, 1920, width].filter((size) => size <= width))].sort((a, b) => a - b);

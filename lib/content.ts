@@ -5,6 +5,7 @@ export const content = {
   },
   navigation: [
     { label: "A Casa", href: "#a-casa" },
+    { label: "Suítes", href: "#suites" },
     { label: "Ambientes", href: "#ambientes" },
     { label: "Localização", href: "#localizacao" },
   ],
@@ -25,6 +26,13 @@ export const content = {
       "Aqui, cada detalhe convida você a aproveitar o melhor da vida à beira-mar.",
     ],
     action: "Conheça nossa casa",
+  },
+  suites: {
+    eyebrow: "O PRAZER DE DESCANSAR",
+    title: "O conforto de estar longe. A sensação de estar em casa.",
+    description: "A Casa Praiamar dispõe de seis suítes climatizadas, pensadas para que cada hóspede aproveite a estadia no seu próprio ritmo.",
+    action: "Conheça nossas suítes",
+    images: ["suiteNordestina", "suitePassaro", "suiteArvoreLoft", "suiteArvore", "suiteRenda"],
   },
   features: {
     eyebrow: "PENSADA PARA VIVER BEM",
@@ -102,6 +110,7 @@ export const content = {
     links: [
       { label: "Início", href: "#topo" },
       { label: "A Casa", href: "#a-casa" },
+      { label: "Suítes", href: "#suites" },
       { label: "Ambientes", href: "#ambientes" },
       { label: "Localização", href: "#localizacao" },
       { label: "Reservas", href: "#reservas" },
