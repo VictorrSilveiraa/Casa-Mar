@@ -1,8 +1,10 @@
 .hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; color: var(--color-white); background: var(--color-ink); }
 .photo { position: absolute; inset: 0; }
 .photo img { object-position: 50% 58%; }
-.scrim { position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(12 42 46 / .5) 0%, transparent 280px), linear-gradient(to top, rgb(12 42 46 / .7) 0%, rgb(12 42 46 / .43) 40%, transparent 100%); }
-.content { position: absolute; z-index: 1; left: var(--header-edge); bottom: 3.25rem; width: min(740px, calc(100% - 2 * var(--header-edge))); }
+.scrim { position: absolute; right: 0; left: 0; pointer-events: none; }
+.topScrim { top: 0; height: 280px; background: linear-gradient(to bottom, rgb(12 42 46 / .5), transparent); }
+.bottomScrim { bottom: 0; height: min(640px, 71.111%); background: linear-gradient(to top, rgb(12 42 46 / .7), rgb(12 42 46 / .43) 40%, transparent); }
+.content { position: absolute; z-index: 1; top: 50%; left: var(--header-edge); width: min(740px, calc(100% - 2 * var(--header-edge))); transform: translateY(-50%); }
 .eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
 .content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: .98; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); }
 .description { max-width: 430px; font-family: var(--jost-300), sans-serif; font-size: clamp(1.0625rem, 1rem + .21vw, 1.1875rem); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
@@ -15,8 +17,9 @@
 @media (max-width: 767px) {
   .hero { min-height: 600px; }
   .photo img { object-position: 50% 57%; }
-  .scrim { background: linear-gradient(0deg, rgb(0 0 0 / .72) 0%, rgb(0 0 0 / .45) 34%, transparent 72%), linear-gradient(180deg, rgb(0 0 0 / .35), transparent 28%); }
-  .content { left: var(--gutter); bottom: clamp(2.5rem, 6vh, 4rem); width: min(600px, calc(100% - 2 * var(--gutter))); }
+  .topScrim { height: 180px; background: linear-gradient(to bottom, rgb(12 42 46 / .42), transparent); }
+  .bottomScrim { height: 68%; background: linear-gradient(to top, rgb(12 42 46 / .76), rgb(12 42 46 / .44) 45%, transparent); }
+  .content { top: auto; left: var(--gutter); bottom: clamp(2.5rem, 6vh, 4rem); width: min(600px, calc(100% - 2 * var(--gutter))); transform: none; }
   .content h1 { font-size: clamp(2.75rem, 10.4vw, 4.7rem); max-width: 600px; margin-bottom: 1.1rem; }
   .description { font-size: 1rem; max-width: 340px; margin-bottom: 1.2rem; }
   .eyebrow { font-size: .63rem; margin-bottom: .8rem; }
