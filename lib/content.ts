@@ -11,7 +11,7 @@ export const content = {
   ],
   hero: {
     eyebrow: "CASA PRAIAMAR — ARPOEIRAS, CEARÁ",
-    title: "Onde a casa encontra o mar.",
+    titleLines: ["Onde a casa", "encontra o mar."],
     description: "Um refúgio à beira-mar para viver dias de tranquilidade, conforto e momentos que merecem ser lembrados.",
     action: "Descubra a Praiamar",
     scroll: "Explore a experiência",

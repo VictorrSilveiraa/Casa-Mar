@@ -1,4 +1,6 @@
 .heading { max-width: 760px; }
-.eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); color: var(--color-olive-deep); margin-bottom: 1.3rem; }
-.heading h2 { font-family: var(--jost-300), sans-serif; font-size: var(--text-h2); font-weight: 300; line-height: var(--leading-heading); letter-spacing: -.025em; text-wrap: balance; margin-bottom: 1.5rem; }
-.description { max-width: var(--container-text); line-height: var(--leading-body); margin-bottom: 0; }
+.eyebrow { display: flex; align-items: center; gap: 1rem; font-size: var(--text-eyebrow); font-family: var(--font-sans-ui); font-weight: 400; line-height: normal; letter-spacing: var(--tracking-eyebrow); color: var(--color-olive-deep); margin-bottom: 0; }
+.eyebrow::before { content: ""; flex: 0 0 2.5rem; height: 1px; background: currentColor; }
+.heading h2 { font-family: var(--font-display); font-size: var(--text-h2); font-weight: 300; line-height: var(--leading-heading); letter-spacing: -.02em; text-wrap: balance; margin: 2.25rem 0 0; font-optical-sizing: auto; }
+.description { max-width: var(--container-text); font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); margin: 2.5rem 0 0; }
+@media (max-width: 900px) { .eyebrow::before { flex-basis: 2rem; } .heading h2 { margin-top: 1.75rem; } }

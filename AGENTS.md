@@ -51,16 +51,14 @@ Também não afirmar: vista para o mar em todas as suítes, varanda, TV, tipo de
 
 ## 6. Tipografia (regra obrigatória)
 
-Somente duas famílias, hospedadas localmente, subconjunto latino, `font-display: swap`:
+O arquivo **`docs/REGRAS-TIPOGRAFIA.md` é a autoridade obrigatória** para todo texto existente ou futuro do site. Nenhum componente pode criar tamanhos, pesos, entrelinhas ou espaçamentos tipográficos fora dos papéis definidos nele.
 
-- **Newsreader 300** (normal, sem itálico): **exclusivamente** no `h1` do hero, "Onde a casa encontra o mar." Em nenhum outro lugar. Fallback: Georgia, serif.
-- **Jost 300 / 400 / 500**: todo o resto (logotipo textual, menu, títulos, parágrafos, botões, labels, formulário, FAQ, rodapé). Fallback: sans-serif.
-
-Pesos de Jost: 300 para títulos de seção grandes e frases editoriais; 400 para parágrafos, navegação e labels; 500 para botões e pequenos destaques.
-
-Evitar caixa alta, exceto em eyebrows, labels pequenos e no logotipo textual. Letter-spacing sutil só em legendas e eyebrows.
-
-Precarregar apenas Newsreader 300 e Jost 400. Reservar espaço para evitar salto de layout.
+- Somente **Newsreader 300 / 400** e **Jost 300 / 400 / 500**, hospedadas localmente, subconjunto latino, `font-display: swap`.
+- Newsreader 300: H1 e títulos H2. Newsreader 400: frases de destaque e fechos editoriais.
+- Jost 300: textos corridos e textos de apoio. Jost 400: navegação, rótulos e overlines. Jost 500: botões e links de ação.
+- Breakpoint tipográfico único: **900px**. Acima, valores desktop; até 900px, valores mobile.
+- Sem itálico, pesos 600 ou maiores, caixa alta fora da marca/overline/PT-EN, letter-spacing positivo em Newsreader ou valores tipográficos avulsos.
+- Precarregar apenas Newsreader 300 e Jost 400. Reservar espaço para evitar salto de layout.
 
 ## 7. Paleta e regras de contraste
 
@@ -95,19 +93,21 @@ Crie estes tokens globais e use-os em todo o projeto. Ajuste valores se a compos
   --color-scrim: rgb(0 0 0 / 0.28);
 
   /* tipografia */
-  --font-editorial: "Newsreader", Georgia, serif;
-  --font-primary: "Jost", sans-serif;
-  --text-display: clamp(2.75rem, 1.2rem + 6.2vw, 6.25rem);
-  --text-h2: clamp(2rem, 1.25rem + 2.6vw, 3.75rem);
-  --text-h3: clamp(1.5rem, 1.15rem + 1.2vw, 2.25rem);
-  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
-  --text-body: 1.0625rem;
-  --text-small: 0.9375rem;
-  --text-eyebrow: 0.75rem;
-  --tracking-eyebrow: 0.16em;
-  --leading-display: 1.04;
-  --leading-heading: 1.12;
-  --leading-body: 1.65;
+  --font-display: "Newsreader", Georgia, serif;
+  --font-display-regular: "Newsreader", Georgia, serif;
+  --font-sans: "Jost", system-ui, sans-serif;
+  --text-display: 5.5rem;
+  --text-h2: 3.5rem;
+  --text-h3: 1.5rem;
+  --text-lead: 1.1875rem;
+  --text-body: 1.125rem;
+  --text-label: 0.8125rem;
+  --text-eyebrow: 0.8125rem;
+  --tracking-eyebrow: 0.2em;
+  --leading-display: 0.98;
+  --leading-heading: 1.06;
+  --leading-highlight: 1.35;
+  --leading-body: 1.75;
 
   /* espaçamento (base 8px) */
   --space-1: 0.25rem;
@@ -120,12 +120,12 @@ Crie estes tokens globais e use-os em todo o projeto. Ajuste valores se a compos
   --space-8: 4rem;
   --space-9: 6rem;
   --space-10: 8rem;
-  --section-y: clamp(5rem, 3rem + 8vw, 10rem);
-  --gutter: clamp(1.25rem, 0.5rem + 3.5vw, 4rem);
+  --section-y: 8.75rem;
+  --gutter: 3.5rem;
 
   /* layout */
   --container: 1360px;
-  --container-text: 38rem;
+  --container-text: 28.75rem;
   --header-h: 60px;          /* 72px a partir de 768px */
   --target-min: 44px;
 
@@ -148,7 +148,7 @@ Crie estes tokens globais e use-os em todo o projeto. Ajuste valores se a compos
 }
 ```
 
-Breakpoints de referência: 480, 768, 1024 e 1440 px (variáveis CSS não funcionam em media queries; documente-os em um comentário e use `clamp()`, grid e `minmax()` para layouts fluidos).
+Breakpoint tipográfico: 900px. Breakpoints estruturais de referência: 480, 768, 1024 e 1440 px (variáveis CSS não funcionam em media queries; documente-os em um comentário e use `clamp()`, grid e `minmax()` para layouts fluidos).
 
 ## 9. Imagens
 
@@ -220,3 +220,13 @@ Um commit por fase, com mensagem clara (ex.: `feat(hero): hero, header e barra d
 ## 16. Relatório final
 
 Ao concluir, informe: o que foi implementado; arquivos criados e modificados; imagens usadas (e descartadas, com motivo); o que está funcionando; o que ainda precisa ser configurado (WhatsApp, Instagram, domínio, localização); comandos executados e resultados; limitações e decisões que mereçam revisão.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

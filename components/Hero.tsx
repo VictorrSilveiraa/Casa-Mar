@@ -10,7 +10,7 @@ export function Hero() {
       <div className={`${styles.scrim} ${styles.bottomScrim}`} aria-hidden="true" />
       <div className={styles.content}>
         <p className={styles.eyebrow}>{content.hero.eyebrow}</p>
-        <h1 id="hero-title">{content.hero.title}</h1>
+        <h1 id="hero-title">{content.hero.titleLines.map((line) => <span key={line}>{line}</span>)}</h1>
         <p className={styles.description}>{content.hero.description}</p>
         <a href="#a-casa" className={styles.link}>{content.hero.action}<span aria-hidden="true">↗</span></a>
       </div>

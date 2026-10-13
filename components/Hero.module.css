@@ -5,24 +5,24 @@
 .topScrim { top: 0; height: 280px; background: linear-gradient(to bottom, rgb(12 42 46 / .5), transparent); }
 .bottomScrim { bottom: 0; height: min(640px, 71.111%); background: linear-gradient(to top, rgb(12 42 46 / .7), rgb(12 42 46 / .43) 40%, transparent); }
 .content { position: absolute; z-index: 1; top: 61%; left: var(--header-edge); width: min(740px, calc(100% - 2 * var(--header-edge))); transform: translateY(-50%); }
-.eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
-.content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: .98; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); }
-.description { max-width: 430px; font-family: var(--jost-300), sans-serif; font-size: clamp(1.0625rem, 1rem + .21vw, 1.1875rem); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
-.link { display: inline-flex; align-items: center; gap: 1rem; min-height: var(--target-min); text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--jost-500), sans-serif; font-size: .94rem; }
+.eyebrow { font-size: var(--text-eyebrow); font-family: var(--font-sans-ui); font-weight: 400; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
+.content h1 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: -.02em; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); font-optical-sizing: auto; }
+.content h1 span { display: block; }
+.description { max-width: 430px; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
+.link { display: inline-flex; align-items: center; gap: 1rem; min-height: var(--target-min); text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--font-sans-medium); font-weight: 500; font-size: 1rem; letter-spacing: .02em; }
 .link span { transition: transform var(--dur-fast) var(--ease-out); }
 .link:hover span { transform: translate(4px,-4px); }
-.scroll { position: absolute; right: var(--header-edge); bottom: 3.25rem; z-index: 1; display: flex; gap: .875rem; align-items: center; text-decoration: none; font-size: .8125rem; letter-spacing: .14em; writing-mode: vertical-rl; }
+.scroll { position: absolute; right: var(--header-edge); bottom: 3.25rem; z-index: 1; display: flex; gap: .875rem; align-items: center; text-decoration: none; font-family: var(--font-sans-ui); font-size: .8125rem; font-weight: 400; letter-spacing: .14em; writing-mode: vertical-rl; }
 .scroll span { width: 1px; height: 50px; background: currentColor; }
 .hero :focus-visible { outline-color: var(--color-white); }
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .hero { min-height: 600px; }
   .photo img { object-position: 50% 57%; }
   .topScrim { height: 180px; background: linear-gradient(to bottom, rgb(12 42 46 / .42), transparent); }
   .bottomScrim { height: 68%; background: linear-gradient(to top, rgb(12 42 46 / .76), rgb(12 42 46 / .44) 45%, transparent); }
   .content { top: auto; left: var(--gutter); bottom: clamp(2.5rem, 6vh, 4rem); width: min(600px, calc(100% - 2 * var(--gutter))); transform: none; }
-  .content h1 { font-size: clamp(2.75rem, 10.4vw, 4.7rem); max-width: 600px; margin-bottom: 1.1rem; }
-  .description { font-size: 1rem; max-width: 340px; margin-bottom: 1.2rem; }
-  .eyebrow { font-size: .63rem; margin-bottom: .8rem; }
-  .scroll { display: none; }
+  .content h1 { font-size: var(--text-display); line-height: 1; max-width: 600px; margin-bottom: 1rem; text-shadow: 0 2px 24px rgb(12 42 46 / .35); }
+  .description { font-size: var(--text-lead); line-height: 1.5; max-width: 320px; margin-bottom: 0; }
+  .eyebrow { font-size: var(--text-eyebrow); margin-bottom: 1rem; }
+  .link, .scroll { display: none; }
 }
-@media (max-width: 360px) { .content h1 { font-size: 2.65rem; } }

@@ -4,6 +4,7 @@ import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const output = resolve(import.meta.dirname, "../docs/screenshots");
+const baseUrl = process.env.BASE_URL ?? "http://127.0.0.1:3000";
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
@@ -15,7 +16,7 @@ for (const width of widths) {
   const consoleProblems = [];
   page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) consoleProblems.push(`${msg.type()}: ${msg.text()}`); });
   page.on("pageerror", (error) => consoleProblems.push(`pageerror: ${error.message}`));
-  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.goto(baseUrl, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(async () => {
     const imgs = Array.from(document.querySelectorAll("img"));
@@ -26,6 +27,33 @@ for (const width of widths) {
   if (size.scroll > size.inner) problems.push(`${width}px overflow ${size.scroll - size.inner}px`);
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator("#topo #reservas").count(), 0);
+  if (width === 390 || width === 1440) {
+    const typography = await page.evaluate(() => {
+      const read = (element) => {
+        const style = getComputedStyle(element);
+        return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, lineHeight: style.lineHeight, letterSpacing: style.letterSpacing };
+      };
+      const h1 = document.querySelector("h1");
+      const h2 = document.querySelector("#a-casa h2");
+      const overline = h2?.previousElementSibling;
+      const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
+      if (!h1 || !h2 || !overline || !paragraph) throw new Error("Typography sample elements were not found.");
+      return { h1: read(h1), h2: read(h2), overline: read(overline), paragraph: read(paragraph) };
+    });
+    const mobile = width === 390;
+    assert.match(typography.h1.family, /^newsreader300/i);
+    assert.equal(typography.h1.size, mobile ? "48px" : "88px");
+    assert.equal(typography.h1.weight, "300");
+    assert.match(typography.h2.family, /^newsreader300/i);
+    assert.equal(typography.h2.size, mobile ? "40px" : "56px");
+    assert.equal(typography.h2.weight, "300");
+    assert.match(typography.paragraph.family, /^jost300/i);
+    assert.equal(typography.paragraph.size, mobile ? "17px" : "18px");
+    assert.equal(typography.paragraph.weight, "300");
+    assert.match(typography.overline.family, /^jost400/i);
+    assert.equal(typography.overline.size, mobile ? "12px" : "13px");
+    assert.equal(typography.overline.weight, "400");
+  }
   await page.screenshot({ path: resolve(output, `${width}.png`), fullPage: true, animations: "disabled" });
   if (width === 390 || width === 1440) await page.screenshot({ path: resolve(output, `${width}-hero.png`), animations: "disabled" });
   if (consoleProblems.length) problems.push(`${width}px console: ${consoleProblems.join(" | ")}`);
@@ -38,7 +66,7 @@ const page = await context.newPage();
 const interactiveProblems = [];
 page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) interactiveProblems.push(`${msg.type()}: ${msg.text()}`); });
 page.on("pageerror", (error) => interactiveProblems.push(`pageerror: ${error.message}`));
-await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+await page.goto(baseUrl, { waitUntil: "networkidle" });
 await page.getByRole("button", { name: "Consultar disponibilidade" }).click();
 assert.equal(await page.locator(":focus").getAttribute("id"), "checkin");
 assert.equal(await page.locator("#checkin-error").textContent(), "Escolha a data de check-in.");
@@ -95,13 +123,13 @@ await context.close();
 
 const reduced = await browser.newContext({ viewport: { width: 390, height: 800 }, reducedMotion: "reduce" });
 const reducedPage = await reduced.newPage();
-await reducedPage.goto("http://127.0.0.1:3000");
+await reducedPage.goto(baseUrl);
 assert.equal(await reducedPage.locator("h1").isVisible(), true);
 assert.equal(await reducedPage.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), "auto");
 await reduced.close();
 const noJs = await browser.newContext({ viewport: { width: 390, height: 800 }, javaScriptEnabled: false });
 const noJsPage = await noJs.newPage();
-await noJsPage.goto("http://127.0.0.1:3000");
+await noJsPage.goto(baseUrl);
 assert.equal(await noJsPage.getByText("Há lugares que nos fazem esquecer das horas.").isVisible(), true);
 assert.equal(await noJsPage.locator("details summary").first().isVisible(), true);
 await noJs.close();
