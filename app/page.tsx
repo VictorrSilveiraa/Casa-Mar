@@ -68,17 +68,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="acomodacoes" className={`${styles.section} ${styles.accommodation}`} aria-labelledby="accommodation-title">
-        <div className={`${styles.container} ${styles.accommodationGrid}`}>
-          <SectionHeading id="accommodation-title" eyebrow={content.accommodation.eyebrow} title={content.accommodation.title} />
-          <div className={styles.accommodationBody}>
-            <div className={styles.paragraphs}>{content.accommodation.paragraphs.map((text) => <p key={text}>{text}</p>)}</div>
-            <div className={styles.highlights}>{content.accommodation.highlights.map((item) => <span key={item}>{item}</span>)}</div>
-            <TextLink href="#informacoes">{content.accommodation.action}</TextLink>
-          </div>
-        </div>
-      </section>
-
       <section className={`${styles.section} ${styles.hospitality}`} aria-labelledby="hospitality-title">
         <div className={`${styles.container} ${styles.hospitalityGrid}`}>
           <div className={styles.hospitalityImage}><ResponsiveImage image="socialPortrait" sizes="(max-width: 767px) 100vw, 38vw" /></div>

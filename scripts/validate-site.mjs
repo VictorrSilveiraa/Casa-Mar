@@ -27,6 +27,8 @@ for (const width of widths) {
   if (size.scroll > size.inner) problems.push(`${width}px overflow ${size.scroll - size.inner}px`);
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator("#topo #reservas").count(), 0);
+  assert.equal(await page.locator("#acomodacoes").count(), 0);
+  assert.equal(await page.locator('a[href="#acomodacoes"]').count(), 0);
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {
       const read = (element) => {

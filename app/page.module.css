@@ -37,12 +37,6 @@
 .terraceCopy { max-width: 470px; border-top: 1px solid var(--color-line); padding-top: 2rem; }
 .terraceCopy p:not(.imageLabel) { margin-bottom: 2rem; }
 
-.accommodation { background: var(--color-sand); }
-.accommodationGrid { display: grid; grid-template-columns: 1fr .82fr; gap: clamp(3rem, 10vw, 11rem); align-items: start; }
-.accommodationBody { padding-top: clamp(2rem, 5vw, 5rem); }
-.highlights { display: grid; border-top: 1px solid var(--color-line); margin: 2.5rem 0 1.6rem; }
-.highlights span { display: block; padding: .9rem 0; border-bottom: 1px solid var(--color-line); font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
-
 .hospitality { background: var(--color-olive-deep); color: var(--color-background); }
 .hospitalityGrid { display: grid; grid-template-columns: .78fr 1fr; gap: clamp(3rem, 9vw, 10rem); align-items: center; }
 .hospitalityImage { height: clamp(580px, 64vw, 840px); overflow: hidden; }
@@ -106,7 +100,7 @@
   .paragraphs p { margin-bottom: 1.125rem; }
   .hospitalityStatement, .lifestyleStatement { margin-top: 2.5rem; padding-top: 1.625rem; }
   .locationHighlight { margin-top: 2.5rem; padding-top: 1.625rem; }
-  .essenceGrid, .accommodationGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid, .environmentTail { grid-template-columns: 1fr; }
+  .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid, .environmentTail { grid-template-columns: 1fr; }
   .essenceCopy { padding: 0; }
   .essenceImage { height: 118vw; max-height: 620px; }
   .featureHeading { margin-bottom: 2.5rem; }
@@ -119,7 +113,6 @@
   .kitchenImage { height: 70vw; min-height: 310px; }
   .environmentTail { margin-top: 4rem; gap: 2.5rem; }
   .socialImage { height: 70vw; min-height: 320px; }
-  .accommodationBody { padding-top: 0; }
   .hospitalityImage { height: 98vw; max-height: 700px; }
   .hospitalityCopy .paragraphs { margin: 2.5rem 0; }
   .lifestyleImage { height: 65svh; min-height: 430px; }

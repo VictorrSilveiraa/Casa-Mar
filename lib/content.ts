@@ -6,7 +6,6 @@ export const content = {
   navigation: [
     { label: "A Casa", href: "#a-casa" },
     { label: "Ambientes", href: "#ambientes" },
-    { label: "Acomodações", href: "#acomodacoes" },
     { label: "Localização", href: "#localizacao" },
   ],
   hero: {
@@ -47,16 +46,6 @@ export const content = {
       { key: "terrace", label: "Terraço", title: "Quando o pôr do sol se torna um ritual.", description: "Um lugar para contemplar o horizonte, sentir a brisa e apreciar a beleza dos últimos instantes do dia." },
     ],
     action: "Explore os ambientes",
-  },
-  accommodation: {
-    eyebrow: "O PRAZER DE DESCANSAR",
-    title: "O conforto de estar longe. A sensação de estar em casa.",
-    paragraphs: [
-      "Depois de um dia de sol e mar, nada melhor do que encontrar um ambiente acolhedor para renovar as energias.",
-      "A Casa Praiamar dispõe de seis suítes climatizadas, proporcionando conforto para que cada hóspede aproveite a estadia no seu próprio ritmo.",
-    ],
-    highlights: ["06 suítes", "Ambientes climatizados", "Até 24 hóspedes"],
-    action: "Conheça as acomodações",
   },
   hospitality: {
     eyebrow: "UMA EXPERIÊNCIA DE HOSPITALIDADE",
@@ -114,7 +103,6 @@ export const content = {
       { label: "Início", href: "#topo" },
       { label: "A Casa", href: "#a-casa" },
       { label: "Ambientes", href: "#ambientes" },
-      { label: "Acomodações", href: "#acomodacoes" },
       { label: "Localização", href: "#localizacao" },
       { label: "Reservas", href: "#reservas" },
     ],
