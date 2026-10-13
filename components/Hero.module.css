@@ -4,7 +4,7 @@
 .scrim { position: absolute; right: 0; left: 0; pointer-events: none; }
 .topScrim { top: 0; height: 280px; background: linear-gradient(to bottom, rgb(12 42 46 / .5), transparent); }
 .bottomScrim { bottom: 0; height: min(640px, 71.111%); background: linear-gradient(to top, rgb(12 42 46 / .7), rgb(12 42 46 / .43) 40%, transparent); }
-.content { position: absolute; z-index: 1; top: 50%; left: var(--header-edge); width: min(740px, calc(100% - 2 * var(--header-edge))); transform: translateY(-50%); }
+.content { position: absolute; z-index: 1; top: 61%; left: var(--header-edge); width: min(740px, calc(100% - 2 * var(--header-edge))); transform: translateY(-50%); }
 .eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
 .content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: .98; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); }
 .description { max-width: 430px; font-family: var(--jost-300), sans-serif; font-size: clamp(1.0625rem, 1rem + .21vw, 1.1875rem); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
