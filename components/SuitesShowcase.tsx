@@ -49,7 +49,7 @@ export function SuitesShowcase() {
   return (
     <section id="suites" className={styles.section} aria-label="Suítes da Casa Praiamar">
       <div className={styles.intro}>
-        <SectionHeading eyebrow={content.suites.eyebrow} title={content.suites.title} description={content.suites.description} />
+        <SectionHeading title={content.suites.title} />
         <a className={styles.cta} href="/suites">{content.suites.action}<Arrow direction="next" /></a>
       </div>
 

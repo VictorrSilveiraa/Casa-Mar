@@ -29,6 +29,10 @@ for (const width of widths) {
   assert.equal(await page.locator("#topo #reservas").count(), 0);
   assert.equal(await page.locator("#suites").count(), 1);
   assert.equal(await page.locator("#suites img").count(), 5);
+  assert.equal(await page.locator("#suites h2").textContent(), "Nossas suítes");
+  assert.equal(await page.locator('#suites [class*="eyebrow"]').count(), 0);
+  assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
+  assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
   assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {

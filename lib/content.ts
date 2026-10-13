@@ -28,9 +28,7 @@ export const content = {
     action: "Conheça nossa casa",
   },
   suites: {
-    eyebrow: "O PRAZER DE DESCANSAR",
-    title: "O conforto de estar longe. A sensação de estar em casa.",
-    description: "A Casa Praiamar dispõe de seis suítes climatizadas, pensadas para que cada hóspede aproveite a estadia no seu próprio ritmo.",
+    title: "Nossas suítes",
     action: "Conheça nossas suítes",
     images: ["suiteNordestina", "suitePassaro", "suiteArvoreLoft", "suiteArvore", "suiteRenda"],
   },
