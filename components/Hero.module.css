@@ -1,10 +1,10 @@
 .hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; color: var(--color-white); background: var(--color-ink); }
 .photo { position: absolute; inset: 0; }
-.photo img { object-position: 50% 53%; }
-.scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(0 0 0 / .50) 0%, rgb(0 0 0 / .24) 48%, transparent 80%), linear-gradient(0deg, rgb(0 0 0 / .38), transparent 48%); }
-.content { position: absolute; z-index: 1; left: var(--header-edge); bottom: clamp(3.25rem, 4vw, 4rem); width: min(740px, calc(100% - 2 * var(--header-edge))); }
+.photo img { object-position: 50% 58%; }
+.scrim { position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(12 42 46 / .5) 0%, transparent 280px), linear-gradient(to top, rgb(12 42 46 / .7) 0%, rgb(12 42 46 / .43) 40%, transparent 100%); }
+.content { position: absolute; z-index: 1; left: var(--header-edge); bottom: 3.25rem; width: min(740px, calc(100% - 2 * var(--header-edge))); }
 .eyebrow { font-size: var(--text-eyebrow); font-family: var(--jost-500), sans-serif; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
-.content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: .98; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 1.625rem; max-width: 720px; }
+.content h1 { font-family: var(--font-editorial); font-weight: 300; font-size: var(--text-display); line-height: .98; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); }
 .description { max-width: 430px; font-family: var(--jost-300), sans-serif; font-size: clamp(1.0625rem, 1rem + .21vw, 1.1875rem); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
 .link { display: inline-flex; align-items: center; gap: 1rem; min-height: var(--target-min); text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--jost-500), sans-serif; font-size: .94rem; }
 .link span { transition: transform var(--dur-fast) var(--ease-out); }

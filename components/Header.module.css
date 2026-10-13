@@ -1,5 +1,5 @@
 .header { position: fixed; inset: 0 0 auto; z-index: var(--z-header); color: var(--color-white); transition: background var(--dur-fast), color var(--dur-fast); }
-.header::before { content: ""; position: absolute; inset: 0 0 -2rem; z-index: -1; background: linear-gradient(to bottom, rgb(0 0 0 / .58), transparent); pointer-events: none; }
+.header::before { content: ""; position: absolute; inset: 0 0 -2rem; z-index: -1; pointer-events: none; }
 .solid { background: var(--color-background); color: var(--color-ink); border-bottom: 1px solid var(--color-line); }
 .solid::before { display: none; }
 .inner { height: var(--header-h); width: 100%; padding-inline: var(--header-edge); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; }
