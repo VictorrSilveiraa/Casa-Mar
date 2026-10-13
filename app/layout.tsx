@@ -21,16 +21,16 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     title: content.metadata.title,
     description: content.metadata.description,
-    images: [{ url: "/media/hero-desktop-1440.webp", width: 1440, height: 853, alt: "Fachada da Casa Praiamar entre coqueiros" }],
+    images: [{ url: "/media/hero-villa-1440.webp", width: 1440, height: 810, alt: "Fachada da Casa Praiamar entre coqueiros" }],
   },
-  twitter: { card: "summary_large_image", title: content.metadata.title, description: content.metadata.description, images: ["/media/hero-desktop-1440.webp"] },
+  twitter: { card: "summary_large_image", title: content.metadata.title, description: content.metadata.description, images: ["/media/hero-villa-1440.webp"] },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${jost300.variable} ${jost400.variable} ${jost500.variable} ${newsreader.variable}`}>
       <head>
-        <link rel="preload" as="image" imageSrcSet={imageSrcSet("heroMobile", "avif")} imageSizes="100vw" type="image/avif" media="(max-width: 767px)" fetchPriority="high" />
+        <link rel="preload" as="image" imageSrcSet={imageSrcSet("heroDesktop", "avif")} imageSizes="100vw" type="image/avif" media="(max-width: 767px)" fetchPriority="high" />
         <link rel="preload" as="image" imageSrcSet={imageSrcSet("heroDesktop", "avif")} imageSizes="100vw" type="image/avif" media="(min-width: 768px)" fetchPriority="high" />
       </head>
       <body>{children}</body>

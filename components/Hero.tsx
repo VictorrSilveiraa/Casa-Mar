@@ -5,7 +5,7 @@ import styles from "./Hero.module.css";
 export function Hero() {
   return (
     <section id="topo" className={styles.hero} aria-labelledby="hero-title">
-      <ResponsiveImage image="heroDesktop" mobileImage="heroMobile" sizes="100vw" className={styles.photo} priority />
+      <ResponsiveImage image="heroDesktop" sizes="100vw" className={styles.photo} priority />
       <div className={`${styles.scrim} ${styles.topScrim}`} aria-hidden="true" />
       <div className={`${styles.scrim} ${styles.bottomScrim}`} aria-hidden="true" />
       <div className={styles.content}>

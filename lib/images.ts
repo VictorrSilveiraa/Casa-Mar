@@ -1,8 +1,7 @@
 export type ImageKey = keyof typeof images;
 
 export const images = {
-  heroDesktop: { source: "Imagem da HERO.png", slug: "hero-desktop", width: 1629, height: 965, alt: "Fachada da Casa Praiamar entre coqueiros, jardim e passarela de madeira", desktop: "50% 53%", mobile: "50% 57%" },
-  heroMobile: { source: "HERO MOBILE.png", slug: "hero-mobile", width: 941, height: 1672, alt: "Passarela de madeira em direção à Casa Praiamar entre coqueiros", desktop: "50% 57%", mobile: "50% 57%" },
+  heroDesktop: { source: "Villa tropical de luxo à beira-mar.png", slug: "hero-villa", width: 1672, height: 941, alt: "Fachada da Casa Praiamar entre coqueiros, jardim e passarela de madeira", desktop: "50% 58%", mobile: "50% 52%" },
   kitchen: { source: "Imagem do ChatGPT 12 de out. de 2026, 13_47_25-1.png", slug: "cozinha-gourmet", width: 1448, height: 1086, alt: "Mesa de madeira e cadeiras diante da cozinha gourmet climatizada", desktop: "50% 48%", mobile: "50% 48%" },
   social: { source: "Imagem do ChatGPT 12 de out. de 2026, 13_47_31-2.png", slug: "ambiente-social", width: 1448, height: 1086, alt: "Ambiente social coberto com rede, sofá e mesa, aberto para o mar", desktop: "53% 50%", mobile: "59% 50%" },
   garden: { source: "Imagem do ChatGPT 12 de out. de 2026, 13_47_33-3.png", slug: "jardim", width: 1448, height: 1086, alt: "Espreguiçadeiras no jardim diante da fachada da Casa Praiamar", desktop: "51% 55%", mobile: "52% 54%" },
