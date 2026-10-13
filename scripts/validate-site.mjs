@@ -37,6 +37,7 @@ for (const width of widths) {
   assert.equal(await page.locator("#diferenciais").count(), 1);
   assert.equal(await page.locator("#diferenciais img").count(), 1);
   assert.equal(await page.locator("#diferenciais [data-feature-item]").count(), 4);
+  assert.equal(await page.locator('#diferenciais [class*="eyebrow"]').count(), 0);
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {
       const read = (element) => {

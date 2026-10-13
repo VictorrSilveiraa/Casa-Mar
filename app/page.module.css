@@ -13,8 +13,8 @@
 .essenceImage { height: clamp(480px, 58vw, 770px); overflow: hidden; }
 
 .features { padding-block: var(--section-y); }
-.featuresLayout { display: grid; grid-template-columns: minmax(16rem, .58fr) minmax(0, 1.42fr); gap: clamp(3rem, 8vw, 9rem); align-items: start; }
-.featureImage { position: sticky; top: calc(var(--header-h) + 2rem); height: min(48vw, 44rem); overflow: hidden; }
+.featuresLayout { display: grid; grid-template-columns: minmax(18rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 6vw, 7rem); align-items: start; }
+.featureImage { position: sticky; top: calc(var(--header-h) + 2rem); height: min(42vw, 38rem); overflow: hidden; }
 .featureContent { padding-top: clamp(.25rem, 1vw, 1rem); }
 .featureHeading { max-width: 700px; margin-bottom: clamp(3rem, 5vw, 4.75rem); }
 .featureGrid { border-top: 1px solid var(--color-line); }
@@ -89,8 +89,9 @@
 .footer :focus-visible { outline-color: var(--color-background); }
 
 @media (max-width: 1023px) {
-  .featuresLayout { grid-template-columns: minmax(13rem, .5fr) minmax(0, 1fr); gap: 3rem; }
-  .featureImage { height: min(60vw, 38rem); }
+  .featuresLayout { grid-template-columns: minmax(15rem, .65fr) minmax(0, 1fr); gap: 3rem; }
+  .featureImage { height: min(56vw, 34rem); }
+  .feature { grid-template-columns: 1fr; gap: .5rem; }
   .environmentGrid { grid-template-columns: 1.2fr 1fr; }
   .kitchenArticle { padding-top: 4rem; }
   .hospitalityGrid { gap: 3rem; }

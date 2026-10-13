@@ -48,7 +48,7 @@ export default function Home() {
         <div className={`${styles.container} ${styles.featuresLayout}`}>
           <div className={styles.featureImage}><ResponsiveImage image="featuresPortrait" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 34vw, 28vw" /></div>
           <div className={styles.featureContent}>
-            <SectionHeading id="features-title" eyebrow={content.features.eyebrow} title={content.features.title} className={styles.featureHeading} />
+            <SectionHeading id="features-title" title={content.features.title} className={styles.featureHeading} />
             <div className={styles.featureGrid}>{content.features.items.map((item) => <article className={styles.feature} data-feature-item key={item.title}><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
           </div>
         </div>
