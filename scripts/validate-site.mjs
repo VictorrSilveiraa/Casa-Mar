@@ -88,6 +88,30 @@ for (const width of widths) {
   assert.equal(await page.locator('#hospitalidade [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("Mais tempo para estar presente.", { exact: false }).count(), 0);
   assert.equal(await page.locator("#hospitalidade").getByText(/Cozinheira|Camareira|Segurança noturna/).count(), 0);
+  assert.equal(await page.locator("#experiencias").count(), 1);
+  assert.equal(await page.locator("#experiencias img").count(), 1);
+  assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
+  assert.equal(await page.locator('#experiencias a[href="/experiencias"]').textContent(), "Conheça nossas experiências↗");
+  assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
+  if (width === 1440) {
+    const experienceLayout = await page.evaluate(() => {
+      const section = document.querySelector("#experiencias");
+      const image = section?.querySelector("img");
+      const copy = section?.querySelector("h2")?.parentElement;
+      if (!section || !image || !copy) throw new Error("Experience layout elements were not found.");
+      const sectionRect = section.getBoundingClientRect();
+      const imageRect = image.getBoundingClientRect();
+      const copyRect = copy.getBoundingClientRect();
+      return {
+        sectionHeight: sectionRect.height,
+        imageCoversSection: imageRect.top <= sectionRect.top + 1 && imageRect.bottom >= sectionRect.bottom - 1,
+        copyOverImage: copyRect.left >= imageRect.left && copyRect.right <= imageRect.right && copyRect.top >= imageRect.top && copyRect.bottom <= imageRect.bottom,
+      };
+    });
+    assert.ok(experienceLayout.sectionHeight >= 650, `Experience section height is ${experienceLayout.sectionHeight}px, expected at least 650px`);
+    assert.equal(experienceLayout.imageCoversSection, true);
+    assert.equal(experienceLayout.copyOverImage, true);
+  }
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {
       const read = (element) => {

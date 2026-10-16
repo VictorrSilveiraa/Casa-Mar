@@ -82,9 +82,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.lifestyle} aria-labelledby="lifestyle-title">
+      <section id="experiencias" className={styles.lifestyle} aria-labelledby="lifestyle-title">
         <div className={styles.lifestyleImage}><ResponsiveImage image="dusk" sizes="100vw" /></div>
-        <div className={`${styles.container} ${styles.lifestyleCopy}`}><SectionHeading id="lifestyle-title" eyebrow={content.lifestyle.eyebrow} title={content.lifestyle.title} /><div className={styles.paragraphs}>{content.lifestyle.paragraphs.map((text) => <p key={text}>{text}</p>)}</div><p className={styles.lifestyleStatement}>{content.lifestyle.statement}</p></div>
+        <div className={styles.lifestyleScrim} aria-hidden="true" />
+        <div className={`${styles.container} ${styles.lifestyleInner}`}>
+          <div className={styles.lifestyleCopy}>
+            <SectionHeading id="lifestyle-title" title={content.lifestyle.title} />
+            <p className={styles.lifestyleDescription}>{content.lifestyle.description}</p>
+            <a href="/experiencias">{content.lifestyle.action}<span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
       </section>
 
       <section id="localizacao" className={`${styles.section} ${styles.location}`} aria-labelledby="location-title">

@@ -60,14 +60,9 @@ export const content = {
     ],
   },
   lifestyle: {
-    eyebrow: "A ARTE DE VIVER SEM PRESSA",
-    title: "Dias que passam devagar. Memórias que ficam para sempre.",
-    paragraphs: [
-      "Acordar com o som das ondas. Sentir a brisa do mar. Passar a tarde entre mergulhos e boas conversas.",
-      "Esperar o pôr do sol sem olhar para o relógio.",
-      "Na Praiamar, são os pequenos momentos que tornam cada estadia inesquecível.",
-    ],
-    statement: "Porque, às vezes, tudo o que precisamos é de um lugar para simplesmente estar.",
+    title: "Experiências para viver sem pressa.",
+    description: "Entre o mar, a piscina e os espaços da casa, cada momento convida a desacelerar e aproveitar a companhia de quem importa.",
+    action: "Conheça nossas experiências",
   },
   location: {
     eyebrow: "ARPOEIRAS, CEARÁ",
