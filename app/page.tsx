@@ -55,8 +55,8 @@ export default function Home() {
       </section>
 
       <section id="ambientes" className={`${styles.section} ${styles.environments}`} aria-labelledby="environments-title">
-        <div className={styles.container}>
-          <div className={styles.environmentHeader}><SectionHeading id="environments-title" title={content.environments.title} description={content.environments.description} /></div>
+        <div className={styles.environmentContainer}>
+          <div className={styles.environmentHeader}><SectionHeading id="environments-title" title={content.environments.title} /></div>
           <div className={styles.environmentGrid}>
             <article className={styles.environmentItem} data-environment-item>
               <div className={styles.environmentImage}><ResponsiveImage image="poolNight" sizes="(max-width: 767px) 100vw, 33vw" /></div>

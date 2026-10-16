@@ -44,7 +44,6 @@ export const content = {
   },
   environments: {
     title: "Cada ambiente, uma nova forma de aproveitar.",
-    description: "Dos dias ensolarados às noites de conversas prolongadas, a Praiamar reúne espaços que convidam a estar junto e aproveitar cada instante.",
     items: [
       { key: "pool", label: "Piscina", title: "Mergulhe no seu próprio ritmo.", description: "O convite perfeito para aproveitar o sol, relaxar e transformar uma tarde qualquer em uma boa lembrança." },
       { key: "kitchen", label: "Cozinha gourmet", title: "Os melhores encontros acontecem à mesa.", description: "Um espaço acolhedor, pensado para compartilhar sabores, histórias e momentos que merecem durar." },

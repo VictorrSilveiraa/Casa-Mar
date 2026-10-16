@@ -44,6 +44,7 @@ for (const width of widths) {
   assert.equal(await page.locator("#ambientes").count(), 1);
   assert.equal(await page.locator('#ambientes [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("ESPAÇOS QUE INSPIRAM", { exact: true }).count(), 0);
+  assert.equal(await page.getByText("Dos dias ensolarados às noites de conversas prolongadas, a Praiamar reúne espaços que convidam a estar junto e aproveitar cada instante.", { exact: true }).count(), 0);
   assert.equal(await page.locator("#ambientes [data-environment-item]").count(), 3);
   assert.deepEqual(await page.locator("#ambientes [data-environment-item] h3").allTextContents(), ["Piscina", "Cozinha gourmet", "Terraço"]);
   assert.equal(await page.getByRole("button", { name: "Conheça todos os ambientes" }).count(), 1);
@@ -67,6 +68,21 @@ for (const width of widths) {
     assert.ok(Math.max(...environmentLayout.images.map(({ top }) => top)) - Math.min(...environmentLayout.images.map(({ top }) => top)) <= 1, "Environment images must share the same top edge");
     assert.ok(Math.max(...environmentLayout.images.map(({ width }) => width)) - Math.min(...environmentLayout.images.map(({ width }) => width)) <= 1, "Environment images must have equal widths");
     for (const image of environmentLayout.images) assert.ok(Math.abs(image.width / image.height - 0.75) <= 0.01, "Environment images must use a 3:4 ratio");
+  }
+  if (width === 1920) {
+    const environmentSpacing = await page.evaluate(() => {
+      const section = document.querySelector("#ambientes");
+      const title = section?.querySelector("h2");
+      const grid = section?.querySelector("[data-environment-item]")?.parentElement;
+      const firstImage = section?.querySelector("[data-environment-item] > div:first-child");
+      if (!title || !grid || !firstImage) throw new Error("Environment spacing elements were not found.");
+      const titleRect = title.getBoundingClientRect();
+      const gridRect = grid.getBoundingClientRect();
+      const imageRect = firstImage.getBoundingClientRect();
+      return { gridWidth: gridRect.width, titleToImage: imageRect.top - titleRect.bottom };
+    });
+    assert.ok(environmentSpacing.gridWidth >= 1600, `Environment content width is ${environmentSpacing.gridWidth}px, expected at least 1600px`);
+    assert.ok(environmentSpacing.titleToImage <= 80, `Environment title-to-image gap is ${environmentSpacing.titleToImage}px, expected at most 80px`);
   }
   assert.equal(await page.locator("#hospitalidade").count(), 1);
   assert.equal(await page.locator('#hospitalidade [class*="eyebrow"]').count(), 0);
