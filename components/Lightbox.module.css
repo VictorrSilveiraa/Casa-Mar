@@ -1,5 +1,6 @@
-.trigger { display: inline-flex; align-items: center; gap: 1rem; min-height: 48px; padding: 0; border: 0; border-bottom: 1px solid currentColor; background: none; color: inherit; font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; }
+.trigger { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 52px; padding: .75rem 1.25rem; border: 1px solid var(--color-ink); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; transition: background var(--dur-fast) var(--ease-out); }
 .trigger span { transition: transform var(--dur-fast); }
+.trigger:hover { background: var(--color-sand); }
 .trigger:hover span { transform: translate(4px,-4px); }
 .dialog { position: fixed; inset: 0; width: min(94vw, 1400px); height: min(94svh, 900px); max-width: none; max-height: none; margin: auto; padding: clamp(1rem, 2vw, 2rem); border: 0; background: var(--color-background); color: var(--color-ink); box-shadow: 0 24px 80px rgb(0 0 0 / .3); }
 .dialog::backdrop { background: rgb(0 0 0 / .84); }

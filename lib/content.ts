@@ -43,7 +43,6 @@ export const content = {
     ],
   },
   environments: {
-    eyebrow: "ESPAÇOS QUE INSPIRAM",
     title: "Cada ambiente, uma nova forma de aproveitar.",
     description: "Dos dias ensolarados às noites de conversas prolongadas, a Praiamar reúne espaços que convidam a estar junto e aproveitar cada instante.",
     items: [
@@ -51,7 +50,7 @@ export const content = {
       { key: "kitchen", label: "Cozinha gourmet", title: "Os melhores encontros acontecem à mesa.", description: "Um espaço acolhedor, pensado para compartilhar sabores, histórias e momentos que merecem durar." },
       { key: "terrace", label: "Terraço", title: "Quando o pôr do sol se torna um ritual.", description: "Um lugar para contemplar o horizonte, sentir a brisa e apreciar a beleza dos últimos instantes do dia." },
     ],
-    action: "Explore os ambientes",
+    action: "Conheça todos os ambientes",
   },
   hospitality: {
     title: "O verdadeiro luxo é poder aproveitar cada momento.",

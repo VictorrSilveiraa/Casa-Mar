@@ -22,21 +22,22 @@
 .feature h3 { margin: 0; font-family: var(--font-display-regular); font-weight: 400; font-size: var(--text-h3); line-height: var(--leading-highlight); letter-spacing: -.005em; font-optical-sizing: auto; }
 .feature p { max-width: 31ch; margin: 0; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 
-.environments :global(h2) { max-width: 640px; }
-.environmentGrid { display: grid; grid-template-columns: 1.5fr .85fr; gap: clamp(1.5rem, 3vw, 3.5rem); align-items: start; margin-top: clamp(3rem, 5vw, 5rem); }
-.poolImage { height: clamp(430px, 48vw, 650px); overflow: hidden; }
-.kitchenArticle { padding-top: clamp(5rem, 13vw, 12rem); }
-.kitchenImage { height: clamp(300px, 30vw, 420px); overflow: hidden; }
-.environmentCopy { padding-top: 1.5rem; max-width: 480px; }
+.environmentIntro { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(20rem, .72fr); gap: clamp(3rem, 8vw, 9rem); align-items: end; }
+.environments :global(h2) { max-width: 700px; }
+.environmentIntroAside { max-width: var(--container-text); padding-top: 1.75rem; border-top: 1px solid var(--color-line); }
+.environmentIntroAside p { margin: 0 0 2rem; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
+.environmentGrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(5rem, 9vw, 9rem) clamp(1.5rem, 2.5vw, 2.75rem); align-items: start; margin-top: clamp(4rem, 7vw, 6.5rem); }
+.poolArticle { grid-column: 1 / span 7; }
+.poolImage { aspect-ratio: 16 / 10; overflow: hidden; }
+.kitchenArticle { grid-column: 9 / -1; margin-top: clamp(3.5rem, 7vw, 7rem); }
+.kitchenImage { aspect-ratio: 4 / 5; overflow: hidden; }
+.environmentCopy { max-width: 470px; padding-top: 1.5rem; }
 .imageLabel { font-family: var(--font-sans-ui); color: var(--color-olive-deep); font-size: var(--text-eyebrow); font-weight: 400; line-height: normal; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; margin: 0 0 1.2rem; }
 .environmentCopy h3, .terraceCopy h3 { font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; margin-bottom: 1rem; font-optical-sizing: auto; }
 .environmentCopy p:last-child, .terraceCopy p:not(.imageLabel) { max-width: 460px; margin-bottom: 0; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
-.environmentTail { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 8vw, 10rem); align-items: center; margin-top: clamp(6rem, 10vw, 10rem); }
-.socialFigure { margin: 0; }
-.socialImage { height: clamp(330px, 43vw, 560px); overflow: hidden; }
-.socialFigure figcaption { margin-top: 1rem; font-family: var(--font-sans-ui); color: var(--color-olive-deep); font-size: var(--text-eyebrow); font-weight: 400; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; }
-.terraceCopy { max-width: 470px; border-top: 1px solid var(--color-line); padding-top: 2rem; }
-.terraceCopy p:not(.imageLabel) { margin-bottom: 2rem; }
+.terraceArticle { grid-column: 3 / span 9; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(18rem, .75fr); gap: clamp(3rem, 7vw, 8rem); align-items: end; }
+.socialImage { aspect-ratio: 4 / 3; overflow: hidden; }
+.terraceCopy { max-width: 470px; padding-top: 2rem; border-top: 1px solid var(--color-line); }
 
 .hospitality { padding-block: clamp(6rem, 8vw, 8.75rem); background: var(--color-olive-deep); color: var(--color-background); }
 .hospitalityGrid { display: grid; grid-template-columns: .92fr 1fr; gap: clamp(3rem, 8vw, 9rem); align-items: center; }
@@ -89,27 +90,32 @@
   .featuresLayout { grid-template-columns: minmax(15rem, .65fr) minmax(0, 1fr); gap: 3rem; }
   .featureImage { height: min(56vw, 34rem); }
   .feature { grid-template-columns: 1fr; gap: .5rem; }
-  .environmentGrid { grid-template-columns: 1.2fr 1fr; }
-  .kitchenArticle { padding-top: 4rem; }
+  .environmentIntro { grid-template-columns: minmax(0, 1fr) minmax(18rem, .72fr); gap: 3rem; }
+  .poolArticle { grid-column: 1 / span 7; }
+  .kitchenArticle { grid-column: 8 / -1; }
+  .terraceArticle { grid-column: 2 / span 11; gap: 3rem; }
   .hospitalityGrid { gap: 3rem; }
 }
 @media (max-width: 767px) {
   .paragraphs p { margin-bottom: 1.125rem; }
   .lifestyleStatement { margin-top: 2.5rem; padding-top: 1.625rem; }
   .locationHighlight { margin-top: 2.5rem; padding-top: 1.625rem; }
-  .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid, .environmentTail { grid-template-columns: 1fr; }
+  .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentIntro, .environmentGrid { grid-template-columns: 1fr; }
   .essenceCopy { padding: 0; }
   .essenceImage { height: 118vw; max-height: 620px; }
   .featuresLayout { grid-template-columns: 1fr; gap: 3rem; }
   .featureImage { position: static; height: min(128vw, 38rem); }
   .featureHeading { margin-bottom: 2.5rem; }
   .feature { grid-template-columns: 1fr; gap: .5rem; padding: 1.35rem 0; }
-  .environmentGrid { gap: 4rem; }
-  .kitchenArticle { padding-top: 0; }
-  .poolImage { height: 75vw; min-height: 350px; }
-  .kitchenImage { height: 70vw; min-height: 310px; }
-  .environmentTail { margin-top: 4rem; gap: 2.5rem; }
-  .socialImage { height: 70vw; min-height: 320px; }
+  .environmentIntro { gap: 2.5rem; }
+  .environmentIntroAside { max-width: 100%; }
+  .environmentGrid { gap: 4.5rem; margin-top: 4rem; }
+  .poolArticle, .kitchenArticle, .terraceArticle { grid-column: 1; margin-top: 0; }
+  .poolImage { aspect-ratio: 4 / 3; }
+  .kitchenImage { aspect-ratio: 4 / 3; }
+  .terraceArticle { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  .socialImage { aspect-ratio: 4 / 3; }
+  .terraceCopy { max-width: 100%; }
   .hospitalityImage { height: 88vw; max-height: 600px; }
   .hospitalityCopy .paragraphs { margin-top: 2.5rem; padding-top: 2rem; }
   .lifestyleImage { height: 65svh; min-height: 430px; }
