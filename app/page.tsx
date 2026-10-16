@@ -56,27 +56,22 @@ export default function Home() {
 
       <section id="ambientes" className={`${styles.section} ${styles.environments}`} aria-labelledby="environments-title">
         <div className={styles.container}>
-          <div className={styles.environmentIntro}>
-            <SectionHeading id="environments-title" title={content.environments.title} />
-            <div className={styles.environmentIntroAside}>
-              <p>{content.environments.description}</p>
-              <Lightbox label={content.environments.action} />
-            </div>
-          </div>
+          <div className={styles.environmentHeader}><SectionHeading id="environments-title" title={content.environments.title} description={content.environments.description} /></div>
           <div className={styles.environmentGrid}>
-            <article className={styles.poolArticle} data-environment-item>
-              <div className={styles.poolImage}><ResponsiveImage image="poolNight" sizes="(max-width: 767px) 100vw, 65vw" /></div>
-              <div className={styles.environmentCopy}><p className={styles.imageLabel}>{content.environments.items[0].label}</p><h3>{content.environments.items[0].title}</h3><p>{content.environments.items[0].description}</p></div>
+            <article className={styles.environmentItem} data-environment-item>
+              <div className={styles.environmentImage}><ResponsiveImage image="poolNight" sizes="(max-width: 767px) 100vw, 33vw" /></div>
+              <div className={styles.environmentCopy}><h3>{content.environments.items[0].label}</h3><p>{content.environments.items[0].description}</p></div>
             </article>
-            <article className={styles.kitchenArticle} data-environment-item>
-              <div className={styles.kitchenImage}><ResponsiveImage image="kitchen" sizes="(max-width: 767px) 100vw, 32vw" /></div>
-              <div className={styles.environmentCopy}><p className={styles.imageLabel}>{content.environments.items[1].label}</p><h3>{content.environments.items[1].title}</h3><p>{content.environments.items[1].description}</p></div>
+            <article className={styles.environmentItem} data-environment-item>
+              <div className={styles.environmentImage}><ResponsiveImage image="kitchen" sizes="(max-width: 767px) 100vw, 33vw" /></div>
+              <div className={styles.environmentCopy}><h3>{content.environments.items[1].label}</h3><p>{content.environments.items[1].description}</p></div>
             </article>
-            <article className={styles.terraceArticle} data-environment-item>
-              <div className={styles.socialImage}><ResponsiveImage image="social" sizes="(max-width: 767px) 100vw, 48vw" /></div>
-              <div className={styles.terraceCopy}><p className={styles.imageLabel}>{content.environments.items[2].label}</p><h3>{content.environments.items[2].title}</h3><p>{content.environments.items[2].description}</p></div>
+            <article className={styles.environmentItem} data-environment-item>
+              <div className={styles.environmentImage}><ResponsiveImage image="social" sizes="(max-width: 767px) 100vw, 33vw" /></div>
+              <div className={styles.environmentCopy}><h3>{content.environments.items[2].label}</h3><p>{content.environments.items[2].description}</p></div>
             </article>
           </div>
+          <div className={styles.environmentAction}><Lightbox label={content.environments.action} /></div>
         </div>
       </section>
 

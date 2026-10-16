@@ -45,7 +45,29 @@ for (const width of widths) {
   assert.equal(await page.locator('#ambientes [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("ESPAÇOS QUE INSPIRAM", { exact: true }).count(), 0);
   assert.equal(await page.locator("#ambientes [data-environment-item]").count(), 3);
+  assert.deepEqual(await page.locator("#ambientes [data-environment-item] h3").allTextContents(), ["Piscina", "Cozinha gourmet", "Terraço"]);
   assert.equal(await page.getByRole("button", { name: "Conheça todos os ambientes" }).count(), 1);
+  if (width === 1440) {
+    const environmentLayout = await page.evaluate(() => {
+      const section = document.querySelector("#ambientes");
+      const title = section?.querySelector("h2");
+      const images = Array.from(section?.querySelectorAll("[data-environment-item] > div:first-child") ?? []);
+      if (!title || images.length !== 3) throw new Error("Environment layout elements were not found.");
+      const titleRect = title.getBoundingClientRect();
+      return {
+        titleCenter: titleRect.left + titleRect.width / 2,
+        viewportCenter: window.innerWidth / 2,
+        images: images.map((image) => {
+          const rect = image.getBoundingClientRect();
+          return { top: rect.top, width: rect.width, height: rect.height };
+        }),
+      };
+    });
+    assert.ok(Math.abs(environmentLayout.titleCenter - environmentLayout.viewportCenter) <= 1, "Environment title must be centered");
+    assert.ok(Math.max(...environmentLayout.images.map(({ top }) => top)) - Math.min(...environmentLayout.images.map(({ top }) => top)) <= 1, "Environment images must share the same top edge");
+    assert.ok(Math.max(...environmentLayout.images.map(({ width }) => width)) - Math.min(...environmentLayout.images.map(({ width }) => width)) <= 1, "Environment images must have equal widths");
+    for (const image of environmentLayout.images) assert.ok(Math.abs(image.width / image.height - 0.75) <= 0.01, "Environment images must use a 3:4 ratio");
+  }
   assert.equal(await page.locator("#hospitalidade").count(), 1);
   assert.equal(await page.locator('#hospitalidade [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("Mais tempo para estar presente.", { exact: false }).count(), 0);
