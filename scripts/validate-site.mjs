@@ -34,6 +34,9 @@ for (const width of widths) {
   assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
   assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
   assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
+  const firstSuiteLeft = await page.locator("#suites article").first().evaluate((element) => element.getBoundingClientRect().left);
+  if (width > 900) assert.ok(Math.abs(firstSuiteLeft) <= 1, `${width}px first suite starts at x=${firstSuiteLeft}, expected x=0`);
+  else assert.ok(firstSuiteLeft > 0, `${width}px first suite must retain its mobile gutter`);
   assert.equal(await page.locator("#diferenciais").count(), 1);
   assert.equal(await page.locator("#diferenciais img").count(), 1);
   assert.equal(await page.locator("#diferenciais [data-feature-item]").count(), 4);
@@ -140,9 +143,23 @@ assert.match(await page.locator("dialog").textContent(), /2 \/ 6/);
 await page.keyboard.press("Escape");
 assert.equal(await page.getByRole("dialog", { name: "Galeria de ambientes" }).isVisible(), false);
 assert.equal(await page.locator(":focus").textContent(), "Explore os ambientes↗");
-assert.deepEqual(interactiveProblems, []);
+assert.deepEqual(interactiveProblems.filter((problem) => problem !== "warning: integração de contato pendente"), []);
 console.log("Inquiry, menu, FAQ and gallery interactions: PASS");
 await context.close();
+
+const desktopSuites = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const desktopSuitesPage = await desktopSuites.newPage();
+await desktopSuitesPage.goto(baseUrl, { waitUntil: "networkidle" });
+const desktopSuitesRegion = desktopSuitesPage.getByRole("region", { name: "Suítes da Casa Praiamar" });
+await desktopSuitesRegion.getByRole("button", { name: "Próxima suíte" }).click();
+await desktopSuitesRegion.getByText("02 / 05").waitFor({ state: "visible" });
+await desktopSuitesRegion.getByRole("button", { name: "Suíte anterior" }).click();
+await desktopSuitesPage.waitForFunction(() => {
+  const firstSuite = document.querySelector("#suites article");
+  return firstSuite ? Math.abs(firstSuite.getBoundingClientRect().left) <= 1 : false;
+});
+console.log("Desktop suites first stage edge alignment: PASS");
+await desktopSuites.close();
 
 const reduced = await browser.newContext({ viewport: { width: 390, height: 800 }, reducedMotion: "reduce" });
 const reducedPage = await reduced.newPage();

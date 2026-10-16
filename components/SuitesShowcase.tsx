@@ -24,7 +24,12 @@ export function SuitesShowcase() {
 
   const goTo = (index: number) => {
     const next = Math.max(0, Math.min(images.length - 1, index));
-    itemRefs.current[next]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    const firstStageAtDesktopEdge = next === 0 && window.matchMedia("(min-width: 901px)").matches;
+    itemRefs.current[next]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: firstStageAtDesktopEdge ? "start" : "center",
+    });
     setActive(next);
   };
 
