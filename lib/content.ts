@@ -54,15 +54,12 @@ export const content = {
     action: "Explore os ambientes",
   },
   hospitality: {
-    eyebrow: "UMA EXPERIÊNCIA DE HOSPITALIDADE",
     title: "O verdadeiro luxo é poder aproveitar cada momento.",
     paragraphs: [
       "Na Praiamar, a tranquilidade também faz parte da experiência.",
       "Durante sua estadia, você conta com uma equipe composta por cozinheira, camareira e segurança noturna.",
       "São cuidados pensados para tornar seus dias mais leves, permitindo que você se dedique ao que realmente importa: viver bons momentos.",
     ],
-    statement: "Mais tempo para estar presente. Menos preocupações pelo caminho.",
-    services: ["Cozinheira", "Camareira", "Segurança noturna"],
   },
   lifestyle: {
     eyebrow: "A ARTE DE VIVER SEM PRESSA",

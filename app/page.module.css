@@ -38,16 +38,13 @@
 .terraceCopy { max-width: 470px; border-top: 1px solid var(--color-line); padding-top: 2rem; }
 .terraceCopy p:not(.imageLabel) { margin-bottom: 2rem; }
 
-.hospitality { background: var(--color-olive-deep); color: var(--color-background); }
-.hospitalityGrid { display: grid; grid-template-columns: .78fr 1fr; gap: clamp(3rem, 9vw, 10rem); align-items: center; }
-.hospitalityImage { height: clamp(580px, 64vw, 840px); overflow: hidden; }
-.hospitalityCopy { max-width: 640px; }
+.hospitality { padding-block: clamp(6rem, 8vw, 8.75rem); background: var(--color-olive-deep); color: var(--color-background); }
+.hospitalityGrid { display: grid; grid-template-columns: .92fr 1fr; gap: clamp(3rem, 8vw, 9rem); align-items: center; }
+.hospitalityImage { height: clamp(520px, 52vw, 720px); overflow: hidden; }
+.hospitalityCopy { max-width: 600px; }
 .hospitalityCopy :global(h2) { max-width: 580px; }
-.hospitalityCopy :global(p:first-child) { color: var(--color-background); }
-.hospitalityCopy .paragraphs { margin: 2.5rem 0; }
-.hospitalityStatement { max-width: 25ch; margin: 3rem 0; padding-top: 1.75rem; border-top: 1px solid var(--color-line-inverse); font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
-.serviceList { display: grid; border-top: 1px solid var(--color-line-inverse); }
-.serviceList span { padding: .85rem 0; border-bottom: 1px solid var(--color-line-inverse); font-family: var(--font-sans-ui); font-size: .9375rem; font-weight: 400; letter-spacing: .02em; }
+.hospitalityCopy .paragraphs { margin: clamp(2.5rem, 4vw, 4rem) 0 0; padding-top: clamp(2rem, 3vw, 3rem); border-top: 1px solid var(--color-line-inverse); }
+.hospitalityCopy .paragraphs p:first-child { max-width: 36ch; font-size: var(--text-lead); line-height: 1.55; }
 
 .lifestyleImage { height: clamp(540px, 83svh, 900px); overflow: hidden; }
 .lifestyleCopy { max-width: 760px; text-align: center; padding-block: var(--section-y); }
@@ -98,7 +95,7 @@
 }
 @media (max-width: 767px) {
   .paragraphs p { margin-bottom: 1.125rem; }
-  .hospitalityStatement, .lifestyleStatement { margin-top: 2.5rem; padding-top: 1.625rem; }
+  .lifestyleStatement { margin-top: 2.5rem; padding-top: 1.625rem; }
   .locationHighlight { margin-top: 2.5rem; padding-top: 1.625rem; }
   .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid, .environmentTail { grid-template-columns: 1fr; }
   .essenceCopy { padding: 0; }
@@ -113,8 +110,8 @@
   .kitchenImage { height: 70vw; min-height: 310px; }
   .environmentTail { margin-top: 4rem; gap: 2.5rem; }
   .socialImage { height: 70vw; min-height: 320px; }
-  .hospitalityImage { height: 98vw; max-height: 700px; }
-  .hospitalityCopy .paragraphs { margin: 2.5rem 0; }
+  .hospitalityImage { height: 88vw; max-height: 600px; }
+  .hospitalityCopy .paragraphs { margin-top: 2.5rem; padding-top: 2rem; }
   .lifestyleImage { height: 65svh; min-height: 430px; }
   .lifestyleCopy { text-align: left; }
   .lifestyleCopy .paragraphs { margin-left: 0; }

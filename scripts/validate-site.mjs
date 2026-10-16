@@ -38,6 +38,10 @@ for (const width of widths) {
   assert.equal(await page.locator("#diferenciais img").count(), 1);
   assert.equal(await page.locator("#diferenciais [data-feature-item]").count(), 4);
   assert.equal(await page.locator('#diferenciais [class*="eyebrow"]').count(), 0);
+  assert.equal(await page.locator("#hospitalidade").count(), 1);
+  assert.equal(await page.locator('#hospitalidade [class*="eyebrow"]').count(), 0);
+  assert.equal(await page.getByText("Mais tempo para estar presente.", { exact: false }).count(), 0);
+  assert.equal(await page.locator("#hospitalidade").getByText(/Cozinheira|Camareira|Segurança noturna/).count(), 0);
   if (width === 390 || width === 1440) {
     const typography = await page.evaluate(() => {
       const read = (element) => {

@@ -74,10 +74,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.hospitality}`} aria-labelledby="hospitality-title">
+      <section id="hospitalidade" className={`${styles.section} ${styles.hospitality}`} aria-labelledby="hospitality-title">
         <div className={`${styles.container} ${styles.hospitalityGrid}`}>
-          <div className={styles.hospitalityImage}><ResponsiveImage image="socialPortrait" sizes="(max-width: 767px) 100vw, 38vw" /></div>
-          <div className={styles.hospitalityCopy}><SectionHeading id="hospitality-title" eyebrow={content.hospitality.eyebrow} title={content.hospitality.title} /><div className={styles.paragraphs}>{content.hospitality.paragraphs.map((text) => <p key={text}>{text}</p>)}</div><p className={styles.hospitalityStatement}>{content.hospitality.statement}</p><div className={styles.serviceList}>{content.hospitality.services.map((item) => <span key={item}>{item}</span>)}</div></div>
+          <div className={styles.hospitalityImage}><ResponsiveImage image="socialPortrait" sizes="(max-width: 767px) 100vw, 42vw" /></div>
+          <div className={styles.hospitalityCopy}><SectionHeading id="hospitality-title" title={content.hospitality.title} /><div className={styles.paragraphs}>{content.hospitality.paragraphs.map((text) => <p key={text}>{text}</p>)}</div></div>
         </div>
       </section>
 
