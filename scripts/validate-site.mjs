@@ -120,6 +120,24 @@ for (const width of widths) {
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
   assert.equal(await page.locator('#experiencias a[href="/experiencias"]').textContent(), "Conheça nossas experiências↗");
   assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
+  assert.equal(await page.locator('#localizacao [class*="eyebrow"]').count(), 0);
+  assert.equal(await page.getByText("ARPOEIRAS, CEARÁ", { exact: true }).count(), 0);
+  const locationMeta = await page.locator("#localizacao [data-location-meta]").evaluate((element) => {
+    const style = getComputedStyle(element);
+    const place = element.querySelector("p")?.getBoundingClientRect();
+    const action = element.querySelector("a")?.getBoundingClientRect();
+    if (!place || !action) throw new Error("Location metadata content was not found.");
+    return {
+      borderTopWidth: style.borderTopWidth,
+      borderBottomWidth: style.borderBottomWidth,
+      placeCenter: place.top + place.height / 2,
+      actionCenter: action.top + action.height / 2,
+    };
+  });
+  assert.equal(locationMeta.borderTopWidth, "1px");
+  assert.equal(locationMeta.borderBottomWidth, "0px");
+  if (width > 767) assert.ok(Math.abs(locationMeta.placeCenter - locationMeta.actionCenter) <= 1, "Location and action must share one editorial row");
+  else assert.ok(locationMeta.actionCenter > locationMeta.placeCenter, "Location action must stack below the place on mobile");
   if (width === 1440) {
     const experienceLayout = await page.evaluate(() => {
       const section = document.querySelector("#experiencias");
@@ -147,7 +165,7 @@ for (const width of widths) {
       };
       const h1 = document.querySelector("h1");
       const h2 = document.querySelector("#a-casa h2");
-      const overline = document.querySelector('#localizacao [class*="eyebrow"]');
+      const overline = document.querySelector('#informacoes [class*="eyebrow"]');
       const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
       const bookingDatePrompt = document.querySelector('#checkin + span');
       const bookingGuests = document.querySelector('#guests');

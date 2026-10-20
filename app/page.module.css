@@ -58,8 +58,10 @@
 .location { background: var(--color-sand); }
 .locationGrid { display: grid; grid-template-columns: 1fr .82fr; gap: clamp(3rem, 9vw, 10rem); align-items: center; }
 .locationCopy { max-width: 650px; }
-.locationCopy .paragraphs { margin: 2.5rem 0; }
-.locationHighlight { margin: 3rem 0 1.3rem; padding: 1.75rem 0 1rem; border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
+.locationCopy .paragraphs { margin: 2.5rem 0 0; }
+.locationMeta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 3rem; padding-top: 1.75rem; border-top: 1px solid var(--color-line); }
+.locationMeta p { margin: 0; font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
+.locationMeta .textLink { flex: 0 0 auto; }
 .locationImage { height: clamp(550px, 58vw, 760px); overflow: hidden; }
 
 .faqGrid { display: grid; grid-template-columns: .8fr 1.15fr; gap: clamp(3rem, 8vw, 9rem); align-items: start; }
@@ -95,7 +97,6 @@
 }
 @media (max-width: 767px) {
   .paragraphs p { margin-bottom: 1.125rem; }
-  .locationHighlight { margin-top: 2.5rem; padding-top: 1.625rem; }
   .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid { grid-template-columns: 1fr; }
   .essenceCopy { padding: 0; }
   .essenceImage { height: 118vw; max-height: 620px; }
@@ -118,6 +119,7 @@
   .lifestyleCopy { width: 100%; padding-bottom: clamp(4rem, 12vw, 6rem); }
   .lifestyleDescription { margin-top: 1.5rem; }
   .lifestyleCopy a { width: 100%; margin-top: 2rem; }
+  .locationMeta { display: grid; justify-items: start; gap: 1.25rem; margin-top: 2.5rem; padding-top: 1.625rem; }
   .locationImage { height: 110vw; max-height: 680px; }
   .faqGrid { gap: 3rem; }
   .final { height: 78svh; min-height: 620px; }

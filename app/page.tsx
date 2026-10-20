@@ -96,7 +96,7 @@ export default function Home() {
 
       <section id="localizacao" className={`${styles.section} ${styles.location}`} aria-labelledby="location-title">
         <div className={`${styles.container} ${styles.locationGrid}`}>
-          <div className={styles.locationCopy}><SectionHeading id="location-title" eyebrow={content.location.eyebrow} title={content.location.title} /><div className={styles.paragraphs}>{content.location.paragraphs.map((text) => <p key={text}>{text}</p>)}</div><p className={styles.locationHighlight}>{content.location.highlight}</p><TextLink href={siteConfig.locationUrl} external>{content.location.action}</TextLink></div>
+          <div className={styles.locationCopy}><SectionHeading id="location-title" title={content.location.title} /><div className={styles.paragraphs}>{content.location.paragraphs.map((text) => <p key={text}>{text}</p>)}</div><div className={styles.locationMeta} data-location-meta><p>{content.location.highlight}</p><TextLink href={siteConfig.locationUrl} external>{content.location.action}</TextLink></div></div>
           <div className={styles.locationImage}><ResponsiveImage image="lawnPortrait" sizes="(max-width: 767px) 100vw, 35vw" /></div>
         </div>
       </section>

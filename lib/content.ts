@@ -64,7 +64,6 @@ export const content = {
     action: "Conheça nossas experiências",
   },
   location: {
-    eyebrow: "ARPOEIRAS, CEARÁ",
     title: "Um cenário especial. Uma conexão natural com o mar.",
     paragraphs: [
       "Localizada na Praia de Arpoeiras, em Acaraú, no litoral cearense, a Casa Praiamar convida você a descobrir o encanto de viver diante do oceano.",
