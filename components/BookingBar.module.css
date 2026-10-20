@@ -12,10 +12,10 @@
 .selectRow > select { grid-column: 1; grid-row: 1; }
 .selectRow > svg { grid-column: 2; grid-row: 1; }
 .inputRow > svg:last-child { color: var(--color-olive-deep); }
-.field input, .field select { display: block; width: 100%; min-width: 0; padding: 0; border: 0; appearance: none; background: transparent; color: var(--color-ink); font-family: var(--font-sans-ui); font-size: 1.125rem; font-weight: 400; line-height: normal; }
+.field input, .field select { display: block; width: 100%; min-width: 0; padding: 0; border: 0; appearance: none; background: transparent; color: var(--color-ink); font-family: var(--font-sans); font-size: 1.125rem; font-weight: 300; line-height: normal; }
 .field input:focus-visible, .field select:focus-visible { outline-offset: 1px; }
 .field input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; opacity: 0; }
-.datePrompt { position: relative; z-index: 1; grid-column: 2; grid-row: 1; width: 100%; pointer-events: none; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans-ui); font-size: 1.125rem; font-weight: 400; line-height: normal; }
+.datePrompt { position: relative; z-index: 1; grid-column: 2; grid-row: 1; width: 100%; pointer-events: none; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1.125rem; font-weight: 300; line-height: normal; }
 .submit { display: flex; min-width: 13.25rem; height: 100%; min-height: 0; align-items: center; justify-content: center; border: 0; background: var(--color-ink); color: var(--color-background); font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
 .submit:hover:not(:disabled) { background: var(--color-olive-deep); }
 .submit:disabled { background: rgb(35 40 36 / .29); color: rgb(245 243 238 / .9); cursor: not-allowed; }

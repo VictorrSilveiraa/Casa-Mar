@@ -148,8 +148,21 @@ for (const width of widths) {
       const h2 = document.querySelector("#a-casa h2");
       const overline = h2?.previousElementSibling;
       const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
-      if (!h1 || !h2 || !overline || !paragraph) throw new Error("Typography sample elements were not found.");
-      return { h1: read(h1), h2: read(h2), overline: read(overline), paragraph: read(paragraph) };
+      const bookingDatePrompt = document.querySelector('#checkin + span');
+      const bookingGuests = document.querySelector('#guests');
+      const bookingLabel = document.querySelector('label[for="checkin"]');
+      if (!h1 || !h2 || !overline || !paragraph || !bookingDatePrompt || !bookingGuests || !bookingLabel) {
+        throw new Error("Typography sample elements were not found.");
+      }
+      return {
+        h1: read(h1),
+        h2: read(h2),
+        overline: read(overline),
+        paragraph: read(paragraph),
+        bookingDatePrompt: read(bookingDatePrompt),
+        bookingGuests: read(bookingGuests),
+        bookingLabel: read(bookingLabel),
+      };
     });
     const mobile = width === 390;
     assert.match(typography.h1.family, /^newsreader300/i);
@@ -164,6 +177,12 @@ for (const width of widths) {
     assert.match(typography.overline.family, /^jost400/i);
     assert.equal(typography.overline.size, mobile ? "12px" : "13px");
     assert.equal(typography.overline.weight, "400");
+    assert.match(typography.bookingDatePrompt.family, /^jost300/i);
+    assert.equal(typography.bookingDatePrompt.weight, "300");
+    assert.match(typography.bookingGuests.family, /^jost300/i);
+    assert.equal(typography.bookingGuests.weight, "300");
+    assert.match(typography.bookingLabel.family, /^jost400/i);
+    assert.equal(typography.bookingLabel.weight, "400");
   }
   await page.screenshot({ path: resolve(output, `${width}.png`), fullPage: true, animations: "disabled" });
   if (width === 390 || width === 1440) await page.screenshot({ path: resolve(output, `${width}-hero.png`), animations: "disabled" });
