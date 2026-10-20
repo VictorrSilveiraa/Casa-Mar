@@ -86,7 +86,7 @@ export const content = {
   final: {
     eyebrow: "SEU PRÓXIMO REFÚGIO À BEIRA-MAR",
     title: "Os melhores momentos merecem um lugar especial.",
-    paragraphs: ["O mar, o conforto e as pessoas que fazem tudo valer a pena.", "Sua próxima boa lembrança pode começar aqui."],
+    paragraphs: ["Sua próxima boa lembrança pode começar aqui."],
     action: "Consulte sua estadia",
   },
   footer: {

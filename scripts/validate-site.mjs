@@ -117,6 +117,8 @@ for (const width of widths) {
   assert.equal(await page.locator("#hospitalidade").getByText(/Cozinheira|Camareira|Segurança noturna/).count(), 0);
   assert.equal(await page.getByText("SUA ESTADIA, COM TRANQUILIDADE", { exact: true }).count(), 0);
   assert.equal(await page.locator('#informacoes [class*="eyebrow"]').count(), 0);
+  assert.equal(await page.getByText("O mar, o conforto e as pessoas que fazem tudo valer a pena.", { exact: true }).count(), 0);
+  assert.equal(await page.getByText("Sua próxima boa lembrança pode começar aqui.", { exact: true }).count(), 1);
   assert.equal(await page.locator("#experiencias").count(), 1);
   assert.equal(await page.locator("#experiencias img").count(), 1);
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
