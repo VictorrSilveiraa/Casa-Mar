@@ -34,7 +34,7 @@ export default function Home() {
       <section id="a-casa" className={`${styles.section} ${styles.essence}`} aria-labelledby="essence-title">
         <div className={`${styles.container} ${styles.essenceGrid}`}>
           <div className={styles.essenceCopy}>
-            <SectionHeading id="essence-title" eyebrow={content.essence.eyebrow} title={content.essence.title} />
+            <SectionHeading id="essence-title" title={content.essence.title} />
             <div className={styles.paragraphs}>{content.essence.paragraphs.map((text) => <p key={text}>{text}</p>)}</div>
             <TextLink href="#ambientes">{content.essence.action}</TextLink>
           </div>

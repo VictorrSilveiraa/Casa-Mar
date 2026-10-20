@@ -38,6 +38,7 @@ for (const width of widths) {
   if (width > 900) assert.ok(Math.abs(firstSuiteLeft) <= 1, `${width}px first suite starts at x=${firstSuiteLeft}, expected x=0`);
   else assert.ok(firstSuiteLeft > 0, `${width}px first suite must retain its mobile gutter`);
   assert.equal(await page.locator("#diferenciais").count(), 1);
+  assert.equal(await page.getByText("UM CONVITE PARA DESACELERAR", { exact: true }).count(), 0);
   assert.equal(await page.locator("#diferenciais img").count(), 1);
   assert.equal(await page.locator("#diferenciais [data-feature-item]").count(), 4);
   assert.equal(await page.locator('#diferenciais [class*="eyebrow"]').count(), 0);
@@ -146,7 +147,7 @@ for (const width of widths) {
       };
       const h1 = document.querySelector("h1");
       const h2 = document.querySelector("#a-casa h2");
-      const overline = h2?.previousElementSibling;
+      const overline = document.querySelector('#localizacao [class*="eyebrow"]');
       const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
       const bookingDatePrompt = document.querySelector('#checkin + span');
       const bookingGuests = document.querySelector('#guests');

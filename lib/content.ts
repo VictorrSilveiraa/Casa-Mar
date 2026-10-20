@@ -18,7 +18,6 @@ export const content = {
   },
   booking: { checkin: "Check-in", checkout: "Check-out", guests: "Hóspedes", action: "Consultar disponibilidade" },
   essence: {
-    eyebrow: "UM CONVITE PARA DESACELERAR",
     title: "Há lugares que nos fazem esquecer das horas.",
     paragraphs: [
       "Na Praia de Arpoeiras, a Casa Praiamar nasce do encontro entre conforto, natureza e simplicidade.",
