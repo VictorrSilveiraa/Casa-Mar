@@ -115,6 +115,8 @@ for (const width of widths) {
   assert.equal(await page.locator('#hospitalidade [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("Mais tempo para estar presente.", { exact: false }).count(), 0);
   assert.equal(await page.locator("#hospitalidade").getByText(/Cozinheira|Camareira|Segurança noturna/).count(), 0);
+  assert.equal(await page.getByText("SUA ESTADIA, COM TRANQUILIDADE", { exact: true }).count(), 0);
+  assert.equal(await page.locator('#informacoes [class*="eyebrow"]').count(), 0);
   assert.equal(await page.locator("#experiencias").count(), 1);
   assert.equal(await page.locator("#experiencias img").count(), 1);
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
@@ -165,7 +167,7 @@ for (const width of widths) {
       };
       const h1 = document.querySelector("h1");
       const h2 = document.querySelector("#a-casa h2");
-      const overline = document.querySelector('#informacoes [class*="eyebrow"]');
+      const overline = document.querySelector('#topo [class*="eyebrow"]');
       const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
       const bookingDatePrompt = document.querySelector('#checkin + span');
       const bookingGuests = document.querySelector('#guests');

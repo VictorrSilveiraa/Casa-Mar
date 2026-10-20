@@ -73,7 +73,6 @@ export const content = {
     action: "Ver localização",
   },
   faq: {
-    eyebrow: "SUA ESTADIA, COM TRANQUILIDADE",
     title: "Tudo o que você precisa saber antes de chegar.",
     action: "Falar com nossa equipe",
     items: [

@@ -102,7 +102,7 @@ export default function Home() {
       </section>
 
       <section id="informacoes" className={`${styles.section} ${styles.faq}`} aria-labelledby="faq-title">
-        <div className={`${styles.container} ${styles.faqGrid}`}><div><SectionHeading id="faq-title" eyebrow={content.faq.eyebrow} title={content.faq.title} /><TextLink href="#reservas" focusBooking>{content.faq.action}</TextLink></div><FaqList /></div>
+        <div className={`${styles.container} ${styles.faqGrid}`}><div><SectionHeading id="faq-title" title={content.faq.title} /><TextLink href="#reservas" focusBooking>{content.faq.action}</TextLink></div><FaqList /></div>
       </section>
 
       <section className={styles.final} aria-labelledby="final-title">
