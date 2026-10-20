@@ -49,6 +49,12 @@ for (const width of widths) {
   assert.deepEqual(await page.locator("#ambientes [data-environment-item] h3").allTextContents(), ["Piscina", "Cozinha gourmet", "Terraço"]);
   assert.equal(await page.getByRole("button", { name: "Conheça todos os ambientes" }).count(), 1);
   if (width === 1440) {
+    const bookingBar = await page.locator("#reservas form").evaluate((form) => {
+      const rect = form.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    assert.ok(Math.abs(bookingBar.width - 1400) <= 1, `Booking bar width is ${bookingBar.width}px, expected 1400px`);
+    assert.ok(Math.abs(bookingBar.height - 85) <= 1, `Booking bar height is ${bookingBar.height}px, expected 85px`);
     const environmentLayout = await page.evaluate(() => {
       const section = document.querySelector("#ambientes");
       const title = section?.querySelector("h2");
@@ -154,6 +160,10 @@ page.on("pageerror", (error) => interactiveProblems.push(`pageerror: ${error.mes
 await page.goto(baseUrl, { waitUntil: "networkidle" });
 const inquirySubmit = page.getByRole("button", { name: "Consultar disponibilidade" });
 assert.equal(await inquirySubmit.isDisabled(), true);
+assert.equal(await page.getByText("Selecione as datas", { exact: true }).count(), 2);
+const guestSelect = page.getByRole("combobox", { name: "Hóspedes" });
+assert.equal(await guestSelect.inputValue(), "2");
+assert.equal(await guestSelect.locator("option").count(), 24);
 await page.locator("#reservas form").evaluate((form) => form.requestSubmit());
 assert.equal(await page.locator(":focus").getAttribute("id"), "checkin");
 assert.equal(await page.locator("#checkin-error").textContent(), "Escolha a data de check-in.");
@@ -169,16 +179,10 @@ assert.equal(await page.locator("#checkout-error").textContent(), "O check-out d
 await page.locator("#checkin").fill(today);
 const checkout = new Date(`${today}T12:00:00Z`); checkout.setUTCDate(checkout.getUTCDate() + 1);
 await page.locator("#checkout").fill(checkout.toISOString().slice(0, 10));
+assert.equal(await page.getByText("Selecione as datas", { exact: true }).count(), 0);
 assert.equal(await inquirySubmit.isEnabled(), true);
-await page.getByRole("button", { name: "Diminuir hóspedes" }).click();
-assert.equal(await page.getByRole("button", { name: "Diminuir hóspedes" }).isDisabled(), true);
-for (let i = 0; i < 23; i++) await page.getByRole("button", { name: "Aumentar hóspedes" }).click();
-assert.equal(await page.getByRole("button", { name: "Aumentar hóspedes" }).isDisabled(), true);
-await page.getByRole("spinbutton", { name: "Hóspedes" }).focus();
-await page.keyboard.press("Home");
-assert.equal(await page.getByRole("spinbutton", { name: "Hóspedes" }).textContent(), "1 hóspedes");
-await page.keyboard.press("End");
-assert.equal(await page.getByRole("spinbutton", { name: "Hóspedes" }).textContent(), "24 hóspedes");
+await guestSelect.selectOption("24");
+assert.equal(await guestSelect.inputValue(), "24");
 await page.getByRole("button", { name: "Consultar disponibilidade" }).click();
 assert.equal(await page.getByRole("button", { name: "Copiar mensagem" }).isVisible(), true);
 assert.match(new URL(page.url()).search, /hospedes=24/);
@@ -187,7 +191,7 @@ await page.getByRole("button", { name: "Mensagem copiada" }).waitFor({ state: "v
 await page.reload({ waitUntil: "networkidle" });
 assert.equal(await page.locator("#checkin").inputValue(), today);
 assert.equal(await page.locator("#checkout").inputValue(), checkout.toISOString().slice(0, 10));
-assert.equal(await page.getByRole("spinbutton", { name: "Hóspedes" }).textContent(), "24 hóspedes");
+assert.equal(await page.getByRole("combobox", { name: "Hóspedes" }).inputValue(), "24");
 await page.getByRole("button", { name: "Abrir menu" }).click();
 assert.equal(await page.getByRole("button", { name: "Fechar menu" }).getAttribute("aria-expanded"), "true");
 assert.equal(await page.locator("main").getAttribute("inert"), "");

@@ -15,14 +15,6 @@ function ChevronDown() {
   return <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false"><path d="m6.5 8 3.5 3.5L13.5 8" /></svg>;
 }
 
-function MinusIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false"><path d="M5.5 10h9" /></svg>;
-}
-
-function PlusIcon() {
-  return <svg aria-hidden="true" viewBox="0 0 20 20" focusable="false"><path d="M10 5.5v9M5.5 10h9" /></svg>;
-}
-
 export function BookingBar() {
   const [today] = useState(() => todayInFortaleza());
   const [inquiry, setInquiry] = useState<Inquiry>({ checkin: "", checkout: "", guests: siteConfig.booking.initialGuests });
@@ -32,7 +24,7 @@ export function BookingBar() {
   const [copied, setCopied] = useState(false);
   const checkinRef = useRef<HTMLInputElement>(null);
   const checkoutRef = useRef<HTMLInputElement>(null);
-  const guestsRef = useRef<HTMLOutputElement>(null);
+  const guestsRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     const restore = window.setTimeout(() => {
@@ -101,6 +93,7 @@ export function BookingBar() {
             <div className={styles.inputRow}>
               <CalendarIcon />
               <input ref={checkinRef} id="checkin" type="date" min={today} value={inquiry.checkin} onChange={(event) => update("checkin", event.target.value)} aria-invalid={!!errors.checkin} aria-describedby={errors.checkin ? "checkin-error" : undefined} />
+              {!inquiry.checkin && <span className={styles.datePrompt} aria-hidden="true">Selecione as datas</span>}
               <ChevronDown />
             </div>
             {errors.checkin && <span id="checkin-error" className={styles.error}>{errors.checkin}</span>}
@@ -110,22 +103,18 @@ export function BookingBar() {
             <div className={styles.inputRow}>
               <CalendarIcon />
               <input ref={checkoutRef} id="checkout" type="date" min={inquiry.checkin ? addDays(inquiry.checkin, 1) : addDays(today, 1)} value={inquiry.checkout} onChange={(event) => update("checkout", event.target.value)} aria-invalid={!!errors.checkout} aria-describedby={errors.checkout ? "checkout-error" : undefined} />
+              {!inquiry.checkout && <span className={styles.datePrompt} aria-hidden="true">Selecione as datas</span>}
               <ChevronDown />
             </div>
             {errors.checkout && <span id="checkout-error" className={styles.error}>{errors.checkout}</span>}
           </div>
           <div className={styles.field}>
-            <span id="guests-label" className={styles.label}>{content.booking.guests}</span>
-            <div className={styles.stepper} role="group" aria-labelledby="guests-label">
-              <button type="button" aria-label="Diminuir hóspedes" disabled={inquiry.guests <= 1} onClick={() => update("guests", inquiry.guests - 1)}><MinusIcon /></button>
-              <output ref={guestsRef} role="spinbutton" tabIndex={0} aria-labelledby="guests-label" aria-valuemin={1} aria-valuemax={siteConfig.booking.maxGuests} aria-valuenow={inquiry.guests} aria-valuetext={`${inquiry.guests} hóspedes`} aria-invalid={!!errors.guests} aria-describedby={errors.guests ? "guests-error" : undefined} aria-live="polite" aria-atomic="true" onKeyDown={(event) => {
-                if (["ArrowDown", "ArrowLeft", "ArrowUp", "ArrowRight", "Home", "End"].includes(event.key)) event.preventDefault();
-                if (["ArrowDown", "ArrowLeft"].includes(event.key)) update("guests", Math.max(1, inquiry.guests - 1));
-                if (["ArrowUp", "ArrowRight"].includes(event.key)) update("guests", Math.min(siteConfig.booking.maxGuests, inquiry.guests + 1));
-                if (event.key === "Home") update("guests", 1);
-                if (event.key === "End") update("guests", siteConfig.booking.maxGuests);
-              }}>{inquiry.guests} hóspedes</output>
-              <button type="button" aria-label="Aumentar hóspedes" disabled={inquiry.guests >= siteConfig.booking.maxGuests} onClick={() => update("guests", inquiry.guests + 1)}><PlusIcon /></button>
+            <label htmlFor="guests">{content.booking.guests}</label>
+            <div className={`${styles.inputRow} ${styles.selectRow}`}>
+              <select ref={guestsRef} id="guests" value={inquiry.guests} onChange={(event) => update("guests", Number(event.target.value))} aria-invalid={!!errors.guests} aria-describedby={errors.guests ? "guests-error" : undefined}>
+                {Array.from({ length: siteConfig.booking.maxGuests }, (_, index) => index + 1).map((guests) => <option key={guests} value={guests}>{guests} {guests === 1 ? "hóspede" : "hóspedes"}</option>)}
+              </select>
+              <ChevronDown />
             </div>
             {errors.guests && <span id="guests-error" className={styles.error}>{errors.guests}</span>}
           </div>
