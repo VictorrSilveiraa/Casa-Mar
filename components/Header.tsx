@@ -44,7 +44,7 @@ export function Header() {
         <nav className={styles.desktopNav} aria-label="Navegação principal">
           {content.navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
         </nav>
-        <a className={styles.reserve} href="#reservas" data-focus-booking>Reservar <span aria-hidden>↗</span></a>
+        <a className={styles.reserve} href="#reservas" data-focus-booking>Reservar</a>
         <button ref={toggle} className={styles.menuToggle} type="button" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}><span /><span /></button>
       </div>
       <div ref={menu} id="mobile-menu" className={`${styles.mobileMenu} ${open ? styles.mobileOpen : ""}`} aria-hidden={!open}>
