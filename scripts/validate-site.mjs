@@ -51,10 +51,30 @@ for (const width of widths) {
   if (width === 1440) {
     const bookingBar = await page.locator("#reservas form").evaluate((form) => {
       const rect = form.getBoundingClientRect();
-      return { width: rect.width, height: rect.height };
+      const children = Array.from(form.children).map((element) => element.getBoundingClientRect());
+      const dateInputs = Array.from(form.querySelectorAll('input[type="date"]')).map((element) => element.getBoundingClientRect());
+      const dateRows = Array.from(form.querySelectorAll('input[type="date"]')).map((input) => {
+        const row = input.parentElement;
+        if (!row) throw new Error("Date input row was not found.");
+        const controls = Array.from(row.children).map((element) => element.getBoundingClientRect());
+        return { height: row.getBoundingClientRect().height, controls };
+      });
+      return {
+        width: rect.width,
+        height: rect.height,
+        contentContained: children.every((child) => child.top >= rect.top && child.bottom <= rect.bottom),
+        dateInputsWide: dateInputs.every((input) => input.width >= 200),
+        dateRowsSingleLine: dateRows.every(({ height, controls }) => {
+          const centers = controls.map(({ top, height: controlHeight }) => top + controlHeight / 2);
+          return height <= 32 && Math.max(...centers) - Math.min(...centers) <= 1;
+        }),
+      };
     });
     assert.ok(Math.abs(bookingBar.width - 1400) <= 1, `Booking bar width is ${bookingBar.width}px, expected 1400px`);
     assert.ok(Math.abs(bookingBar.height - 85) <= 1, `Booking bar height is ${bookingBar.height}px, expected 85px`);
+    assert.equal(bookingBar.contentContained, true, "Booking fields and submit button must remain inside the 85px bar");
+    assert.equal(bookingBar.dateInputsWide, true, "Date inputs must occupy the available text column");
+    assert.equal(bookingBar.dateRowsSingleLine, true, "Date icon, input, prompt and chevron must share one row");
     const environmentLayout = await page.evaluate(() => {
       const section = document.querySelector("#ambientes");
       const title = section?.querySelector("h2");
