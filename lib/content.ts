@@ -90,8 +90,13 @@ export const content = {
     action: "Consulte sua estadia",
   },
   footer: {
+    brand: "CASA PRAIAMAR",
     statement: "O privilégio de viver sem pressa.",
+    navigationLabel: "Navegue",
+    destinationLabel: "Onde estamos",
     location: "Praia de Arpoeiras — Acaraú, Ceará",
+    action: "Consultar estadia",
+    wordmark: "PRAIAMAR",
     links: [
       { label: "Início", href: "#topo" },
       { label: "A Casa", href: "#a-casa" },

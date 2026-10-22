@@ -1,0 +1,211 @@
+.footer {
+  overflow: hidden;
+  padding-top: clamp(5rem, 8vw, 8rem);
+  background: var(--color-ink);
+  color: var(--color-background);
+}
+
+.inner {
+  width: min(calc(100% - 2 * var(--gutter)), var(--container));
+  margin-inline: auto;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(15rem, .85fr) minmax(16rem, .85fr);
+  gap: clamp(3rem, 7vw, 8rem);
+  align-items: start;
+}
+
+.identity {
+  max-width: 27rem;
+}
+
+.brand {
+  display: inline-flex;
+  min-height: var(--target-min);
+  align-items: center;
+  font-family: var(--font-sans-ui);
+  font-size: .9375rem;
+  font-weight: 400;
+  letter-spacing: .24em;
+  text-decoration: none;
+}
+
+.statement {
+  max-width: 18ch;
+  margin: 1.35rem 0 0;
+  font-family: var(--font-display-regular);
+  font-size: var(--text-h3);
+  font-weight: 400;
+  line-height: var(--leading-highlight);
+  letter-spacing: -.005em;
+}
+
+.label {
+  margin: .7rem 0 1.25rem;
+  font-family: var(--font-sans-ui);
+  font-size: var(--text-label);
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(6rem, 1fr));
+  column-gap: 1.75rem;
+}
+
+.navigation a {
+  display: flex;
+  min-height: var(--target-min);
+  align-items: center;
+  font-family: var(--font-sans-ui);
+  font-size: var(--text-small);
+  font-weight: 400;
+  letter-spacing: .02em;
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+  text-underline-offset: .35rem;
+}
+
+.location {
+  max-width: 20ch;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.action {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid currentColor;
+  font-family: var(--font-sans-medium);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-decoration: none;
+}
+
+.action span {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.action:hover span {
+  transform: translate(4px, -4px);
+}
+
+.meta {
+  display: flex;
+  min-height: var(--target-min);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: clamp(4rem, 7vw, 7rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line-inverse);
+  font-family: var(--font-sans-ui);
+  font-size: var(--text-label);
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
+.meta a {
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+.wordmarkFrame {
+  width: 100%;
+  margin-top: clamp(3rem, 6vw, 6rem);
+  padding-inline: clamp(.75rem, 2vw, 2rem);
+  overflow: hidden;
+}
+
+.wordmark {
+  display: block;
+  width: 100%;
+  transform: translateY(.08em);
+  background-image: linear-gradient(180deg, rgb(231 221 202 / .16) 0%, var(--color-olive) 34%, var(--color-sand) 72%, var(--color-white) 100%);
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-display);
+  font-size: min(16.6vw, 20rem);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: .76;
+  letter-spacing: -.035em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.footer[data-motion="ready"] .wordmark {
+  clip-path: inset(100% 0 0);
+  opacity: .18;
+  transform: translateY(24%);
+  transition: clip-path 900ms cubic-bezier(.16, 1, .3, 1), opacity 650ms var(--ease-out), transform 900ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.footer[data-motion="ready"][data-visible="true"] .wordmark {
+  clip-path: inset(0);
+  opacity: 1;
+  transform: translateY(.08em);
+}
+
+.footer :focus-visible {
+  outline-color: var(--color-background);
+}
+
+@media (max-width: 900px) {
+  .info {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .identity {
+    max-width: none;
+  }
+
+  .navigation {
+    max-width: 20rem;
+  }
+
+  .meta {
+    display: grid;
+    justify-items: start;
+    gap: .5rem;
+    padding-bottom: 0;
+  }
+
+  .wordmarkFrame {
+    margin-top: 3.5rem;
+    padding-inline: .5rem;
+  }
+
+  .wordmark {
+    font-size: 16.6vw;
+    letter-spacing: -.03em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer[data-motion="ready"] .wordmark,
+  .footer[data-motion="ready"][data-visible="true"] .wordmark {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: translateY(.08em);
+    transition: none;
+  }
+}

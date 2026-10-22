@@ -142,6 +142,35 @@ for (const width of widths) {
   assert.equal(locationMeta.borderBottomWidth, "0px");
   if (width > 767) assert.ok(Math.abs(locationMeta.placeCenter - locationMeta.actionCenter) <= 1, "Location and action must share one editorial row");
   else assert.ok(locationMeta.actionCenter > locationMeta.placeCenter, "Location action must stack below the place on mobile");
+  const footerWordmark = page.locator("#rodape [data-footer-wordmark]");
+  assert.equal(await footerWordmark.textContent(), "PRAIAMAR");
+  assert.equal(await footerWordmark.getAttribute("href"), "#topo");
+  const footerLayout = await page.locator("#rodape").evaluate((footer) => {
+    const wordmark = footer.querySelector("[data-footer-wordmark]");
+    const info = footer.querySelector("[data-footer-info]");
+    if (!wordmark || !info) throw new Error("Footer layout elements were not found.");
+    const wordmarkRect = wordmark.getBoundingClientRect();
+    const wordmarkStyle = getComputedStyle(wordmark);
+    return {
+      wordmarkContained: wordmarkRect.left >= -1 && wordmarkRect.right <= window.innerWidth + 1,
+      wordmarkFamily: wordmarkStyle.fontFamily,
+      wordmarkWeight: wordmarkStyle.fontWeight,
+      wordmarkGradient: wordmarkStyle.backgroundImage,
+      infoColumns: getComputedStyle(info).gridTemplateColumns.split(" ").length,
+    };
+  });
+  assert.equal(footerLayout.wordmarkContained, true, "Footer wordmark must remain inside the viewport");
+  assert.match(footerLayout.wordmarkFamily, /^newsreader300/i);
+  assert.equal(footerLayout.wordmarkWeight, "300");
+  assert.match(footerLayout.wordmarkGradient, /linear-gradient/i);
+  assert.equal(footerLayout.infoColumns, width > 900 ? 3 : 1);
+  if (width === 1440) {
+    await page.waitForFunction(() => document.querySelector("#rodape")?.getAttribute("data-motion") === "ready");
+    assert.equal(await page.locator("#rodape").getAttribute("data-visible"), null);
+    await page.locator("#rodape").scrollIntoViewIfNeeded();
+    await page.locator("#rodape").waitFor({ state: "visible" });
+    await page.waitForFunction(() => document.querySelector("#rodape")?.getAttribute("data-visible") === "true");
+  }
   if (width === 1440) {
     const experienceLayout = await page.evaluate(() => {
       const section = document.querySelector("#experiencias");
@@ -299,12 +328,15 @@ const reducedPage = await reduced.newPage();
 await reducedPage.goto(baseUrl);
 assert.equal(await reducedPage.locator("h1").isVisible(), true);
 assert.equal(await reducedPage.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), "auto");
+assert.equal(await reducedPage.locator("#rodape").getAttribute("data-motion"), null);
+assert.equal(await reducedPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await reduced.close();
 const noJs = await browser.newContext({ viewport: { width: 390, height: 800 }, javaScriptEnabled: false });
 const noJsPage = await noJs.newPage();
 await noJsPage.goto(baseUrl);
 assert.equal(await noJsPage.getByText("Há lugares que nos fazem esquecer das horas.").isVisible(), true);
 assert.equal(await noJsPage.locator("details summary").first().isVisible(), true);
+assert.equal(await noJsPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await noJs.close();
 console.log("Reduced motion and no-JavaScript content: PASS");
 

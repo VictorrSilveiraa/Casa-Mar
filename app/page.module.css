@@ -79,16 +79,6 @@
 .finalCopy a:hover { background: var(--color-sand); }
 .finalCopy :focus-visible { outline-color: var(--color-background); }
 
-.footer { background: var(--color-ink); color: var(--color-background); padding: 5rem 0 2rem; }
-.footerTop { display: flex; justify-content: space-between; gap: 3rem; padding-bottom: 6rem; }
-.footerBrand { font-family: var(--font-sans-ui); font-weight: 400; letter-spacing: .24em; font-size: .9375rem; text-decoration: none; }
-.footerTop p { margin: 1.3rem 0 0; font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
-.footerTop nav { display: grid; grid-template-columns: repeat(2, minmax(120px, 1fr)); column-gap: clamp(2rem, 5vw, 6rem); align-content: start; }
-.footerTop nav a { min-height: 44px; display: flex; align-items: center; font-family: var(--font-sans-ui); font-size: .9375rem; font-weight: 400; letter-spacing: .03em; text-decoration: none; }
-.footerTop nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.footerBottom { display: flex; justify-content: space-between; gap: 1.5rem; border-top: 1px solid var(--color-line-inverse); padding-top: 1.5rem; font-family: var(--font-sans-ui); font-size: var(--text-label); font-weight: 400; letter-spacing: .02em; }
-.footer :focus-visible { outline-color: var(--color-background); }
-
 @media (max-width: 1023px) {
   .featuresLayout { grid-template-columns: minmax(15rem, .65fr) minmax(0, 1fr); gap: 3rem; }
   .featureImage { height: min(56vw, 34rem); }
@@ -123,9 +113,6 @@
   .locationImage { height: 110vw; max-height: 680px; }
   .faqGrid { gap: 3rem; }
   .final { height: 78svh; min-height: 620px; }
-  .footerTop { display: block; padding-bottom: 3rem; }
-  .footerTop nav { margin-top: 3rem; }
-  .footerBottom { display: grid; gap: .5rem; padding-bottom: 5rem; }
 }
 @media (max-width: 480px) {
   .featureImage { height: min(136vw, 34rem); }

@@ -9,6 +9,7 @@ import { Lightbox } from "@/components/Lightbox";
 import { FaqList } from "@/components/FaqList";
 import { StickyCTA } from "@/components/StickyCTA";
 import { SuitesShowcase } from "@/components/SuitesShowcase";
+import { Footer } from "@/components/Footer";
 import styles from "./page.module.css";
 
 const jsonLd = {
@@ -111,7 +112,7 @@ export default function Home() {
         <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<a href="#reservas" data-focus-booking>{content.final.action}<span aria-hidden="true">↗</span></a></div>
       </section>
     </main>
-    <footer id="rodape" className={styles.footer}><div className={styles.container}><div className={styles.footerTop}><div><a className={styles.footerBrand} href="#topo">CASA PRAIAMAR</a><p>{content.footer.statement}</p></div><nav aria-label="Navegação do rodapé">{content.footer.links.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}</nav></div><div className={styles.footerBottom}><span>{content.footer.location}</span><span>© {new Date().getFullYear()} Casa Praiamar</span>{siteConfig.instagramHandle && <a href={`https://instagram.com/${siteConfig.instagramHandle}`} target="_blank" rel="noopener noreferrer">Instagram</a>}</div></div></footer>
+    <Footer />
     <StickyCTA />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
   </>;
