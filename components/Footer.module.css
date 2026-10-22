@@ -105,25 +105,6 @@
   transform: translate(4px, -4px);
 }
 
-.meta {
-  display: flex;
-  min-height: var(--target-min);
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  margin-top: clamp(3.5rem, 5vw, 5rem);
-  font-family: var(--font-sans-ui);
-  font-size: var(--text-label);
-  font-weight: 400;
-  letter-spacing: .02em;
-}
-
-.meta a {
-  min-height: var(--target-min);
-  display: inline-flex;
-  align-items: center;
-}
-
 .wordmarkFrame {
   width: 100%;
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
@@ -135,7 +116,7 @@
   display: block;
   width: 100%;
   transform: translateY(.06em);
-  background-image: linear-gradient(180deg, rgb(231 221 202 / .16) 0%, var(--color-olive) 34%, var(--color-sand) 72%, var(--color-white) 100%);
+  background-image: linear-gradient(180deg, rgb(231 221 202 / .72) 0%, var(--color-sand) 42%, var(--color-white) 100%);
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
@@ -178,15 +159,6 @@
 
   .navigation {
     max-width: 20rem;
-  }
-
-  .meta {
-    display: grid;
-    justify-items: start;
-    justify-content: normal;
-    gap: .5rem;
-    margin-top: 3rem;
-    padding-bottom: 0;
   }
 
   .wordmarkFrame {

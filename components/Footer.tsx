@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { content } from "@/lib/content";
-import { siteConfig } from "@/lib/site.config";
 import styles from "./Footer.module.css";
 
 export function Footer() {
@@ -51,10 +50,6 @@ export function Footer() {
           </div>
         </div>
 
-        <div className={styles.meta} data-footer-meta>
-          <span>© {new Date().getFullYear()} Casa Praiamar</span>
-          {siteConfig.instagramHandle && <a href={`https://instagram.com/${siteConfig.instagramHandle}`} target="_blank" rel="noopener noreferrer">Instagram</a>}
-        </div>
       </div>
 
       <div className={styles.wordmarkFrame}>

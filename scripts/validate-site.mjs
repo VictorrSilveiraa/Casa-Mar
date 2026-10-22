@@ -149,32 +149,32 @@ for (const width of widths) {
     const wordmark = footer.querySelector("[data-footer-wordmark]");
     const wordmarkFrame = wordmark?.parentElement;
     const info = footer.querySelector("[data-footer-info]");
-    const meta = footer.querySelector("[data-footer-meta]");
-    if (!wordmark || !wordmarkFrame || !info || !meta) throw new Error("Footer layout elements were not found.");
+    if (!wordmark || !wordmarkFrame || !info) throw new Error("Footer layout elements were not found.");
     const wordmarkRect = wordmark.getBoundingClientRect();
+    const wordmarkFrameRect = wordmarkFrame.getBoundingClientRect();
+    const infoRect = info.getBoundingClientRect();
     const wordmarkStyle = getComputedStyle(wordmark);
     const wordmarkFrameStyle = getComputedStyle(wordmarkFrame);
-    const metaStyle = getComputedStyle(meta);
     return {
+      hasCopyright: footer.textContent?.includes("©") ?? false,
       wordmarkContained: wordmarkRect.left >= -1 && wordmarkRect.right <= window.innerWidth + 1,
+      wordmarkFrameGap: wordmarkFrameRect.top - infoRect.bottom,
       wordmarkFamily: wordmarkStyle.fontFamily,
       wordmarkWeight: wordmarkStyle.fontWeight,
       wordmarkGradient: wordmarkStyle.backgroundImage,
       wordmarkLineHeightRatio: Number.parseFloat(wordmarkStyle.lineHeight) / Number.parseFloat(wordmarkStyle.fontSize),
       wordmarkFramePaddingTop: Number.parseFloat(wordmarkFrameStyle.paddingTop),
-      metaBorderTopWidth: metaStyle.borderTopWidth,
-      metaJustification: metaStyle.justifyContent,
       infoColumns: getComputedStyle(info).gridTemplateColumns.split(" ").length,
     };
   });
+  assert.equal(footerLayout.hasCopyright, false, "Footer must not show the copyright line above its wordmark");
   assert.equal(footerLayout.wordmarkContained, true, "Footer wordmark must remain inside the viewport");
+  assert.ok(footerLayout.wordmarkFrameGap <= 48, "Footer wordmark must stay visually connected to the information above it");
   assert.match(footerLayout.wordmarkFamily, /^newsreader300/i);
   assert.equal(footerLayout.wordmarkWeight, "300");
   assert.match(footerLayout.wordmarkGradient, /linear-gradient/i);
   assert.ok(footerLayout.wordmarkLineHeightRatio >= .85, "Footer wordmark needs enough line height to show the full letter tops");
   assert.ok(footerLayout.wordmarkFramePaddingTop >= 8, "Footer wordmark needs top breathing room inside its clipped frame");
-  assert.equal(footerLayout.metaBorderTopWidth, "0px", "Footer copyright must not have a full-width divider");
-  assert.equal(footerLayout.metaJustification, width > 900 ? "flex-end" : "normal");
   assert.equal(footerLayout.infoColumns, width > 900 ? 3 : 1);
   if (width === 1440) {
     await page.waitForFunction(() => document.querySelector("#rodape")?.getAttribute("data-motion") === "ready");
