@@ -51,7 +51,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className={styles.meta}>
+        <div className={styles.meta} data-footer-meta>
           <span>© {new Date().getFullYear()} Casa Praiamar</span>
           {siteConfig.instagramHandle && <a href={`https://instagram.com/${siteConfig.instagramHandle}`} target="_blank" rel="noopener noreferrer">Instagram</a>}
         </div>
