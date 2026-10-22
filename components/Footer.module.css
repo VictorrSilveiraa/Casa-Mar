@@ -116,7 +116,7 @@
   display: block;
   width: 100%;
   transform: translateY(.06em);
-  background-image: linear-gradient(180deg, rgb(231 221 202 / .72) 0%, var(--color-sand) 42%, var(--color-white) 100%);
+  background-image: linear-gradient(180deg, rgb(115 122 97 / .78) 0%, var(--color-sand) 54%, var(--color-white) 100%);
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
