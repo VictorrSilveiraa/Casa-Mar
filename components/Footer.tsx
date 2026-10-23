@@ -45,7 +45,7 @@ export function Footer() {
             <p className={styles.label}>{content.footer.destinationLabel}</p>
             <p className={styles.location}>{content.footer.location}</p>
             <a className={styles.action} href="#reservas" data-focus-booking>
-              {content.footer.action}<span aria-hidden="true">↗</span>
+              {content.footer.action}
             </a>
           </div>
         </div>

@@ -9,9 +9,8 @@
 .content h1 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: -.02em; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); font-optical-sizing: auto; }
 .content h1 span { display: block; }
 .description { max-width: 430px; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
-.link { display: inline-flex; align-items: center; gap: 1rem; min-height: var(--target-min); text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--font-sans-medium); font-weight: 500; font-size: 1rem; letter-spacing: .02em; }
-.link span { transition: transform var(--dur-fast) var(--ease-out); }
-.link:hover span { transform: translate(4px,-4px); }
+.link { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: .75rem 1.25rem; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-weight: 300; font-size: 1rem; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.link:hover { background: var(--color-background); color: var(--color-ink); }
 .scroll { position: absolute; right: var(--header-edge); bottom: 3.25rem; z-index: 1; display: flex; gap: .875rem; align-items: center; text-decoration: none; font-family: var(--font-sans-ui); font-size: .8125rem; font-weight: 400; letter-spacing: .14em; writing-mode: vertical-rl; }
 .scroll span { width: 1px; height: 50px; background: currentColor; }
 .hero :focus-visible { outline-color: var(--color-white); }

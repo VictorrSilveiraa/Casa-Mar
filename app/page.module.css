@@ -3,9 +3,8 @@
 .paragraphs { max-width: var(--container-text); }
 .paragraphs p { margin: 0 0 1.25rem; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 .paragraphs p:last-child { margin-bottom: 0; }
-.textLink { min-height: 48px; display: inline-flex; align-items: center; gap: 1.1rem; text-decoration: none; border-bottom: 1px solid currentColor; font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; }
-.textLink span { transition: transform var(--dur-fast) var(--ease-out); }
-.textLink:hover span { transform: translate(4px,-4px); }
+.textLink { min-height: 52px; padding: .75rem 1.25rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.textLink:hover { background: var(--color-sand); }
 
 .essenceGrid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .82fr); grid-template-areas: "image copy"; gap: clamp(3rem, 8vw, 8rem); align-items: center; }
 .essenceCopy { grid-area: copy; max-width: 34rem; justify-self: end; padding-block: 2rem; }
@@ -60,6 +59,7 @@
 .locationMeta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 3rem; padding-top: 1.75rem; border-top: 1px solid var(--color-line); }
 .locationMeta p { margin: 0; font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
 .locationMeta .textLink { flex: 0 0 auto; }
+.locationMeta .textLink:hover { background: var(--color-background); }
 .locationImage { height: clamp(550px, 58vw, 760px); overflow: hidden; }
 
 .faqGrid { display: grid; grid-template-columns: .8fr 1.15fr; gap: clamp(3rem, 8vw, 9rem); align-items: start; }

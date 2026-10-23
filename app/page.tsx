@@ -21,7 +21,7 @@ const jsonLd = {
 };
 
 function TextLink({ href, children, external = false, focusBooking = false }: { href: string; children: React.ReactNode; external?: boolean; focusBooking?: boolean }) {
-  return <a className={styles.textLink} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} {...(focusBooking ? { "data-focus-booking": true } : {})}>{children}<span aria-hidden="true">↗</span></a>;
+  return <a className={styles.textLink} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} {...(focusBooking ? { "data-focus-booking": true } : {})}>{children}</a>;
 }
 
 export default function Home() {

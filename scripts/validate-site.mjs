@@ -268,12 +268,17 @@ for (const width of widths) {
 
     const boxedActions = await page.evaluate(() => {
       const selectors = [
+        '#topo a[href="#a-casa"]',
         'header a[data-focus-booking]',
         '#reservas button[type="submit"]',
+        '#a-casa a[href="#ambientes"]',
         '#suites a[href="/suites"]',
         '#ambientes button',
         '#experiencias a[href="/experiencias"]',
+        '#localizacao a',
+        '#informacoes a[data-focus-booking]',
         'main section:last-of-type a[data-focus-booking]',
+        '#rodape a[data-focus-booking]',
       ];
       return selectors.map((selector) => {
         const element = document.querySelector(selector);
