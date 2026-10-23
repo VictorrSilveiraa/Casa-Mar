@@ -60,11 +60,11 @@ export default function Home() {
           <div className={styles.environmentHeader}><SectionHeading id="environments-title" title={content.environments.title} /></div>
           <div className={styles.environmentGrid}>
             <article className={styles.environmentItem} data-environment-item>
-              <div className={styles.environmentImage}><ResponsiveImage image="environmentPool" sizes="(max-width: 767px) 100vw, 33vw" /></div>
+              <div className={styles.environmentImage}><ResponsiveImage image="environmentPool" sizes="(max-width: 767px) 200vw, 66vw" /></div>
               <div className={styles.environmentCopy}><h3>{content.environments.items[0].label}</h3><p>{content.environments.items[0].description}</p></div>
             </article>
             <article className={styles.environmentItem} data-environment-item>
-              <div className={styles.environmentImage}><ResponsiveImage image="environmentKitchen" sizes="(max-width: 767px) 100vw, 33vw" /></div>
+              <div className={styles.environmentImage}><ResponsiveImage image="environmentKitchen" sizes="(max-width: 767px) 200vw, 66vw" /></div>
               <div className={styles.environmentCopy}><h3>{content.environments.items[1].label}</h3><p>{content.environments.items[1].description}</p></div>
             </article>
             <article className={styles.environmentItem} data-environment-item>
