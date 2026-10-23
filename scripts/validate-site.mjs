@@ -27,6 +27,18 @@ for (const width of widths) {
   if (size.scroll > size.inner) problems.push(`${width}px overflow ${size.scroll - size.inner}px`);
   assert.equal(await page.locator("h1").count(), 1);
   assert.equal(await page.locator("#topo #reservas").count(), 0);
+  const headerNavigationStyles = await page.locator('header nav[aria-label="Navegação principal"] a').first().evaluate((link) => {
+    const style = getComputedStyle(link);
+    return { fontWeight: style.fontWeight, textTransform: style.textTransform };
+  });
+  assert.deepEqual(headerNavigationStyles, { fontWeight: "300", textTransform: "uppercase" });
+  if (width <= 1100) {
+    const mobileNavigationStyles = await page.locator('header nav[aria-label="Navegação mobile"] a').first().evaluate((link) => {
+      const style = getComputedStyle(link);
+      return { fontWeight: style.fontWeight, textTransform: style.textTransform };
+    });
+    assert.deepEqual(mobileNavigationStyles, { fontWeight: "300", textTransform: "uppercase" });
+  }
   assert.equal(await page.locator("#suites").count(), 1);
   assert.equal(await page.locator("#suites img").count(), 5);
   assert.equal(await page.locator("#suites h2").textContent(), "Nossas suítes");

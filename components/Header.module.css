@@ -6,6 +6,7 @@
 .wordmark { justify-self: start; font-family: var(--font-sans-ui); font-size: .9375rem; font-weight: 400; letter-spacing: .24em; line-height: normal; text-decoration: none; white-space: nowrap; }
 .desktopNav { display: flex; align-items: center; justify-self: center; gap: 2.75rem; }
 .desktopNav a, .reserve { min-height: 46px; display: inline-flex; align-items: center; text-decoration: none; font-family: var(--font-sans-ui); font-size: .9375rem; font-weight: 400; line-height: normal; letter-spacing: .03em; }
+.desktopNav a { font-weight: 300; text-transform: uppercase; }
 .desktopNav a { border-bottom: 1px solid transparent; }
 .desktopNav a:hover { border-bottom-color: currentColor; }
 .reserve { justify-self: end; justify-content: center; border: 1px solid currentColor; padding: .45rem 1.35rem; white-space: nowrap; font-family: var(--font-sans); font-weight: 300; letter-spacing: .12em; text-align: center; text-transform: uppercase; }
@@ -21,7 +22,7 @@
   .mobileMenu { position: fixed; inset: var(--header-h) 0 0; z-index: var(--z-mobile-nav); background: var(--color-background); color: var(--color-ink); padding: clamp(2rem, 8vh, 5rem) var(--gutter); overflow: auto; }
   .mobileOpen { display: flex; flex-direction: column; justify-content: space-between; }
   .mobileMenu nav { display: grid; }
-  .mobileMenu a { display: flex; align-items: center; min-height: 58px; border-bottom: 1px solid var(--color-line); font-family: var(--font-sans-ui); font-size: 1rem; font-weight: 400; line-height: normal; letter-spacing: .03em; text-decoration: none; }
+  .mobileMenu a { display: flex; align-items: center; min-height: 58px; border-bottom: 1px solid var(--color-line); font-family: var(--font-sans-ui); font-size: 1rem; font-weight: 300; line-height: normal; letter-spacing: .03em; text-decoration: none; text-transform: uppercase; }
   .mobileMenu p { max-width: 460px; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 }
 @media (max-width: 900px) { .wordmark { font-size: .6875rem; letter-spacing: .22em; } .reserve { min-height: 44px; font-size: .875rem; } }
