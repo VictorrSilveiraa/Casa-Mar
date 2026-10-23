@@ -107,7 +107,7 @@ export default function Home() {
       </section>
 
       <section className={styles.final} aria-labelledby="final-title">
-        <ResponsiveImage image="heroDesktop" sizes="100vw" className={styles.finalImage} />
+        <ResponsiveImage image="finalGarden" sizes="100vw" className={styles.finalImage} />
         <div className={styles.finalScrim} aria-hidden="true" />
         <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<a href="#reservas" data-focus-booking>{content.final.action}</a></div>
       </section>

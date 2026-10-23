@@ -67,7 +67,11 @@
 
 .final { position: relative; min-height: 680px; height: 82svh; display: grid; place-items: center; overflow: hidden; background: var(--color-ink); color: var(--color-white); text-align: center; }
 .finalImage, .finalScrim { position: absolute; inset: 0; }
-.finalScrim { background: rgb(0 0 0 / .56); }
+.finalScrim {
+  background:
+    linear-gradient(to top, var(--color-ink) 0%, rgb(35 40 36 / .96) 8%, rgb(35 40 36 / .72) 20%, rgb(35 40 36 / .28) 38%, transparent 58%),
+    rgb(0 0 0 / .44);
+}
 .finalCopy { position: relative; z-index: 1; max-width: 770px; padding: 4rem var(--gutter); }
 .finalEyebrow { font-family: var(--font-sans-ui); font-size: var(--text-eyebrow); font-weight: 400; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.3rem; }
 .finalCopy h2 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-h2); line-height: var(--leading-heading); letter-spacing: -.02em; text-wrap: balance; margin-bottom: 2rem; font-optical-sizing: auto; }
@@ -112,6 +116,11 @@
   .locationImage { height: 110vw; max-height: 680px; }
   .faqGrid { gap: 3rem; }
   .final { height: 78svh; min-height: 620px; }
+  .finalScrim {
+    background:
+      linear-gradient(to top, var(--color-ink) 0%, rgb(35 40 36 / .96) 10%, rgb(35 40 36 / .7) 26%, rgb(35 40 36 / .28) 48%, transparent 70%),
+      rgb(0 0 0 / .46);
+  }
 }
 @media (max-width: 480px) {
   .featureImage { height: min(136vw, 34rem); }

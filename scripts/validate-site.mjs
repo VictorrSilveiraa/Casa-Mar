@@ -160,6 +160,22 @@ for (const width of widths) {
   assert.equal(locationMeta.borderBottomWidth, "0px");
   if (width > 767) assert.ok(Math.abs(locationMeta.placeCenter - locationMeta.actionCenter) <= 1, "Location and action must share one editorial row");
   else assert.ok(locationMeta.actionCenter > locationMeta.placeCenter, "Location action must stack below the place on mobile");
+  const finalSection = page.locator("main section:last-of-type");
+  const finalImage = finalSection.locator("img");
+  assert.match(await finalImage.getAttribute("src"), /final-jardim-espreguicadeiras-/);
+  const finalTransition = await finalSection.evaluate((section) => {
+    const footer = document.querySelector("#rodape");
+    const scrim = section.querySelector("[aria-hidden='true']");
+    if (!footer || !scrim) throw new Error("Final section transition elements were not found.");
+    const sectionRect = section.getBoundingClientRect();
+    const footerRect = footer.getBoundingClientRect();
+    return {
+      joinsFooter: Math.abs(sectionRect.bottom - footerRect.top) <= 1,
+      gradient: getComputedStyle(scrim).backgroundImage,
+    };
+  });
+  assert.equal(finalTransition.joinsFooter, true, "Final image and footer must meet without a layout gap");
+  assert.match(finalTransition.gradient, /linear-gradient/i);
   const footerWordmark = page.locator("#rodape [data-footer-wordmark]");
   assert.equal(await footerWordmark.textContent(), "PRAIAMAR");
   assert.equal(await footerWordmark.getAttribute("href"), "#topo");
