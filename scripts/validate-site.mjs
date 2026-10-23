@@ -34,6 +34,24 @@ for (const width of widths) {
   assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
   assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
   assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
+  const essenceLayout = await page.locator("#a-casa").evaluate((section) => {
+    const image = section.querySelector("[data-essence-image]");
+    const copy = section.querySelector("[data-essence-copy]");
+    if (!image || !copy) throw new Error("Essence layout elements were not found.");
+    const imageRect = image.getBoundingClientRect();
+    const copyRect = copy.getBoundingClientRect();
+    return {
+      imageLeftOfCopy: imageRect.right <= copyRect.left,
+      copyAboveImage: copyRect.bottom <= imageRect.top,
+      centerDelta: Math.abs((imageRect.top + imageRect.height / 2) - (copyRect.top + copyRect.height / 2)),
+    };
+  });
+  if (width > 767) {
+    assert.equal(essenceLayout.imageLeftOfCopy, true, `${width}px essence image must sit left of its copy`);
+    assert.ok(essenceLayout.centerDelta <= 40, `${width}px essence image and copy must remain vertically centered`);
+  } else {
+    assert.equal(essenceLayout.copyAboveImage, true, `${width}px essence copy must remain above its image on mobile`);
+  }
   const firstSuiteLeft = await page.locator("#suites article").first().evaluate((element) => element.getBoundingClientRect().left);
   if (width > 900) assert.ok(Math.abs(firstSuiteLeft) <= 1, `${width}px first suite starts at x=${firstSuiteLeft}, expected x=0`);
   else assert.ok(firstSuiteLeft > 0, `${width}px first suite must retain its mobile gutter`);

@@ -34,12 +34,12 @@ export default function Home() {
 
       <section id="a-casa" className={`${styles.section} ${styles.essence}`} aria-labelledby="essence-title">
         <div className={`${styles.container} ${styles.essenceGrid}`}>
-          <div className={styles.essenceCopy}>
+          <div className={styles.essenceCopy} data-essence-copy>
             <SectionHeading id="essence-title" title={content.essence.title} />
             <div className={styles.paragraphs}>{content.essence.paragraphs.map((text) => <p key={text}>{text}</p>)}</div>
             <TextLink href="#ambientes">{content.essence.action}</TextLink>
           </div>
-          <div className={styles.essenceImage}><ResponsiveImage image="garden" sizes="(max-width: 767px) 100vw, 45vw" /></div>
+          <div className={styles.essenceImage} data-essence-image><ResponsiveImage image="garden" sizes="(max-width: 767px) 100vw, 48vw" /></div>
         </div>
       </section>
 
