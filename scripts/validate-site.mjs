@@ -206,7 +206,7 @@ for (const width of widths) {
   assert.equal(footerLayout.hasCopyright, false, "Footer must not show the copyright line above its wordmark");
   assert.equal(footerLayout.wordmarkContained, true, "Footer wordmark must remain inside the viewport");
   assert.ok(footerLayout.wordmarkFrameGap <= 48, "Footer wordmark must stay visually connected to the information above it");
-  assert.ok(footerLayout.footerPaddingTop <= 76, "Footer information must stay visually connected to the image transition");
+  assert.ok(footerLayout.footerPaddingTop <= (width > 900 ? 44 : 56), "Footer information must stay visually connected to the image transition");
   assert.match(footerLayout.wordmarkFamily, /^newsreader300/i);
   assert.equal(footerLayout.wordmarkWeight, "300");
   assert.match(footerLayout.wordmarkGradient, /linear-gradient/i);

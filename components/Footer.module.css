@@ -1,6 +1,6 @@
 .footer {
   overflow: hidden;
-  padding-top: clamp(3.5rem, 4.5vw, 4.75rem);
+  padding-top: clamp(2rem, 2.5vw, 2.75rem);
   background: var(--color-ink);
   color: var(--color-background);
 }
