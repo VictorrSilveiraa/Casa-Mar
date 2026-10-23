@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { content } from "@/lib/content";
 import type { ImageKey } from "@/lib/images";
 import { ResponsiveImage } from "./ResponsiveImage";
@@ -19,16 +19,51 @@ export function SuitesShowcase() {
   const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
   const frameRef = useRef<number | null>(null);
+  const scrollEndRef = useRef<number | null>(null);
+  const targetRef = useRef<number | null>(null);
   const [active, setActive] = useState(0);
   const images = content.suites.images;
+
+  useEffect(() => () => {
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    if (scrollEndRef.current !== null) window.clearTimeout(scrollEndRef.current);
+  }, []);
+
+  const syncActiveFromTrack = () => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    if (track.scrollLeft <= 2) {
+      setActive(0);
+      return;
+    }
+    if (maxScroll - track.scrollLeft <= 2) {
+      setActive(images.length - 1);
+      return;
+    }
+
+    const center = track.getBoundingClientRect().left + track.clientWidth / 2;
+    let closest = 0;
+    let distance = Number.POSITIVE_INFINITY;
+    itemRefs.current.forEach((item, index) => {
+      if (!item) return;
+      const rect = item.getBoundingClientRect();
+      const nextDistance = Math.abs(rect.left + rect.width / 2 - center);
+      if (nextDistance < distance) { distance = nextDistance; closest = index; }
+    });
+    setActive(closest);
+  };
 
   const goTo = (index: number) => {
     const next = Math.max(0, Math.min(images.length - 1, index));
     const firstStageAtDesktopEdge = next === 0 && window.matchMedia("(min-width: 901px)").matches;
+    const lastStage = next === images.length - 1;
+    targetRef.current = next;
     itemRefs.current[next]?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
-      inline: firstStageAtDesktopEdge ? "start" : "center",
+      inline: firstStageAtDesktopEdge ? "start" : lastStage ? "end" : "center",
     });
     setActive(next);
   };
@@ -36,19 +71,13 @@ export function SuitesShowcase() {
   const updateActive = () => {
     if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     frameRef.current = requestAnimationFrame(() => {
-      const track = trackRef.current;
-      if (!track) return;
-      const center = track.getBoundingClientRect().left + track.clientWidth / 2;
-      let closest = 0;
-      let distance = Number.POSITIVE_INFINITY;
-      itemRefs.current.forEach((item, index) => {
-        if (!item) return;
-        const rect = item.getBoundingClientRect();
-        const nextDistance = Math.abs(rect.left + rect.width / 2 - center);
-        if (nextDistance < distance) { distance = nextDistance; closest = index; }
-      });
-      setActive(closest);
+      if (targetRef.current === null) syncActiveFromTrack();
     });
+    if (scrollEndRef.current !== null) window.clearTimeout(scrollEndRef.current);
+    scrollEndRef.current = window.setTimeout(() => {
+      targetRef.current = null;
+      syncActiveFromTrack();
+    }, 140);
   };
 
   return (

@@ -343,14 +343,33 @@ const desktopSuites = await browser.newContext({ viewport: { width: 1440, height
 const desktopSuitesPage = await desktopSuites.newPage();
 await desktopSuitesPage.goto(baseUrl, { waitUntil: "networkidle" });
 const desktopSuitesRegion = desktopSuitesPage.getByRole("region", { name: "Suítes da Casa Praiamar" });
-await desktopSuitesRegion.getByRole("button", { name: "Próxima suíte" }).click();
-await desktopSuitesRegion.getByText("02 / 05").waitFor({ state: "visible" });
-await desktopSuitesRegion.getByRole("button", { name: "Suíte anterior" }).click();
+const suitesNext = desktopSuitesRegion.getByRole("button", { name: "Próxima suíte" });
+const suitesPrevious = desktopSuitesRegion.getByRole("button", { name: "Suíte anterior" });
+const assertSuiteStage = async (stage) => {
+  await desktopSuitesPage.waitForTimeout(700);
+  assert.equal((await desktopSuitesRegion.locator('[class*="counter"]').textContent())?.trim(), `${String(stage).padStart(2, "0")} / 05`);
+  const progress = await desktopSuitesRegion.locator('[class*="progress"] > span').evaluate((bar) => {
+    const track = bar.parentElement;
+    if (!track) throw new Error("Suite progress track was not found.");
+    return bar.getBoundingClientRect().width / track.getBoundingClientRect().width;
+  });
+  assert.ok(Math.abs(progress - stage / 5) <= .01, `Suite progress is ${progress}, expected ${stage / 5}`);
+};
+for (let stage = 2; stage <= 5; stage += 1) {
+  await suitesNext.click();
+  await assertSuiteStage(stage);
+}
+assert.equal(await suitesNext.isDisabled(), true);
+for (let stage = 4; stage >= 1; stage -= 1) {
+  await suitesPrevious.click();
+  await assertSuiteStage(stage);
+}
 await desktopSuitesPage.waitForFunction(() => {
   const firstSuite = document.querySelector("#suites article");
   return firstSuite ? Math.abs(firstSuite.getBoundingClientRect().left) <= 1 : false;
 });
-console.log("Desktop suites first stage edge alignment: PASS");
+assert.equal(await suitesPrevious.isDisabled(), true);
+console.log("Desktop suites controls, count, progress and edge alignment: PASS");
 await desktopSuites.close();
 
 const reduced = await browser.newContext({ viewport: { width: 390, height: 800 }, reducedMotion: "reduce" });
