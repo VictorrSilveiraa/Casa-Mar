@@ -189,6 +189,7 @@ for (const width of widths) {
     const infoRect = info.getBoundingClientRect();
     const wordmarkStyle = getComputedStyle(wordmark);
     const wordmarkFrameStyle = getComputedStyle(wordmarkFrame);
+    const footerStyle = getComputedStyle(footer);
     return {
       hasCopyright: footer.textContent?.includes("©") ?? false,
       wordmarkContained: wordmarkRect.left >= -1 && wordmarkRect.right <= window.innerWidth + 1,
@@ -198,12 +199,14 @@ for (const width of widths) {
       wordmarkGradient: wordmarkStyle.backgroundImage,
       wordmarkLineHeightRatio: Number.parseFloat(wordmarkStyle.lineHeight) / Number.parseFloat(wordmarkStyle.fontSize),
       wordmarkFramePaddingTop: Number.parseFloat(wordmarkFrameStyle.paddingTop),
+      footerPaddingTop: Number.parseFloat(footerStyle.paddingTop),
       infoColumns: getComputedStyle(info).gridTemplateColumns.split(" ").length,
     };
   });
   assert.equal(footerLayout.hasCopyright, false, "Footer must not show the copyright line above its wordmark");
   assert.equal(footerLayout.wordmarkContained, true, "Footer wordmark must remain inside the viewport");
   assert.ok(footerLayout.wordmarkFrameGap <= 48, "Footer wordmark must stay visually connected to the information above it");
+  assert.ok(footerLayout.footerPaddingTop <= 76, "Footer information must stay visually connected to the image transition");
   assert.match(footerLayout.wordmarkFamily, /^newsreader300/i);
   assert.equal(footerLayout.wordmarkWeight, "300");
   assert.match(footerLayout.wordmarkGradient, /linear-gradient/i);

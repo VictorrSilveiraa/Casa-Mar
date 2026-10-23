@@ -1,6 +1,6 @@
 .footer {
   overflow: hidden;
-  padding-top: clamp(5rem, 8vw, 8rem);
+  padding-top: clamp(3.5rem, 4.5vw, 4.75rem);
   background: var(--color-ink);
   color: var(--color-background);
 }
@@ -109,7 +109,7 @@
 
 .wordmarkFrame {
   width: 100%;
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: clamp(.75rem, 1.5vw, 1.25rem);
   padding: clamp(.5rem, 1vw, 1rem) clamp(.75rem, 2vw, 2rem) 0;
   overflow: hidden;
 }
@@ -150,9 +150,13 @@
 }
 
 @media (max-width: 900px) {
+  .footer {
+    padding-top: 3.5rem;
+  }
+
   .info {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .identity {
@@ -164,7 +168,7 @@
   }
 
   .wordmarkFrame {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     padding: .5rem .5rem 0;
   }
 
