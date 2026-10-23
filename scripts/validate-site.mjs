@@ -140,7 +140,7 @@ for (const width of widths) {
   assert.equal(await page.locator("#experiencias").count(), 1);
   assert.equal(await page.locator("#experiencias img").count(), 1);
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
-  assert.equal(await page.locator('#experiencias a[href="/experiencias"]').textContent(), "Conheça nossas experiências↗");
+  assert.equal(await page.locator('#experiencias a[href="/experiencias"]').textContent(), "Conheça nossas experiências");
   assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
   assert.equal(await page.locator('#localizacao [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("ARPOEIRAS, CEARÁ", { exact: true }).count(), 0);
@@ -265,6 +265,37 @@ for (const width of widths) {
     assert.equal(typography.bookingGuests.weight, "300");
     assert.match(typography.bookingLabel.family, /^jost400/i);
     assert.equal(typography.bookingLabel.weight, "400");
+
+    const boxedActions = await page.evaluate(() => {
+      const selectors = [
+        'header a[data-focus-booking]',
+        '#reservas button[type="submit"]',
+        '#suites a[href="/suites"]',
+        '#ambientes button',
+        '#experiencias a[href="/experiencias"]',
+        'main section:last-of-type a[data-focus-booking]',
+      ];
+      return selectors.map((selector) => {
+        const element = document.querySelector(selector);
+        if (!element) throw new Error(`Boxed action was not found: ${selector}`);
+        const style = getComputedStyle(element);
+        return {
+          selector,
+          weight: style.fontWeight,
+          transform: style.textTransform,
+          align: style.textAlign,
+          justify: style.justifyContent,
+          hasArrow: element.textContent?.includes("↗") ?? false,
+        };
+      });
+    });
+    for (const action of boxedActions) {
+      assert.equal(action.weight, "300", `${action.selector} must use font weight 300`);
+      assert.equal(action.transform, "uppercase", `${action.selector} must render in uppercase`);
+      assert.equal(action.align, "center", `${action.selector} must center its text`);
+      assert.equal(action.justify, "center", `${action.selector} must center its contents`);
+      assert.equal(action.hasArrow, false, `${action.selector} must not include a decorative arrow`);
+    }
   }
   await page.screenshot({ path: resolve(output, `${width}.png`), fullPage: true, animations: "disabled" });
   if (width === 390 || width === 1440) await page.screenshot({ path: resolve(output, `${width}-hero.png`), animations: "disabled" });
@@ -334,7 +365,7 @@ await page.keyboard.press("ArrowRight");
 assert.match(await page.locator("dialog").textContent(), /2 \/ 6/);
 await page.keyboard.press("Escape");
 assert.equal(await page.getByRole("dialog", { name: "Galeria de ambientes" }).isVisible(), false);
-assert.equal(await page.locator(":focus").textContent(), "Conheça todos os ambientes↗");
+assert.equal(await page.locator(":focus").textContent(), "Conheça todos os ambientes");
 assert.deepEqual(interactiveProblems.filter((problem) => problem !== "warning: integração de contato pendente"), []);
 console.log("Inquiry, menu, FAQ and gallery interactions: PASS");
 await context.close();

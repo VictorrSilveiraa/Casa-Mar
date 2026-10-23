@@ -23,5 +23,5 @@ export function StickyCTA() {
     [hero, booking, footer].forEach((node) => observer.observe(node));
     return () => observer.disconnect();
   }, []);
-  return visible ? <a className={styles.button} href="#reservas" data-focus-booking>Consultar <span aria-hidden>↗</span></a> : null;
+  return visible ? <a className={styles.button} href="#reservas" data-focus-booking>Consultar</a> : null;
 }

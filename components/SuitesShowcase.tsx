@@ -84,7 +84,7 @@ export function SuitesShowcase() {
     <section id="suites" className={styles.section} aria-label="Suítes da Casa Praiamar">
       <div className={styles.intro}>
         <SectionHeading title={content.suites.title} />
-        <a className={styles.cta} href="/suites">{content.suites.action}<Arrow direction="next" /></a>
+        <a className={styles.cta} href="/suites">{content.suites.action}</a>
       </div>
 
       <div ref={trackRef} className={styles.track} onScroll={updateActive}>

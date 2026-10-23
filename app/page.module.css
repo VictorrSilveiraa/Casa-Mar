@@ -49,10 +49,8 @@
 .lifestyleCopy { max-width: 650px; }
 .lifestyleCopy :global(h2) { max-width: 650px; color: var(--color-background); }
 .lifestyleDescription { max-width: 46ch; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
-.lifestyleCopy a { min-height: 52px; display: inline-flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; text-decoration: none; transition: background var(--dur-fast) var(--ease-out); }
+.lifestyleCopy a { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
 .lifestyleCopy a:hover { background: var(--color-sand); }
-.lifestyleCopy a span { transition: transform var(--dur-fast) var(--ease-out); }
-.lifestyleCopy a:hover span { transform: translate(4px,-4px); }
 .lifestyle :focus-visible { outline-color: var(--color-background); }
 
 .location { background: var(--color-sand); }
@@ -75,7 +73,7 @@
 .finalCopy h2 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-h2); line-height: var(--leading-heading); letter-spacing: -.02em; text-wrap: balance; margin-bottom: 2rem; font-optical-sizing: auto; }
 .finalCopy p:not(.finalEyebrow) { max-width: 430px; margin: 0 auto; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
 .finalCopy p:not(.finalEyebrow) + p { margin-top: 1.25rem; }
-.finalCopy a { min-height: 48px; display: inline-flex; align-items: center; gap: 1rem; margin-top: 2.2rem; padding: .8rem 1.25rem; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans-medium); font-size: 1rem; font-weight: 500; letter-spacing: .02em; text-decoration: none; }
+.finalCopy a { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.2rem; padding: .8rem 1.25rem; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; }
 .finalCopy a:hover { background: var(--color-sand); }
 .finalCopy :focus-visible { outline-color: var(--color-background); }
 

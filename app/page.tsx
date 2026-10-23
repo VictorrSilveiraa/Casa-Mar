@@ -90,7 +90,7 @@ export default function Home() {
           <div className={styles.lifestyleCopy}>
             <SectionHeading id="lifestyle-title" title={content.lifestyle.title} />
             <p className={styles.lifestyleDescription}>{content.lifestyle.description}</p>
-            <a href="/experiencias">{content.lifestyle.action}<span aria-hidden="true">↗</span></a>
+            <a href="/experiencias">{content.lifestyle.action}</a>
           </div>
         </div>
       </section>
@@ -109,7 +109,7 @@ export default function Home() {
       <section className={styles.final} aria-labelledby="final-title">
         <ResponsiveImage image="heroDesktop" sizes="100vw" className={styles.finalImage} />
         <div className={styles.finalScrim} aria-hidden="true" />
-        <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<a href="#reservas" data-focus-booking>{content.final.action}<span aria-hidden="true">↗</span></a></div>
+        <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<a href="#reservas" data-focus-booking>{content.final.action}</a></div>
       </section>
     </main>
     <Footer />

@@ -14,7 +14,7 @@ export function Lightbox({ label }: { label: string }) {
   const close = () => dialog.current?.close();
   const move = (delta: number) => setIndex((current) => (current + delta + environmentImages.length) % environmentImages.length);
   return <>
-    <button ref={trigger} className={styles.trigger} type="button" onClick={() => { setIndex(0); dialog.current?.showModal(); }}>{label}<span aria-hidden="true">↗</span></button>
+    <button ref={trigger} className={styles.trigger} type="button" onClick={() => { setIndex(0); dialog.current?.showModal(); }}>{label}</button>
     <dialog ref={dialog} className={styles.dialog} aria-label="Galeria de ambientes" onClose={() => trigger.current?.focus()} onKeyDown={(event) => { if (event.key === "ArrowLeft") move(-1); if (event.key === "ArrowRight") move(1); }}>
       <div className={styles.top}><span>CASA PRAIAMAR — AMBIENTES</span><button type="button" onClick={close} aria-label="Fechar galeria">Fechar <span aria-hidden>×</span></button></div>
       <div className={styles.frame}><ResponsiveImage image={environmentImages[index]} sizes="90vw" /></div>
