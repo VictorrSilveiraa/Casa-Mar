@@ -4,7 +4,7 @@ import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const output = resolve(import.meta.dirname, "../docs/screenshots");
-const baseUrl = process.env.BASE_URL ?? process.argv[2] ?? "http://127.0.0.1:3000";
+const baseUrl = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3000";
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
@@ -32,6 +32,19 @@ for (const width of widths) {
     return { fontWeight: style.fontWeight, textTransform: style.textTransform };
   });
   assert.deepEqual(headerNavigationStyles, { fontWeight: "300", textTransform: "uppercase" });
+  const headerLogo = page.locator('header a[aria-label="Casa Praiamar — voltar ao início"] img');
+  assert.equal(await headerLogo.getAttribute("alt"), "");
+  assert.match(await headerLogo.getAttribute("src") ?? "", /\/brand\/praiamar-transparent\.webp$/);
+  const transparentLogoSize = await headerLogo.evaluate((image) => {
+    const rect = image.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  });
+  assert.ok(transparentLogoSize.width > 0 && transparentLogoSize.height > 0, "Transparent header logo must render");
+  await page.evaluate(() => window.scrollTo(0, 80));
+  await page.waitForFunction(() => document.querySelector('header img')?.getAttribute("src")?.endsWith("/brand/praiamar-solid.webp") ?? false);
+  assert.match(await headerLogo.getAttribute("src") ?? "", /\/brand\/praiamar-solid\.webp$/);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForFunction(() => document.querySelector('header img')?.getAttribute("src")?.endsWith("/brand/praiamar-transparent.webp") ?? false);
   if (width <= 1100) {
     const mobileNavigationStyles = await page.locator('header nav[aria-label="Navegação mobile"] a').first().evaluate((link) => {
       const style = getComputedStyle(link);

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { content } from "@/lib/content";
+import { brandAssets } from "@/lib/brand";
 import styles from "./Header.module.css";
 
 export function Header() {
@@ -37,10 +38,17 @@ export function Header() {
   }, [open]);
 
   const close = () => { setOpen(false); toggle.current?.focus(); };
+  const logo = solid || open ? brandAssets.header.solid : brandAssets.header.transparent;
   return (
     <header className={`${styles.header} ${solid || open ? styles.solid : ""}`}>
       <div className={styles.inner}>
-        <a href="#topo" className={styles.wordmark} onClick={() => setOpen(false)}>CASA PRAIAMAR</a>
+        <a href="#topo" className={styles.wordmark} aria-label="Casa Praiamar — voltar ao início" onClick={() => setOpen(false)}>
+          <picture>
+            <source srcSet={logo.avif} type="image/avif" />
+            <source srcSet={logo.webp} type="image/webp" />
+            <img src={logo.webp} alt="" width={logo.crop.width} height={logo.crop.height} />
+          </picture>
+        </a>
         <nav className={styles.desktopNav} aria-label="Navegação principal">
           {content.navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
         </nav>
