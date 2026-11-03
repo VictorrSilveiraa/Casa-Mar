@@ -76,6 +76,13 @@ for (const width of widths) {
   const initialBodyOpacity = Number(await essenceSection.locator("p [data-reveal-word]").first().evaluate((word) => getComputedStyle(word).opacity));
   assert.ok(initialTitleOpacity >= .55 && initialTitleOpacity < .65, `${width}px muted title must remain readable, received ${initialTitleOpacity}`);
   assert.ok(initialBodyOpacity >= .65 && initialBodyOpacity < .75, `${width}px muted body must retain AA contrast, received ${initialBodyOpacity}`);
+  if (width === 390) {
+    const essenceAction = essenceSection.locator("[data-essence-action]");
+    await essenceAction.evaluate((action) => action.focus({ preventScroll: true }));
+    await page.waitForTimeout(450);
+    assert.ok(Number(await essenceAction.evaluate((action) => getComputedStyle(action).opacity)) > .95, "Focused essence action must be fully visible");
+    await essenceAction.evaluate((action) => action.blur());
+  }
   const essenceLayout = await essenceSection.evaluate((section) => {
     const image = section.querySelector("[data-essence-image]");
     const copy = section.querySelector("[data-essence-copy]");
