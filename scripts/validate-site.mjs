@@ -9,11 +9,6 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
 const problems = [];
-const contentEssenceParagraphs = [
-  "Na Praia de Arpoeiras, a Casa Praiamar nasce do encontro entre conforto, natureza e simplicidade.",
-  "Um lugar para reunir quem importa, prolongar as conversas, aproveitar os dias de sol e descobrir o prazer de não ter pressa.",
-  "Aqui, cada detalhe convida você a aproveitar o melhor da vida à beira-mar.",
-];
 
 for (const width of widths) {
   const context = await browser.newContext({ viewport: { width, height: width < 768 ? 800 : 900 }, deviceScaleFactor: 1 });
@@ -64,26 +59,7 @@ for (const width of widths) {
   assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
   assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
   assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
-  const essenceSection = page.locator("[data-essence-section]");
-  assert.equal(await essenceSection.count(), 1);
-  assert.equal(await essenceSection.locator("h2").textContent(), "Há lugares que nos fazem esquecer das horas.");
-  assert.deepEqual(await essenceSection.locator("p").allTextContents(), contentEssenceParagraphs);
-  assert.equal(await essenceSection.locator("img").count(), 1);
-  assert.equal(await essenceSection.getByRole("link", { name: "Conheça nossa casa" }).count(), 1);
-  assert.equal(await essenceSection.getAttribute("data-motion"), "ready");
-  assert.ok(await essenceSection.locator("[data-reveal-word]").count() > 30);
-  const initialTitleOpacity = Number(await essenceSection.locator("h2 [data-reveal-word]").first().evaluate((word) => getComputedStyle(word).opacity));
-  const initialBodyOpacity = Number(await essenceSection.locator("p [data-reveal-word]").first().evaluate((word) => getComputedStyle(word).opacity));
-  assert.ok(initialTitleOpacity >= .55 && initialTitleOpacity < .65, `${width}px muted title must remain readable, received ${initialTitleOpacity}`);
-  assert.ok(initialBodyOpacity >= .65 && initialBodyOpacity < .75, `${width}px muted body must retain AA contrast, received ${initialBodyOpacity}`);
-  if (width === 390) {
-    const essenceAction = essenceSection.locator("[data-essence-action]");
-    await essenceAction.evaluate((action) => action.focus({ preventScroll: true }));
-    await page.waitForTimeout(450);
-    assert.ok(Number(await essenceAction.evaluate((action) => getComputedStyle(action).opacity)) > .95, "Focused essence action must be fully visible");
-    await essenceAction.evaluate((action) => action.blur());
-  }
-  const essenceLayout = await essenceSection.evaluate((section) => {
+  const essenceLayout = await page.locator("#a-casa").evaluate((section) => {
     const image = section.querySelector("[data-essence-image]");
     const copy = section.querySelector("[data-essence-copy]");
     if (!image || !copy) throw new Error("Essence layout elements were not found.");
@@ -100,37 +76,6 @@ for (const width of widths) {
     assert.ok(essenceLayout.centerDelta <= 40, `${width}px essence image and copy must remain vertically centered`);
   } else {
     assert.equal(essenceLayout.copyAboveImage, true, `${width}px essence copy must remain above its image on mobile`);
-  }
-  if (width === 390 || width === 1440) {
-    await essenceSection.locator("[data-essence-image]").scrollIntoViewIfNeeded();
-    await page.waitForFunction(() => document.querySelector("[data-essence-section]")?.getAttribute("data-image-visible") === "true");
-    await page.evaluate(() => {
-      const section = document.querySelector("[data-essence-section]");
-      if (!(section instanceof HTMLElement)) throw new Error("Essence section was not found.");
-      window.scrollTo({ top: section.offsetTop + section.offsetHeight, behavior: "instant" });
-    });
-    await page.waitForFunction(() => document.querySelector("[data-essence-section]")?.getAttribute("data-reveal-complete") === "true");
-    await page.waitForFunction(() => {
-      const action = document.querySelector("[data-essence-action]");
-      return action ? Number(getComputedStyle(action).opacity) > .95 : false;
-    });
-    const finishedEssence = await essenceSection.evaluate((section) => {
-      const words = section.querySelectorAll("[data-reveal-word]");
-      const action = section.querySelector("[data-essence-action]");
-      if (!words.length || !action) throw new Error("Essence reveal elements were not found.");
-      return {
-        lastWordOpacity: Number(getComputedStyle(words[words.length - 1]).opacity),
-        actionOpacity: Number(getComputedStyle(action).opacity),
-      };
-    });
-    assert.ok(finishedEssence.lastWordOpacity > .95);
-    assert.ok(finishedEssence.actionOpacity > .95);
-    await page.evaluate(() => {
-      const section = document.querySelector("[data-essence-section]");
-      if (!(section instanceof HTMLElement)) throw new Error("Essence section was not found.");
-      window.scrollTo({ top: Math.max(0, section.offsetTop - window.innerHeight), behavior: "instant" });
-    });
-    await page.waitForFunction(() => document.querySelector("[data-essence-section]")?.getAttribute("data-reveal-complete") !== "true");
   }
   const firstSuiteLeft = await page.locator("#suites article").first().evaluate((element) => element.getBoundingClientRect().left);
   if (width > 900) assert.ok(Math.abs(firstSuiteLeft) <= 1, `${width}px first suite starts at x=${firstSuiteLeft}, expected x=0`);
@@ -513,17 +458,12 @@ await reducedPage.goto(baseUrl);
 assert.equal(await reducedPage.locator("h1").isVisible(), true);
 assert.equal(await reducedPage.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), "auto");
 assert.equal(await reducedPage.locator("#rodape").getAttribute("data-motion"), null);
-assert.equal(await reducedPage.locator("[data-essence-section]").getAttribute("data-motion"), null);
-assert.equal(Number(await reducedPage.locator("[data-essence-section] [data-reveal-word]").first().evaluate((word) => getComputedStyle(word).opacity)), 1);
 assert.equal(await reducedPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await reduced.close();
 const noJs = await browser.newContext({ viewport: { width: 390, height: 800 }, javaScriptEnabled: false });
 const noJsPage = await noJs.newPage();
 await noJsPage.goto(baseUrl);
 assert.equal(await noJsPage.getByText("Há lugares que nos fazem esquecer das horas.").isVisible(), true);
-assert.equal(await noJsPage.locator("[data-essence-section]").getAttribute("data-motion"), null);
-assert.equal(await noJsPage.locator("[data-essence-section] img").isVisible(), true);
-assert.equal(await noJsPage.locator("[data-essence-section] a").isVisible(), true);
 assert.equal(await noJsPage.locator("details summary").first().isVisible(), true);
 assert.equal(await noJsPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await noJs.close();

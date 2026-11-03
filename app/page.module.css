@@ -6,6 +6,11 @@
 .textLink { min-height: 52px; padding: .75rem 1.25rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
 .textLink:hover { background: var(--color-sand); }
 
+.essenceGrid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .82fr); grid-template-areas: "image copy"; gap: clamp(3rem, 8vw, 8rem); align-items: center; }
+.essenceCopy { grid-area: copy; max-width: 34rem; justify-self: end; padding-block: 2rem; }
+.essenceCopy .paragraphs { margin: 2.5rem 0; }
+.essenceImage { grid-area: image; height: clamp(520px, 55vw, 760px); overflow: hidden; }
+
 .features { padding-block: var(--section-y); }
 .featuresLayout { display: grid; grid-template-columns: minmax(18rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 6vw, 7rem); align-items: start; }
 .featureImage { position: sticky; top: calc(var(--header-h) + 2rem); height: min(42vw, 38rem); overflow: hidden; }
@@ -84,7 +89,10 @@
 }
 @media (max-width: 767px) {
   .paragraphs p { margin-bottom: 1.125rem; }
-  .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid { grid-template-columns: 1fr; }
+  .essenceGrid, .hospitalityGrid, .locationGrid, .faqGrid, .environmentGrid { grid-template-columns: 1fr; }
+  .essenceGrid { grid-template-areas: "copy" "image"; }
+  .essenceCopy { max-width: none; justify-self: stretch; padding: 0; }
+  .essenceImage { height: 118vw; max-height: 620px; }
   .featuresLayout { grid-template-columns: 1fr; gap: 3rem; }
   .featureImage { position: static; height: min(128vw, 38rem); }
   .featureHeading { margin-bottom: 2.5rem; }
