@@ -1,4 +1,5 @@
 .section {
+  --reveal-progress: 1;
   padding-block: var(--section-y);
 }
 
@@ -17,6 +18,34 @@
   max-width: 34rem;
   justify-self: end;
   padding-block: 2rem;
+}
+
+.heading {
+  max-width: 760px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: var(--leading-heading);
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+
+.word {
+  opacity: 1;
+}
+
+.section[data-motion="ready"] .word {
+  --word-reveal: clamp(0, calc(var(--reveal-progress) * var(--word-count) - var(--word-index)), 1);
+  opacity: calc(.65 + .35 * var(--word-reveal));
+}
+
+.section[data-motion="ready"] .title .word {
+  opacity: calc(.55 + .45 * var(--word-reveal));
 }
 
 .paragraphs {
@@ -58,10 +87,54 @@
   background: var(--color-sand);
 }
 
-.image {
+.section[data-motion="ready"] .action {
+  opacity: .18;
+  transform: translateY(.75rem);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity 420ms var(--ease-out),
+    transform 620ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.section[data-motion="ready"][data-reveal-complete="true"] .action {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.imageFrame {
   grid-area: image;
   height: clamp(520px, 55vw, 760px);
   overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+.image > :global(picture) {
+  transform: scale(1);
+}
+
+.section[data-motion="ready"] .image {
+  clip-path: inset(0 100% 0 0);
+  opacity: .45;
+  transition: clip-path 920ms cubic-bezier(.16, 1, .3, 1), opacity 680ms var(--ease-out);
+}
+
+.section[data-motion="ready"] .image > :global(picture) {
+  transform: scale(1.035);
+  transition: transform 980ms cubic-bezier(.16, 1, .3, 1);
+}
+
+.section[data-motion="ready"][data-image-visible="true"] .image {
+  clip-path: inset(0);
+  opacity: 1;
+}
+
+.section[data-motion="ready"][data-image-visible="true"] .image > :global(picture) {
+  transform: scale(1);
 }
 
 @media (max-width: 767px) {
@@ -80,8 +153,20 @@
     margin-bottom: 1.125rem;
   }
 
-  .image {
+  .imageFrame {
     height: 118vw;
     max-height: 620px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section .word,
+  .section .action,
+  .section .image,
+  .section .image > :global(picture) {
+    clip-path: inset(0);
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
