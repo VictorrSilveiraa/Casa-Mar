@@ -9,6 +9,11 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
 const problems = [];
+const contentEssenceParagraphs = [
+  "Na Praia de Arpoeiras, a Casa Praiamar nasce do encontro entre conforto, natureza e simplicidade.",
+  "Um lugar para reunir quem importa, prolongar as conversas, aproveitar os dias de sol e descobrir o prazer de não ter pressa.",
+  "Aqui, cada detalhe convida você a aproveitar o melhor da vida à beira-mar.",
+];
 
 for (const width of widths) {
   const context = await browser.newContext({ viewport: { width, height: width < 768 ? 800 : 900 }, deviceScaleFactor: 1 });
@@ -59,7 +64,13 @@ for (const width of widths) {
   assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
   assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
   assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
-  const essenceLayout = await page.locator("#a-casa").evaluate((section) => {
+  const essenceSection = page.locator("[data-essence-section]");
+  assert.equal(await essenceSection.count(), 1);
+  assert.equal(await essenceSection.locator("h2").textContent(), "Há lugares que nos fazem esquecer das horas.");
+  assert.deepEqual(await essenceSection.locator("p").allTextContents(), contentEssenceParagraphs);
+  assert.equal(await essenceSection.locator("img").count(), 1);
+  assert.equal(await essenceSection.getByRole("link", { name: "Conheça nossa casa" }).count(), 1);
+  const essenceLayout = await essenceSection.evaluate((section) => {
     const image = section.querySelector("[data-essence-image]");
     const copy = section.querySelector("[data-essence-copy]");
     if (!image || !copy) throw new Error("Essence layout elements were not found.");
@@ -464,6 +475,9 @@ const noJs = await browser.newContext({ viewport: { width: 390, height: 800 }, j
 const noJsPage = await noJs.newPage();
 await noJsPage.goto(baseUrl);
 assert.equal(await noJsPage.getByText("Há lugares que nos fazem esquecer das horas.").isVisible(), true);
+assert.equal(await noJsPage.locator("[data-essence-section]").getAttribute("data-motion"), null);
+assert.equal(await noJsPage.locator("[data-essence-section] img").isVisible(), true);
+assert.equal(await noJsPage.locator("[data-essence-section] a").isVisible(), true);
 assert.equal(await noJsPage.locator("details summary").first().isVisible(), true);
 assert.equal(await noJsPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await noJs.close();

@@ -1,0 +1,87 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.container {
+  width: min(calc(100% - 2 * var(--gutter)), var(--container));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .82fr);
+  grid-template-areas: "image copy";
+  gap: clamp(3rem, 8vw, 8rem);
+  align-items: center;
+}
+
+.copy {
+  grid-area: copy;
+  max-width: 34rem;
+  justify-self: end;
+  padding-block: 2rem;
+}
+
+.paragraphs {
+  max-width: var(--container-text);
+  margin: 2.5rem 0;
+}
+
+.paragraphs p {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 300;
+  line-height: var(--leading-body);
+}
+
+.paragraphs p:last-child {
+  margin-bottom: 0;
+}
+
+.action {
+  min-height: 52px;
+  padding: .75rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: .12em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.action:hover {
+  background: var(--color-sand);
+}
+
+.image {
+  grid-area: image;
+  height: clamp(520px, 55vw, 760px);
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-areas: "copy" "image";
+  }
+
+  .copy {
+    max-width: none;
+    justify-self: stretch;
+    padding: 0;
+  }
+
+  .paragraphs p {
+    margin-bottom: 1.125rem;
+  }
+
+  .image {
+    height: 118vw;
+    max-height: 620px;
+  }
+}
