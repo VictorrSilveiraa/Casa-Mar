@@ -164,6 +164,8 @@ As fotos reais da casa são o material oficial e conduzem a direção de arte.
 
 ## 10. Consulta de reserva (BookingBar)
 
+> **Decisão de 25/11/2026:** a barra de consulta (check-in, check-out, hóspedes) e o botão fixo "Consultar" do mobile foram **removidos do site** a pedido do proprietário. Todas as ações de reserva ("Reservar", "Falar com nossa equipe", "Consulte sua estadia", "Consultar estadia", "Reservas") usam um único link em `lib/contact.ts`: abre `https://wa.me/<whatsappNumber>` quando o número está em `lib/site.config.ts`; enquanto estiver vazio, leva a `#informacoes`. Não recriar a barra sem pedido explícito. As regras abaixo ficam como referência caso ela volte (o código antigo está no histórico do Git, commit `4b81c3e`).
+
 Não existe motor de reservas. **Nunca simular disponibilidade nem confirmar reserva.**
 
 - Campos: check-in, check-out, hóspedes. Labels visíveis e associados.

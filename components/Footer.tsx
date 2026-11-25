@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { content } from "@/lib/content";
+import { ReserveLink } from "./ReserveLink";
 import styles from "./Footer.module.css";
 
 export function Footer() {
@@ -38,15 +39,16 @@ export function Footer() {
             <p className={styles.label}>{content.footer.navigationLabel}</p>
             <nav className={styles.navigation} aria-label="Navegação do rodapé">
               {content.footer.links.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+              <ReserveLink source="footer-nav">{content.footer.reserveLink}</ReserveLink>
             </nav>
           </div>
 
           <div className={styles.destination}>
             <p className={styles.label}>{content.footer.destinationLabel}</p>
             <p className={styles.location}>{content.footer.location}</p>
-            <a className={styles.action} href="#reservas" data-focus-booking>
+            <ReserveLink className={styles.action} source="footer">
               {content.footer.action}
-            </a>
+            </ReserveLink>
           </div>
         </div>
 

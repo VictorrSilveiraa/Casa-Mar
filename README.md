@@ -19,7 +19,7 @@ npm run images:optimize
 
 ## Configuração
 
-Edite somente `lib/site.config.ts` para informar número de WhatsApp (sem pontuação, com código do país), Instagram, domínio e link de localização. Enquanto o WhatsApp estiver vazio, a consulta apresenta uma mensagem pronta para copiar. O domínio é necessário para o canonical e sitemap de produção.
+Edite somente `lib/site.config.ts` para informar número de WhatsApp (sem pontuação, com código do país, ex.: `5588999999999`), Instagram, domínio e link de localização. Todos os botões de reserva usam o link único de `lib/contact.ts`: com o número preenchido, abrem o WhatsApp; enquanto estiver vazio, levam às perguntas frequentes. O domínio é necessário para o canonical e sitemap de produção.
 
 Os textos ficam em `lib/content.ts` e o mapeamento completo das fotos em `lib/images.ts`. A homepage não confirma reservas nem disponibilidade.
 

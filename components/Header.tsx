@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { content } from "@/lib/content";
 import { brandAssets } from "@/lib/brand";
+import { ReserveLink } from "./ReserveLink";
 import styles from "./Header.module.css";
 
 export function Header() {
@@ -52,13 +53,13 @@ export function Header() {
         <nav className={styles.desktopNav} aria-label="Navegação principal">
           {content.navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
         </nav>
-        <a className={styles.reserve} href="#reservas" data-focus-booking>Reservar</a>
+        <ReserveLink className={styles.reserve} source="header">Reservar</ReserveLink>
         <button ref={toggle} className={styles.menuToggle} type="button" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}><span /><span /></button>
       </div>
       <div ref={menu} id="mobile-menu" className={`${styles.mobileMenu} ${open ? styles.mobileOpen : ""}`} aria-hidden={!open}>
         <nav aria-label="Navegação mobile">
           {content.navigation.map((item) => <a key={item.href} href={item.href} onClick={close}>{item.label}</a>)}
-          <a href="#reservas" data-focus-booking onClick={close}>Reservar</a>
+          <ReserveLink source="mobile-menu" onClick={close}>Reservar</ReserveLink>
         </nav>
         <p>O privilégio de viver sem pressa.</p>
       </div>

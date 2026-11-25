@@ -30,7 +30,7 @@ Convenção: em números de destaque usar "06"; em texto corrido, "seis".
 - **Botão secundário:** Descubra a Praiamar → rola para `#a-casa`
 - **Indicação de scroll (opcional):** Explore a experiência
 
-**Barra de consulta**
+**Barra de consulta** — *removida do site em 25/11/2026; reservas pelo botão "Reservar" → WhatsApp (ver AGENTS.md §10).*
 
 - Labels: Check-in · Check-out · Hóspedes
 - Botão: Consultar disponibilidade
@@ -168,5 +168,7 @@ Convenção: em números de destaque usar "06"; em texto corrido, "seis".
 - Sem e-mail, telefone, CNPJ ou endereço completo. Links de Política de Privacidade só quando existir página real.
 
 ## Botão fixo no mobile
+
+*Removido do site em 25/11/2026 a pedido do proprietário.*
 
 - Rótulo: Consultar → rola até `#reservas`. Aparece depois que o hero sai da tela, some quando a barra de consulta está visível e antes do rodapé, respeita a área segura do aparelho e nunca cobre conteúdo.

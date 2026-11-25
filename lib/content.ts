@@ -16,7 +16,6 @@ export const content = {
     action: "Descubra a Praiamar",
     scroll: "Explore a experiência",
   },
-  booking: { checkin: "Check-in", checkout: "Check-out", guests: "Hóspedes", action: "Consultar disponibilidade" },
   essence: {
     title: "Há lugares que nos fazem esquecer das horas.",
     paragraphs: [
@@ -97,13 +96,13 @@ export const content = {
     location: "Praia de Arpoeiras — Acaraú, Ceará",
     action: "Consultar estadia",
     wordmark: "PRAIAMAR",
+    reserveLink: "Reservas",
     links: [
       { label: "Início", href: "#topo" },
       { label: "A Casa", href: "#a-casa" },
       { label: "Suítes", href: "#suites" },
       { label: "Ambientes", href: "#ambientes" },
       { label: "Localização", href: "#localizacao" },
-      { label: "Reservas", href: "#reservas" },
     ],
   },
 } as const;

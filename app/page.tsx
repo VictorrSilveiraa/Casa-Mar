@@ -2,14 +2,13 @@ import { content } from "@/lib/content";
 import { siteConfig } from "@/lib/site.config";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { BookingBar } from "@/components/BookingBar";
 import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Lightbox } from "@/components/Lightbox";
 import { FaqList } from "@/components/FaqList";
-import { StickyCTA } from "@/components/StickyCTA";
 import { SuitesShowcase } from "@/components/SuitesShowcase";
 import { Footer } from "@/components/Footer";
+import { ReserveLink } from "@/components/ReserveLink";
 import styles from "./page.module.css";
 
 const jsonLd = {
@@ -20,8 +19,8 @@ const jsonLd = {
   address: { "@type": "PostalAddress", addressLocality: "Acaraú", addressRegion: "CE", addressCountry: "BR" },
 };
 
-function TextLink({ href, children, external = false, focusBooking = false }: { href: string; children: React.ReactNode; external?: boolean; focusBooking?: boolean }) {
-  return <a className={styles.textLink} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} {...(focusBooking ? { "data-focus-booking": true } : {})}>{children}</a>;
+function TextLink({ href, children, external = false }: { href: string; children: React.ReactNode; external?: boolean }) {
+  return <a className={styles.textLink} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
 }
 
 export default function Home() {
@@ -30,7 +29,6 @@ export default function Home() {
     <Header />
     <main id="conteudo">
       <Hero />
-      <BookingBar />
 
       <section id="a-casa" className={`${styles.section} ${styles.essence}`} aria-labelledby="essence-title">
         <div className={`${styles.container} ${styles.essenceGrid}`}>
@@ -103,17 +101,16 @@ export default function Home() {
       </section>
 
       <section id="informacoes" className={`${styles.section} ${styles.faq}`} aria-labelledby="faq-title">
-        <div className={`${styles.container} ${styles.faqGrid}`}><div><SectionHeading id="faq-title" title={content.faq.title} /><TextLink href="#reservas" focusBooking>{content.faq.action}</TextLink></div><FaqList /></div>
+        <div className={`${styles.container} ${styles.faqGrid}`}><div><SectionHeading id="faq-title" title={content.faq.title} /><ReserveLink className={styles.textLink} source="faq">{content.faq.action}</ReserveLink></div><FaqList /></div>
       </section>
 
       <section className={styles.final} aria-labelledby="final-title">
         <ResponsiveImage image="finalGarden" sizes="100vw" className={styles.finalImage} />
         <div className={styles.finalScrim} aria-hidden="true" />
-        <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<a href="#reservas" data-focus-booking>{content.final.action}</a></div>
+        <div className={styles.finalCopy}><p className={styles.finalEyebrow}>{content.final.eyebrow}</p><h2 id="final-title">{content.final.title}</h2>{content.final.paragraphs.map((text) => <p key={text}>{text}</p>)}<ReserveLink source="final">{content.final.action}</ReserveLink></div>
       </section>
     </main>
     <Footer />
-    <StickyCTA />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
   </>;
 }

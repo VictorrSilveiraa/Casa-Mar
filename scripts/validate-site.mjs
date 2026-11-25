@@ -26,7 +26,10 @@ for (const width of widths) {
   const size = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
   if (size.scroll > size.inner) problems.push(`${width}px overflow ${size.scroll - size.inner}px`);
   assert.equal(await page.locator("h1").count(), 1);
-  assert.equal(await page.locator("#topo #reservas").count(), 0);
+  assert.equal(await page.locator("#reservas").count(), 0, "Booking bar must stay removed");
+  assert.equal(await page.locator('input[type="date"]').count(), 0);
+  assert.equal(await page.getByText("Consultar", { exact: true }).count(), 0, "Mobile sticky CTA must stay removed");
+  assert.equal(await page.locator("header [data-reserve]").first().getAttribute("href"), "#informacoes");
   const headerNavigationStyles = await page.locator('header nav[aria-label="Navegação principal"] a').first().evaluate((link) => {
     const style = getComputedStyle(link);
     return { fontWeight: style.fontWeight, textTransform: style.textTransform };
@@ -93,32 +96,6 @@ for (const width of widths) {
   assert.deepEqual(await page.locator("#ambientes [data-environment-item] h3").allTextContents(), ["Piscina", "Cozinha gourmet", "Terraço"]);
   assert.equal(await page.getByRole("button", { name: "Conheça todos os ambientes" }).count(), 1);
   if (width === 1440) {
-    const bookingBar = await page.locator("#reservas form").evaluate((form) => {
-      const rect = form.getBoundingClientRect();
-      const children = Array.from(form.children).map((element) => element.getBoundingClientRect());
-      const dateInputs = Array.from(form.querySelectorAll('input[type="date"]')).map((element) => element.getBoundingClientRect());
-      const dateRows = Array.from(form.querySelectorAll('input[type="date"]')).map((input) => {
-        const row = input.parentElement;
-        if (!row) throw new Error("Date input row was not found.");
-        const controls = Array.from(row.children).map((element) => element.getBoundingClientRect());
-        return { height: row.getBoundingClientRect().height, controls };
-      });
-      return {
-        width: rect.width,
-        height: rect.height,
-        contentContained: children.every((child) => child.top >= rect.top && child.bottom <= rect.bottom),
-        dateInputsWide: dateInputs.every((input) => input.width >= 200),
-        dateRowsSingleLine: dateRows.every(({ height, controls }) => {
-          const centers = controls.map(({ top, height: controlHeight }) => top + controlHeight / 2);
-          return height <= 32 && Math.max(...centers) - Math.min(...centers) <= 1;
-        }),
-      };
-    });
-    assert.ok(Math.abs(bookingBar.width - 1400) <= 1, `Booking bar width is ${bookingBar.width}px, expected 1400px`);
-    assert.ok(Math.abs(bookingBar.height - 85) <= 1, `Booking bar height is ${bookingBar.height}px, expected 85px`);
-    assert.equal(bookingBar.contentContained, true, "Booking fields and submit button must remain inside the 85px bar");
-    assert.equal(bookingBar.dateInputsWide, true, "Date inputs must occupy the available text column");
-    assert.equal(bookingBar.dateRowsSingleLine, true, "Date icon, input, prompt and chevron must share one row");
     const environmentLayout = await page.evaluate(() => {
       const section = document.querySelector("#ambientes");
       const title = section?.querySelector("h2");
@@ -274,10 +251,7 @@ for (const width of widths) {
       const h2 = document.querySelector("#a-casa h2");
       const overline = document.querySelector('#topo [class*="eyebrow"]');
       const paragraph = document.querySelector('#a-casa [class*="paragraphs"] p');
-      const bookingDatePrompt = document.querySelector('#checkin + span');
-      const bookingGuests = document.querySelector('#guests');
-      const bookingLabel = document.querySelector('label[for="checkin"]');
-      if (!h1 || !h2 || !overline || !paragraph || !bookingDatePrompt || !bookingGuests || !bookingLabel) {
+      if (!h1 || !h2 || !overline || !paragraph) {
         throw new Error("Typography sample elements were not found.");
       }
       return {
@@ -285,9 +259,6 @@ for (const width of widths) {
         h2: read(h2),
         overline: read(overline),
         paragraph: read(paragraph),
-        bookingDatePrompt: read(bookingDatePrompt),
-        bookingGuests: read(bookingGuests),
-        bookingLabel: read(bookingLabel),
       };
     });
     const mobile = width === 390;
@@ -303,26 +274,19 @@ for (const width of widths) {
     assert.match(typography.overline.family, /^jost400/i);
     assert.equal(typography.overline.size, mobile ? "12px" : "13px");
     assert.equal(typography.overline.weight, "400");
-    assert.match(typography.bookingDatePrompt.family, /^jost300/i);
-    assert.equal(typography.bookingDatePrompt.weight, "300");
-    assert.match(typography.bookingGuests.family, /^jost300/i);
-    assert.equal(typography.bookingGuests.weight, "300");
-    assert.match(typography.bookingLabel.family, /^jost400/i);
-    assert.equal(typography.bookingLabel.weight, "400");
 
     const boxedActions = await page.evaluate(() => {
       const selectors = [
         '#topo a[href="#a-casa"]',
-        'header a[data-focus-booking]',
-        '#reservas button[type="submit"]',
+        'header a[data-reserve]',
         '#a-casa a[href="#ambientes"]',
         '#suites button[aria-haspopup="dialog"]',
         '#ambientes button',
         '#experiencias button[aria-haspopup="dialog"]',
         '#localizacao a',
-        '#informacoes a[data-focus-booking]',
-        'main section:last-of-type a[data-focus-booking]',
-        '#rodape a[data-focus-booking]',
+        '#informacoes a[data-reserve]',
+        'main section:last-of-type a[data-reserve]',
+        '#rodape a[data-reserve][class]',
       ];
       return selectors.map((selector) => {
         const element = document.querySelector(selector);
@@ -353,46 +317,15 @@ for (const width of widths) {
   await context.close();
 }
 
-const context = await browser.newContext({ viewport: { width: 390, height: 800 }, permissions: ["clipboard-read", "clipboard-write"] });
+const context = await browser.newContext({ viewport: { width: 390, height: 800 } });
 const page = await context.newPage();
 const interactiveProblems = [];
 page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) interactiveProblems.push(`${msg.type()}: ${msg.text()}`); });
 page.on("pageerror", (error) => interactiveProblems.push(`pageerror: ${error.message}`));
 await page.goto(baseUrl, { waitUntil: "networkidle" });
-const inquirySubmit = page.getByRole("button", { name: "Consultar disponibilidade" });
-assert.equal(await inquirySubmit.isDisabled(), true);
-assert.equal(await page.getByText("Selecione as datas", { exact: true }).count(), 2);
-const guestSelect = page.getByRole("combobox", { name: "Hóspedes" });
-assert.equal(await guestSelect.inputValue(), "2");
-assert.equal(await guestSelect.locator("option").count(), 24);
-await page.locator("#reservas form").evaluate((form) => form.requestSubmit());
-assert.equal(await page.locator(":focus").getAttribute("id"), "checkin");
-assert.equal(await page.locator("#checkin-error").textContent(), "Escolha a data de check-in.");
-assert.equal(await page.locator("#checkout-error").textContent(), "Escolha a data de check-out.");
-const today = await page.locator("#checkin").getAttribute("min");
-const past = new Date(`${today}T12:00:00Z`); past.setUTCDate(past.getUTCDate() - 1);
-const pastIso = past.toISOString().slice(0, 10);
-await page.locator("#checkin").fill(pastIso);
-await page.locator("#checkout").fill(pastIso);
-await page.locator("#reservas form").evaluate((form) => form.requestSubmit());
-assert.equal(await page.locator("#checkin-error").textContent(), "O check-in não pode ser anterior a hoje.");
-assert.equal(await page.locator("#checkout-error").textContent(), "O check-out deve ser depois do check-in.");
-await page.locator("#checkin").fill(today);
-const checkout = new Date(`${today}T12:00:00Z`); checkout.setUTCDate(checkout.getUTCDate() + 1);
-await page.locator("#checkout").fill(checkout.toISOString().slice(0, 10));
-assert.equal(await page.getByText("Selecione as datas", { exact: true }).count(), 0);
-assert.equal(await inquirySubmit.isEnabled(), true);
-await guestSelect.selectOption("24");
-assert.equal(await guestSelect.inputValue(), "24");
-await page.getByRole("button", { name: "Consultar disponibilidade" }).click();
-assert.equal(await page.getByRole("button", { name: "Copiar mensagem" }).isVisible(), true);
-assert.match(new URL(page.url()).search, /hospedes=24/);
-await page.getByRole("button", { name: "Copiar mensagem" }).click();
-await page.getByRole("button", { name: "Mensagem copiada" }).waitFor({ state: "visible" });
-await page.reload({ waitUntil: "networkidle" });
-assert.equal(await page.locator("#checkin").inputValue(), today);
-assert.equal(await page.locator("#checkout").inputValue(), checkout.toISOString().slice(0, 10));
-assert.equal(await page.getByRole("combobox", { name: "Hóspedes" }).inputValue(), "24");
+const reserveLinks = await page.locator("[data-reserve]").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+assert.ok(reserveLinks.length >= 5, "Header, menu, FAQ, final CTA and footer must share the reservation link");
+assert.ok(reserveLinks.every((href) => href === "#informacoes"), "Without a WhatsApp number every reservation link must lead to the FAQ");
 await page.getByRole("button", { name: "Abrir menu" }).click();
 assert.equal(await page.getByRole("button", { name: "Fechar menu" }).getAttribute("aria-expanded"), "true");
 assert.equal(await page.locator("main").getAttribute("inert"), "");
@@ -426,8 +359,8 @@ for (const [trigger, dialogName, total] of [["Conheça nossas suítes", "Galeria
   assert.equal(await dialog.isVisible(), false);
   assert.equal(await page.locator(":focus").textContent(), trigger);
 }
-assert.deepEqual(interactiveProblems.filter((problem) => problem !== "warning: integração de contato pendente"), []);
-console.log("Inquiry, menu, FAQ and gallery interactions: PASS");
+assert.deepEqual(interactiveProblems, []);
+console.log("Reservation links, menu, FAQ and gallery interactions: PASS");
 await context.close();
 
 const desktopSuites = await browser.newContext({ viewport: { width: 1440, height: 900 } });
