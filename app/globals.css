@@ -12,9 +12,9 @@
   --color-scrim: rgb(0 0 0 / 0.28);
   --font-display: var(--newsreader-300), Georgia, serif;
   --font-display-regular: var(--newsreader-400), Georgia, serif;
-  --font-sans: var(--jost-300), system-ui, sans-serif;
-  --font-sans-ui: var(--jost-400), system-ui, sans-serif;
-  --font-sans-medium: var(--jost-500), system-ui, sans-serif;
+  --font-sans: var(--urbanist-300), system-ui, sans-serif;
+  --font-sans-ui: var(--urbanist-400), system-ui, sans-serif;
+  --font-sans-medium: var(--urbanist-500), system-ui, sans-serif;
   --font-editorial: var(--font-display);
   --font-primary: var(--font-sans);
   --text-display: 5.5rem;
@@ -26,6 +26,7 @@
   --text-label: 0.8125rem;
   --text-eyebrow: 0.8125rem;
   --tracking-eyebrow: 0.2em;
+  --tracking-body: 0.012em; /* Urbanist runs tight; serif (Newsreader) rules always set their own non-positive tracking */
   --leading-display: 0.98;
   --leading-heading: 1.06;
   --leading-highlight: 1.35;
@@ -80,13 +81,14 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
-body { margin: 0; background: var(--color-background); color: var(--color-ink); font-family: var(--font-primary); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--color-background); color: var(--color-ink); font-family: var(--font-primary); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); letter-spacing: var(--tracking-body); -webkit-font-smoothing: antialiased; }
 body.menu-open { overflow: hidden; }
 button, input { font: inherit; }
 button { cursor: pointer; }
 img { display: block; max-width: 100%; }
 a { color: inherit; }
 p, h1, h2, h3 { margin-top: 0; }
+p { text-wrap: pretty; }
 ::selection { background: var(--color-olive-deep); color: var(--color-background); }
 :focus-visible { outline: 2px solid var(--color-olive-deep); outline-offset: 4px; }
 .skip-link { position: absolute; z-index: 100; top: -100px; left: var(--gutter); padding: 0.7rem 1rem; background: var(--color-background); color: var(--color-ink); }

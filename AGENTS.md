@@ -53,12 +53,13 @@ Também não afirmar: vista para o mar em todas as suítes, varanda, TV, tipo de
 
 O arquivo **`docs/REGRAS-TIPOGRAFIA.md` é a autoridade obrigatória** para todo texto existente ou futuro do site. Nenhum componente pode criar tamanhos, pesos, entrelinhas ou espaçamentos tipográficos fora dos papéis definidos nele.
 
-- Somente **Newsreader 300 / 400** e **Jost 300 / 400 / 500**, hospedadas localmente, subconjunto latino, `font-display: swap`.
+- Somente **Newsreader 300 / 400** e **Urbanist 300 / 400 / 500**, hospedadas localmente, subconjunto latino, `font-display: swap`.
 - Newsreader 300: H1 e títulos H2. Newsreader 400: frases de destaque e fechos editoriais.
-- Jost 300: textos corridos e textos de apoio. Jost 400: navegação, rótulos e overlines. Jost 500: botões e links de ação.
+- Urbanist 300: textos corridos e textos de apoio. Urbanist 400: navegação, rótulos e overlines. Urbanist 500: botões e links de ação.
+- Urbanist substituiu Jost em 25/11/2026 (mesmos papéis e pesos). Textos corridos usam `--tracking-body` (0.012em); Newsreader nunca recebe espaçamento positivo.
 - Breakpoint tipográfico único: **900px**. Acima, valores desktop; até 900px, valores mobile.
 - Sem itálico, pesos 600 ou maiores, caixa alta fora da marca/overline/PT-EN, letter-spacing positivo em Newsreader ou valores tipográficos avulsos.
-- Precarregar apenas Newsreader 300 e Jost 400. Reservar espaço para evitar salto de layout.
+- Precarregar apenas Newsreader 300 e Urbanist 400. Reservar espaço para evitar salto de layout.
 
 ## 7. Paleta e regras de contraste
 
@@ -95,7 +96,7 @@ Crie estes tokens globais e use-os em todo o projeto. Ajuste valores se a compos
   /* tipografia */
   --font-display: "Newsreader", Georgia, serif;
   --font-display-regular: "Newsreader", Georgia, serif;
-  --font-sans: "Jost", system-ui, sans-serif;
+  --font-sans: "Urbanist", system-ui, sans-serif;
   --text-display: 5.5rem;
   --text-h2: 3.5rem;
   --text-h3: 1.5rem;
@@ -206,7 +207,7 @@ Não existe motor de reservas. **Nunca simular disponibilidade nem confirmar res
 
 - Componentes pequenos e reutilizáveis: Header, MobileNav, Hero, BookingBar, SectionHeading, FeaturesStrip, ExperienceGallery, Lightbox, AccommodationSection, HospitalitySection, LifestyleSection, LocationSection, FAQ, FinalCTA, StickyCTA, Footer, Button, TextLink, ResponsiveImage. Adapte os nomes à arquitetura existente.
 - Conteúdo repetido (diferenciais, ambientes, perguntas, links) vem de dados estruturados, não de JSX duplicado.
-- Botões: primário (fundo grafite, texto off-white, Jost 500, altura mínima 48 px, cantos ≤ 2 px) e editorial (transparente, sublinhado fino animado, seta que se desloca 4 px no hover). Sem botões grandes arredondados estilo SaaS.
+- Botões: primário (fundo grafite, texto off-white, Urbanist 500, altura mínima 48 px, cantos ≤ 2 px) e editorial (transparente, sublinhado fino animado, seta que se desloca 4 px no hover). Sem botões grandes arredondados estilo SaaS.
 - Cantos retos, divisórias de 1 px (`--color-line`), sem sombras pesadas, sem gradientes coloridos, sem emojis, sem ícones decorativos.
 
 ## 14. Comandos e validação

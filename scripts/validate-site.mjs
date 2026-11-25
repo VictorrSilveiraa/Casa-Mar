@@ -268,10 +268,10 @@ for (const width of widths) {
     assert.match(typography.h2.family, /^newsreader300/i);
     assert.equal(typography.h2.size, mobile ? "40px" : "56px");
     assert.equal(typography.h2.weight, "300");
-    assert.match(typography.paragraph.family, /^jost300/i);
+    assert.match(typography.paragraph.family, /^urbanist300/i);
     assert.equal(typography.paragraph.size, mobile ? "17px" : "18px");
     assert.equal(typography.paragraph.weight, "300");
-    assert.match(typography.overline.family, /^jost400/i);
+    assert.match(typography.overline.family, /^urbanist400/i);
     assert.equal(typography.overline.size, mobile ? "12px" : "13px");
     assert.equal(typography.overline.weight, "400");
 
