@@ -1,6 +1,12 @@
 # Experiência premium da homepage — design
 
-Data: 25/11/2026 · Status: **aguardando aprovação**
+Data: 25/11/2026 · Status: **aprovado pelo proprietário em 25/11/2026, com os ajustes da seção 0**
+
+## 0. Ajustes do proprietário na aprovação
+
+- A referência (tengilemalamala.com) vale **só para a abertura** (o carregamento a cada F5), que deve ser um momento marcante, à altura dela.
+- O restante das animações e da estrutura **não** deve copiar o site de referência: deve seguir o padrão de sofisticação da hotelaria de luxo e das galerias Awwwards, com pesquisa de referências.
+- Nada extravagante: as animações não podem atrapalhar navegação nem conversão, nem deixar o site pesado ou agressivo. Equilíbrio entre sofisticação e discrição.
 
 ## 1. Intenção
 
@@ -99,21 +105,31 @@ Divisão em linhas: utilitário pequeno que envolve palavras em `<span>`, agrupa
 2. A abertura é HTML renderizado no servidor, fixa sobre tudo (`--z-loader: 80`), fundo `--color-olive-deep`, visível só com `html.js`. Rolagem do fundo bloqueada enquanto ela está na tela. `aria-hidden="true"`; o conteúdo da página já está no DOM.
 3. A foto de capa continua carregando com prioridade alta por baixo; a abertura não atrasa o download.
 
+**Conceito: "o sol nasce sobre o mar".** O símbolo da Praiamar é montado em três partes, recortadas do PNG oficial em faixas horizontais, como o monograma que se desenha na referência:
+
+1. **Ondas** (faixa inferior): desenham-se da esquerda para a direita.
+2. **Bloco/casa** (faixa central, com a estrela vazada): sobe de dentro de uma máscara, apoiando-se nas ondas.
+3. **Sol** (pontas da estrela acima do bloco): nasce de dentro de uma máscara com leve rotação (−8° → 0°).
+
+Depois, o nome **PRAIAMAR** se revela da esquerda para a direita, e um filete fino abaixo marca o carregamento.
+
 **Linha do tempo**
 
 | Tempo | Elemento | Papel | Movimento |
 |---|---|---|---|
 | 0 ms | fundo oliva | estático | já pintado |
-| 80 ms | símbolo (sol + ondas, branco) | Lead | cortina de baixo para cima, 700 ms `--ease-out-strong` |
-| 380 ms | wordmark "PRAIAMAR" | Support | cortina da esquerda para a direita, 800 ms `--ease-out-strong` (sobrepõe o símbolo) |
-| 380 ms | filete de 1 px (`--color-line-inverse`) sob o wordmark | Decoração | `scaleX` 0→1 linear até a capa decodificar |
+| 100 ms | ondas | Lead (início) | `clip-path` da esquerda para a direita, 650 ms `--ease-in-out-strong` |
+| 420 ms | bloco/casa | Lead | sobe `translateY(100%)→0` dentro de máscara, 700 ms `--ease-out-strong` |
+| 700 ms | sol | Lead (ápice) | sobe `translateY(60%)→0` + `rotate(-8deg)→0` dentro de máscara, 800 ms `--ease-out-strong` |
+| 900 ms | wordmark "PRAIAMAR" | Support | `clip-path` da esquerda para a direita, 900 ms `--ease-out-strong` |
+| 900 ms | filete de 1 px (`--color-line-inverse`) sob o wordmark | Decoração | `scaleX` 0→1, linear, até a capa decodificar |
 | **saída** | painel inteiro | Lead | sobe `translateY(-100%)`, `--dur-loader-exit` `--ease-in-out-strong` |
 | saída +0 ms | foto de capa | Support | `scale(1.08)→1`, `--dur-settle` |
 | saída +250 ms | cabeçalho | Support | opacidade 0→1, 500 ms |
 | saída +300 ms | título da capa | Support | `lines` (2 linhas, 0/110 ms) |
 | saída +520 ms | eyebrow, frase de apoio, botão | Support | `fade`, 0/60/110 ms |
 
-**Saída** acontece quando as duas condições são verdadeiras: (a) mínimo de **1100 ms** desde o início (o símbolo e o wordmark completam) e (b) a foto de capa decodificou (`img.decode()`), **ou** quando chega o teto de **2400 ms**, o que vier primeiro. Resultado esperado: ~1,3–1,8 s numa conexão boa.
+**Saída** acontece quando as duas condições são verdadeiras: (a) mínimo de **1900 ms** desde o início (a montagem do símbolo e do nome completa e respira um instante) e (b) a foto de capa decodificou (`img.decode()`), **ou** quando chega o teto de **2800 ms**, o que vier primeiro. Resultado esperado: ~1,9–2,2 s numa conexão boa. Antes de sair, símbolo e nome fazem um fade de 250 ms enquanto o painel começa a subir.
 
 ## 7. Seção a seção
 
@@ -148,7 +164,7 @@ Cada seção recebe um momento assinatura (Lead). Composição muda só onde ind
 - Animar apenas `transform`, `opacity` e `clip-path`. `will-change` só durante a revelação e removido depois.
 - JS de movimento num único componente cliente (`MotionController`) + o componente da abertura; meta < 4 KB comprimido.
 - Medir Lighthouse mobile **antes e depois** (performance, LCP, CLS). Critério de aceite: CLS = 0 e LCP sem piora maior que 300 ms em relação à medição de antes. Se piorar mais, reduzir o teto da abertura.
-- Validação existente (`npm run validate:browser`) continua passando; adicionar checagens: abertura some sozinha em ≤ 2,6 s; com movimento reduzido nada fica com `transform` aplicado; sem JS tudo visível; nenhuma revelação reexecuta ao rolar de volta.
+- Validação existente (`npm run validate:browser`) continua passando; adicionar checagens: abertura some sozinha em ≤ 3,8 s (teto + saída); com movimento reduzido nada fica com `transform` aplicado; sem JS tudo visível; nenhuma revelação reexecuta ao rolar de volta.
 - Gravar a abertura e uma seção e conferir quadro a quadro (onda vs. fila), como pedem as skills.
 - O `validate-site.mjs` precisa esperar a abertura sair antes de medir e **rolar a página inteira antes das capturas de página cheia**; caso contrário, as revelações ainda não disparadas aparecem vazias nas imagens.
 
@@ -168,7 +184,7 @@ Cada seção recebe um momento assinatura (Lead). Composição muda só onde ind
 
 ## 11. Decisões técnicas (podem ser revistas)
 
-- Abertura com teto de 2,4 s e mínimo de 1,1 s, ligada à foto de capa; não reaparece no "voltar" do navegador.
+- Abertura com mínimo de 1,9 s e teto de 2,8 s, ligada à foto de capa; não reaparece no "voltar" do navegador.
 - Fundo da abertura em `--color-olive-deep` (contraste com o branco do logo já validado).
 - Cabeçalho que se esconde ao rolar para baixo.
 - Foto da seção "A Casa" sangrando até a borda no desktop.
