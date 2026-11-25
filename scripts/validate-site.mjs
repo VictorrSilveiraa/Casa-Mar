@@ -53,12 +53,12 @@ for (const width of widths) {
     assert.deepEqual(mobileNavigationStyles, { fontWeight: "300", textTransform: "uppercase" });
   }
   assert.equal(await page.locator("#suites").count(), 1);
-  assert.equal(await page.locator("#suites img").count(), 5);
+  assert.equal(await page.locator("#suites img:not(dialog img)").count(), 5);
   assert.equal(await page.locator("#suites h2").textContent(), "Nossas suítes");
   assert.equal(await page.locator('#suites [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("O prazer de descansar", { exact: false }).count(), 0);
   assert.equal(await page.getByText("O conforto de estar longe", { exact: false }).count(), 0);
-  assert.equal(await page.locator('#suites a[href="/suites"]').count(), 1);
+  assert.equal(await page.locator('#suites button[aria-haspopup="dialog"]').count(), 1);
   const essenceLayout = await page.locator("#a-casa").evaluate((section) => {
     const image = section.querySelector("[data-essence-image]");
     const copy = section.querySelector("[data-essence-copy]");
@@ -163,9 +163,9 @@ for (const width of widths) {
   assert.equal(await page.getByText("O mar, o conforto e as pessoas que fazem tudo valer a pena.", { exact: true }).count(), 0);
   assert.equal(await page.getByText("Sua próxima boa lembrança pode começar aqui.", { exact: true }).count(), 1);
   assert.equal(await page.locator("#experiencias").count(), 1);
-  assert.equal(await page.locator("#experiencias img").count(), 1);
+  assert.equal(await page.locator("#experiencias img:not(dialog img)").count(), 1);
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
-  assert.equal(await page.locator('#experiencias a[href="/experiencias"]').textContent(), "Conheça nossas experiências");
+  assert.equal(await page.locator('#experiencias button[aria-haspopup="dialog"]').textContent(), "Conheça nossas experiências");
   assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
   assert.equal(await page.locator('#localizacao [class*="eyebrow"]').count(), 0);
   assert.equal(await page.getByText("ARPOEIRAS, CEARÁ", { exact: true }).count(), 0);
@@ -316,9 +316,9 @@ for (const width of widths) {
         'header a[data-focus-booking]',
         '#reservas button[type="submit"]',
         '#a-casa a[href="#ambientes"]',
-        '#suites a[href="/suites"]',
+        '#suites button[aria-haspopup="dialog"]',
         '#ambientes button',
-        '#experiencias a[href="/experiencias"]',
+        '#experiencias button[aria-haspopup="dialog"]',
         '#localizacao a',
         '#informacoes a[data-focus-booking]',
         'main section:last-of-type a[data-focus-booking]',
@@ -411,10 +411,21 @@ assert.equal(await page.locator("details").first().getAttribute("open"), "");
 await page.getByRole("button", { name: "Conheça todos os ambientes" }).click();
 assert.equal(await page.getByRole("dialog", { name: "Galeria de ambientes" }).isVisible(), true);
 await page.keyboard.press("ArrowRight");
-assert.match(await page.locator("dialog").textContent(), /2 \/ 6/);
+assert.match(await page.locator("dialog[open]").textContent(), /2 \/ 6/);
 await page.keyboard.press("Escape");
 assert.equal(await page.getByRole("dialog", { name: "Galeria de ambientes" }).isVisible(), false);
 assert.equal(await page.locator(":focus").textContent(), "Conheça todos os ambientes");
+for (const [trigger, dialogName, total] of [["Conheça nossas suítes", "Galeria de suítes", 5], ["Conheça nossas experiências", "Galeria de ambientes", 6]]) {
+  await page.getByRole("button", { name: trigger }).click();
+  const dialog = page.getByRole("dialog", { name: dialogName });
+  assert.equal(await dialog.isVisible(), true);
+  assert.match(await dialog.textContent(), new RegExp(`1 / ${total}`));
+  await page.keyboard.press("ArrowLeft");
+  assert.match(await dialog.textContent(), new RegExp(`${total} / ${total}`));
+  await page.keyboard.press("Escape");
+  assert.equal(await dialog.isVisible(), false);
+  assert.equal(await page.locator(":focus").textContent(), trigger);
+}
 assert.deepEqual(interactiveProblems.filter((problem) => problem !== "warning: integração de contato pendente"), []);
 console.log("Inquiry, menu, FAQ and gallery interactions: PASS");
 await context.close();

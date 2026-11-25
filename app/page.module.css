@@ -48,8 +48,8 @@
 .lifestyleCopy { max-width: 650px; }
 .lifestyleCopy :global(h2) { max-width: 650px; color: var(--color-background); }
 .lifestyleDescription { max-width: 46ch; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
-.lifestyleCopy a { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
-.lifestyleCopy a:hover { background: var(--color-sand); }
+.lifestyleAction { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
+.lifestyleAction:hover { background: var(--color-sand); }
 .lifestyle :focus-visible { outline-color: var(--color-background); }
 
 .location { background: var(--color-sand); }
@@ -103,7 +103,7 @@
   .environmentImage { aspect-ratio: 3 / 4; }
   .environmentCopy { padding-top: 1.25rem; }
   .environmentAction { justify-content: stretch; margin-top: 3rem; }
-  .environmentAction :global(button) { width: 100%; }
+  .environmentAction > button { width: 100%; }
   .hospitalityImage { height: 88vw; max-height: 600px; }
   .hospitalityCopy .paragraphs { margin-top: 2.5rem; padding-top: 2rem; }
   .lifestyle { min-height: 620px; height: 78svh; max-height: 760px; }
@@ -111,7 +111,7 @@
   .lifestyleInner { align-items: flex-end; }
   .lifestyleCopy { width: 100%; padding-bottom: clamp(4rem, 12vw, 6rem); }
   .lifestyleDescription { margin-top: 1.5rem; }
-  .lifestyleCopy a { width: 100%; margin-top: 2rem; }
+  .lifestyleAction { width: 100%; margin-top: 2rem; }
   .locationMeta { display: grid; justify-items: start; gap: 1.25rem; margin-top: 2.5rem; padding-top: 1.625rem; }
   .locationImage { height: 110vw; max-height: 680px; }
   .faqGrid { gap: 3rem; }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { content } from "@/lib/content";
 import type { ImageKey } from "@/lib/images";
+import { Lightbox } from "./Lightbox";
 import { ResponsiveImage } from "./ResponsiveImage";
 import { SectionHeading } from "./SectionHeading";
 import styles from "./SuitesShowcase.module.css";
@@ -84,7 +85,7 @@ export function SuitesShowcase() {
     <section id="suites" className={styles.section} aria-label="Suítes da Casa Praiamar">
       <div className={styles.intro}>
         <SectionHeading title={content.suites.title} />
-        <a className={styles.cta} href="/suites">{content.suites.action}</a>
+        <Lightbox label={content.suites.action} gallery="suites" className={styles.cta} />
       </div>
 
       <div ref={trackRef} className={styles.track} onScroll={updateActive}>

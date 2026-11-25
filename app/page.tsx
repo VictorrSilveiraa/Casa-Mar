@@ -72,7 +72,7 @@ export default function Home() {
               <div className={styles.environmentCopy}><h3>{content.environments.items[2].label}</h3><p>{content.environments.items[2].description}</p></div>
             </article>
           </div>
-          <div className={styles.environmentAction}><Lightbox label={content.environments.action} /></div>
+          <div className={styles.environmentAction}><Lightbox label={content.environments.action} gallery="ambientes" /></div>
         </div>
       </section>
 
@@ -90,7 +90,7 @@ export default function Home() {
           <div className={styles.lifestyleCopy}>
             <SectionHeading id="lifestyle-title" title={content.lifestyle.title} />
             <p className={styles.lifestyleDescription}>{content.lifestyle.description}</p>
-            <a href="/experiencias">{content.lifestyle.action}</a>
+            <Lightbox label={content.lifestyle.action} gallery="ambientes" className={styles.lifestyleAction} />
           </div>
         </div>
       </section>
