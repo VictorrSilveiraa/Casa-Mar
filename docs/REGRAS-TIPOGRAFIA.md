@@ -14,7 +14,7 @@ Duas famílias, sem exceção. Ambas são do Google Fonts (licença livre).
 | **Display (serifa)** — títulos e frases de destaque | **Newsreader** | 300 (leve) e 400 (regular) | `Georgia, serif` |
 | **Texto e interface (sans)** — todo o resto | **Urbanist** | 300, 400 e 500 | `system-ui, sans-serif` |
 
-> **Troca de fonte (25/11/2026):** Jost foi substituída por **Urbanist** em todo o site, mantendo os mesmos papéis e pesos. Como a Urbanist tem espaçamento natural mais fechado, textos corridos (Corpo e Corpo L) usam `letter-spacing: 0.012em` (token `--tracking-body`), e parágrafos usam `text-wrap: pretty` para evitar palavra sozinha na última linha. Newsreader continua sem espaçamento positivo. Fontes hospedadas localmente em `app/fonts/` (não usar o link do Google abaixo em produção).
+> **Troca de fonte (25/11/2026):** Jost foi substituída por **Urbanist** em todo o site, mantendo os mesmos papéis e pesos. Como a Urbanist tem espaçamento natural mais fechado, textos corridos (Corpo e Corpo L) usam `letter-spacing: 0.025em` (token `--tracking-body`), e parágrafos usam `text-wrap: pretty` para evitar palavra sozinha na última linha. Newsreader continua sem espaçamento positivo. Fontes hospedadas localmente em `app/fonts/` (não usar o link do Google abaixo em produção).
 
 Importação:
 
@@ -53,7 +53,7 @@ Breakpoint único: **900px**. Acima é desktop; até 900px é mobile (referênci
 | Elemento | Fonte | Peso | Tamanho (desktop / mobile) | Entrelinha | Espaçamento entre letras | Observações |
 |---|---|---|---|---|---|---|
 | Título (H1) | Newsreader | 300 | **88px / 48px** | 0.98 (mobile 1.0) | −0.02em | Duas linhas, quebra manual; sombra de texto suave `0 2px 28px` (mobile `0 2px 24px`) só para ler sobre a foto |
-| Frase de apoio | Urbanist | 300 | 19px / 16px | 1.55 (mobile 1.5) | 0.012em | Largura máxima 430px (mobile 320px); margem acima do texto: 26px (mobile 16px) |
+| Frase de apoio | Urbanist | 300 | 19px / 16px | 1.55 (mobile 1.5) | 0.025em | Largura máxima 430px (mobile 320px); margem acima do texto: 26px (mobile 16px) |
 | Link "Conhecer a casa" | Urbanist | 500 | 16px / — (não aparece no mobile) | normal | 0.02em | Sublinhado de 1px; margem acima: 18px |
 | "Role" (indicador de rolagem) | Urbanist | 400 | 13px / — (some no mobile) | normal | 0.14em | Texto na vertical |
 
@@ -73,7 +73,7 @@ Espaço entre o rótulo e o valor do campo: 6px (mobile 4px).
 |---|---|---|---|---|---|---|
 | Rótulo da seção (overline) | Urbanist | 400 | 13px / 12px | normal | 0.2em | MAIÚSCULAS; fio de 1px (40px de largura, mobile 32px) antes do texto, com 16px de espaço |
 | Título (H2) | Newsreader | 300 | **56px / 40px** | 1.06 (mobile 1.08) | −0.02em | Margem acima: 36px (mobile 28px) |
-| Parágrafo de texto | Urbanist | 300 | 18px / 17px | 1.75 | 0.012em | Largura máxima 460px; margem acima do primeiro: 40px; entre parágrafos: 20px (mobile 18px) |
+| Parágrafo de texto | Urbanist | 300 | 18px / 17px | 1.75 | 0.025em | Largura máxima 460px; margem acima do primeiro: 40px; entre parágrafos: 20px (mobile 18px) |
 | Frase de fecho | Newsreader | 400 | 24px / 22px | 1.35 | −0.005em | Fio de 1px acima; 28px de espaço entre o fio e o texto (mobile 26px); margem acima: 48px (mobile 40px) |
 
 Espaçamento da seção: 140px acima e abaixo e 56px de margem lateral no desktop; no mobile, 88px acima e abaixo e 24px nas laterais.
@@ -89,8 +89,8 @@ Use estes papéis para qualquer texto novo:
 | Display XL | Título principal da hero | Newsreader 300 | 88px / 48px | 0.98–1.0 | −0.02em |
 | Display L | Título de cada seção (H2) | Newsreader 300 | 56px / 40px | 1.06–1.08 | −0.02em |
 | Display M | Frases de destaque, citações, fecho de seção | Newsreader 400 | 24px / 22px | 1.35 | −0.005em |
-| Corpo L | Texto de apoio sobre foto | Urbanist 300 | 19px / 16px | 1.5–1.55 | 0.012em |
-| Corpo | Parágrafos de seção | Urbanist 300 | 18px / 17px | 1.75 | 0.012em |
+| Corpo L | Texto de apoio sobre foto | Urbanist 300 | 19px / 16px | 1.5–1.55 | 0.025em |
+| Corpo | Parágrafos de seção | Urbanist 300 | 18px / 17px | 1.75 | 0.025em |
 | UI | Menu, botões, links de ação | Urbanist 400 ou 500 | 15–16px | normal | 0.02–0.04em |
 | Rótulo | Rótulos de campo, legendas | Urbanist 400 | 13px / 12px | normal | 0.02em |
 | Overline | Rótulo curto acima de título | Urbanist 400 | 13px / 12px | normal | 0.2em, MAIÚSCULAS |
@@ -120,8 +120,8 @@ Padrões fixos:
 .t-display-xl { font-family: var(--font-display); font-weight: 300; font-size: 88px; line-height: .98; letter-spacing: -.02em; }
 .t-display-l  { font-family: var(--font-display); font-weight: 300; font-size: 56px; line-height: 1.06; letter-spacing: -.02em; }
 .t-display-m  { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.35; letter-spacing: -.005em; }
-.t-lead       { font-family: var(--font-sans); font-weight: 300; font-size: 19px; line-height: 1.55; letter-spacing: .012em; }
-.t-body       { font-family: var(--font-sans); font-weight: 300; font-size: 18px; line-height: 1.75; letter-spacing: .012em; max-width: 460px; }
+.t-lead       { font-family: var(--font-sans); font-weight: 300; font-size: 19px; line-height: 1.55; letter-spacing: .025em; }
+.t-body       { font-family: var(--font-sans); font-weight: 300; font-size: 18px; line-height: 1.75; letter-spacing: .025em; max-width: 460px; }
 .t-ui         { font-family: var(--font-sans); font-weight: 500; font-size: 16px; letter-spacing: .02em; }
 .t-nav        { font-family: var(--font-sans); font-weight: 400; font-size: 15px; letter-spacing: .03em; }
 .t-label      { font-family: var(--font-sans); font-weight: 400; font-size: 13px; letter-spacing: .02em; }

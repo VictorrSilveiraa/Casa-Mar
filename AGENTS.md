@@ -56,7 +56,7 @@ O arquivo **`docs/REGRAS-TIPOGRAFIA.md` é a autoridade obrigatória** para todo
 - Somente **Newsreader 300 / 400** e **Urbanist 300 / 400 / 500**, hospedadas localmente, subconjunto latino, `font-display: swap`.
 - Newsreader 300: H1 e títulos H2. Newsreader 400: frases de destaque e fechos editoriais.
 - Urbanist 300: textos corridos e textos de apoio. Urbanist 400: navegação, rótulos e overlines. Urbanist 500: botões e links de ação.
-- Urbanist substituiu Jost em 25/11/2026 (mesmos papéis e pesos). Textos corridos usam `--tracking-body` (0.012em); Newsreader nunca recebe espaçamento positivo.
+- Urbanist substituiu Jost em 25/11/2026 (mesmos papéis e pesos). Textos corridos e textos pequenos em caixa baixa (perguntas, links do rodapé, legendas) usam `--tracking-body` (0.025em ≈ 0,45 px); Newsreader nunca recebe espaçamento positivo.
 - Breakpoint tipográfico único: **900px**. Acima, valores desktop; até 900px, valores mobile.
 - Sem itálico, pesos 600 ou maiores, caixa alta fora da marca/overline/PT-EN, letter-spacing positivo em Newsreader ou valores tipográficos avulsos.
 - Precarregar apenas Newsreader 300 e Urbanist 400. Reservar espaço para evitar salto de layout.
