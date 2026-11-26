@@ -39,12 +39,12 @@ Newsreader usa o eixo de tamanho óptico: mantenha `font-optical-sizing: auto` (
 
 **Estratégia:** uma escala única, **fluida**, definida só em tokens no `:root` de `app/globals.css`. Cada papel tem um valor de referência no **mobile (390px)** e no **desktop (1440px)**; entre os dois o tamanho cresce de forma contínua (`clamp()`), e acima de 1440px continua crescendo pouco até um teto, para telas grandes não parecerem vazias. Nenhum componente declara tamanho de fonte próprio: usa o token do papel.
 
-Por que assim: tamanhos fixos deixavam o texto pequeno em monitores grandes e criavam saltos bruscos no breakpoint; a Urbanist é visualmente menor que a Jost, então o corpo subiu; e a hierarquia ficou mais clara (título de seção ≈ 3× o corpo no desktop, ≈ 2× no mobile).
+Por que assim: tamanhos fixos deixavam o texto pequeno em monitores grandes e criavam saltos bruscos no breakpoint; a Urbanist é visualmente menor que a Jost, então o corpo subiu; e a hierarquia ficou mais clara (título de seção ≈ 2,6× o corpo no desktop, ≈ 2× no mobile; o título de seção para em 50px a pedido do proprietário, 25/11/2026).
 
 | Papel | Token | Fonte / peso | Mobile 390 | Desktop 1440 | Teto | Entrelinha | Espaçamento |
 |---|---|---|---|---|---|---|---|
 | Display XL — título da hero (h1) | `--text-display` | Newsreader 300 | 48px | 96px | 112px | 1.0 / 0.98 | −0.02em |
-| Display L — título de seção (h2) | `--text-h2` | Newsreader 300 | 36px | 60px | 68px | 1.1 / 1.06 | −0.02em |
+| Display L — título de seção (h2) | `--text-h2` | Newsreader 300 | 36px | 50px | 50px | 1.1 / 1.06 | −0.02em |
 | Display M — destaques, h3, fecho | `--text-h3` | Newsreader 400 | 22px | 26px | 28px | 1.35 | −0.005em |
 | Pergunta (FAQ) | `--text-question` | Urbanist 400 | 17px | 20px | 21px | 1.4 | 0.025em |
 | Corpo L — apoio sobre foto, frase de abertura | `--text-lead` | Urbanist 300 | 18px | 21px | 22px | 1.55 | 0.025em |

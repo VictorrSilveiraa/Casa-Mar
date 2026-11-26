@@ -282,7 +282,7 @@ for (const width of widths) {
     near(typography.h1.size, mobile ? 48 : 96, "h1");
     assert.equal(typography.h1.weight, "300");
     assert.match(typography.h2.family, /^newsreader300/i);
-    near(typography.h2.size, mobile ? 36 : 60, "h2");
+    near(typography.h2.size, mobile ? 36 : 50, "h2");
     assert.equal(typography.h2.weight, "300");
     assert.match(typography.paragraph.family, /^urbanist300/i);
     near(typography.paragraph.size, mobile ? 17 : 19, "body");

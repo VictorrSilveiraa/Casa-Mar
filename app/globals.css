@@ -22,7 +22,7 @@
    * (desktop reference), capped for large screens: clamp(mobile, intercept + slope·vw, cap).
    *   role            390px   1440px   cap
    *   display (h1)     48      96      112
-   *   h2               36      60       68
+   *   h2               36      50       50
    *   h3 / highlight   22      26       28
    *   question         17      20       21
    *   lead             18      21       22
@@ -31,7 +31,7 @@
    *   label/eyebrow    12      13       13
    */
   --text-display: clamp(3rem, 1.886rem + 4.571vw, 7rem);
-  --text-h2: clamp(2.25rem, 1.693rem + 2.286vw, 4.25rem);
+  --text-h2: clamp(2.25rem, 1.925rem + 1.333vw, 3.125rem);
   --text-h3: clamp(1.375rem, 1.282rem + 0.381vw, 1.75rem);
   --text-question: clamp(1.0625rem, 0.993rem + 0.286vw, 1.3125rem);
   --text-lead: clamp(1.125rem, 1.055rem + 0.286vw, 1.375rem);
