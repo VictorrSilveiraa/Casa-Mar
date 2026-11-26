@@ -24,59 +24,75 @@ export function SuitesShowcase() {
   const targetRef = useRef<number | null>(null);
   const [active, setActive] = useState(0);
   const images = content.suites.images;
+  /** Distinct scroll positions the arrows can reach. On wide screens the last photos share one stop. */
+  const stopsRef = useRef<number[]>([]);
+  const [stopCount, setStopCount] = useState<number>(images.length);
 
-  useEffect(() => () => {
-    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    if (scrollEndRef.current !== null) window.clearTimeout(scrollEndRef.current);
+  const computeStops = (): number[] => {
+    const track = trackRef.current;
+    if (!track) return [];
+    const desktop = window.matchMedia("(min-width: 901px)").matches;
+    const padLeft = parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0;
+    const max = track.scrollWidth - track.clientWidth;
+    const trackLeft = track.getBoundingClientRect().left;
+    const stops: number[] = [];
+    for (const item of itemRefs.current) {
+      if (!item) continue;
+      const rect = item.getBoundingClientRect();
+      const start = track.scrollLeft + rect.left - trackLeft;
+      // Desktop: each photo rests on the start edge. Mobile: each photo is centered.
+      const target = desktop ? start - padLeft : start - (track.clientWidth - rect.width) / 2;
+      const stop = Math.round(Math.max(0, Math.min(max, target)));
+      if (!stops.length || stop - stops[stops.length - 1] > 8) stops.push(stop);
+    }
+    if (stops.length && max - stops[stops.length - 1] > 8) stops.push(Math.round(max));
+    return stops;
+  };
+
+  const nearestStop = (left: number) => {
+    const stops = stopsRef.current;
+    let closest = 0;
+    stops.forEach((stop, index) => { if (Math.abs(stop - left) < Math.abs(stops[closest] - left)) closest = index; });
+    return closest;
+  };
+
+  useEffect(() => {
+    let timer = 0;
+    const measure = () => {
+      stopsRef.current = computeStops();
+      setStopCount(Math.max(1, stopsRef.current.length));
+      const track = trackRef.current;
+      if (track) setActive(nearestStop(track.scrollLeft));
+    };
+    const frame = requestAnimationFrame(measure);
+    const onResize = () => { window.clearTimeout(timer); timer = window.setTimeout(measure, 150); };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      window.removeEventListener("resize", onResize);
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      if (scrollEndRef.current !== null) window.clearTimeout(scrollEndRef.current);
+    };
+    // computeStops/nearestStop only read refs; measuring once on mount and on resize is intended.
   }, []);
 
   const syncActiveFromTrack = () => {
     const track = trackRef.current;
-    if (!track) return;
-
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    if (track.scrollLeft <= 2) {
-      setActive(0);
-      return;
-    }
-    if (maxScroll - track.scrollLeft <= 2) {
-      setActive(images.length - 1);
-      return;
-    }
-
-    const center = track.getBoundingClientRect().left + track.clientWidth / 2;
-    let closest = 0;
-    let distance = Number.POSITIVE_INFINITY;
-    itemRefs.current.forEach((item, index) => {
-      if (!item) return;
-      const rect = item.getBoundingClientRect();
-      const nextDistance = Math.abs(rect.left + rect.width / 2 - center);
-      if (nextDistance < distance) { distance = nextDistance; closest = index; }
-    });
-    setActive(closest);
+    if (track) setActive(nearestStop(track.scrollLeft));
   };
 
   const goTo = (index: number) => {
-    const next = Math.max(0, Math.min(images.length - 1, index));
-    const firstStageAtDesktopEdge = next === 0 && window.matchMedia("(min-width: 901px)").matches;
-    const lastStage = next === images.length - 1;
+    // Re-measure: the track may have been revealed (it slides in) or resized since the last measure.
+    stopsRef.current = computeStops();
+    const stops = stopsRef.current;
+    if (!stops.length) return;
+    const next = Math.max(0, Math.min(stops.length - 1, index));
     targetRef.current = next;
-    const track = trackRef.current;
-    const item = itemRefs.current[next];
-    if (track && item) {
-      // Scroll only the track horizontally. scrollIntoView would also move the page vertically
-      // whenever the section is not fully in view, making the page jump on every arrow click.
-      const style = getComputedStyle(track);
-      const trackRect = track.getBoundingClientRect();
-      const itemRect = item.getBoundingClientRect();
-      const offset = firstStageAtDesktopEdge
-        ? parseFloat(style.scrollPaddingLeft) || 0
-        : lastStage
-          ? track.clientWidth - itemRect.width - (parseFloat(style.scrollPaddingRight) || 0)
-          : (track.clientWidth - itemRect.width) / 2;
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      track.scrollTo({ left: track.scrollLeft + itemRect.left - trackRect.left - offset, behavior: reduce ? "auto" : "smooth" });
-    }
+    // Scroll only the track horizontally. scrollIntoView would also move the page vertically
+    // whenever the section is not fully in view, making the page jump on every arrow click.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    trackRef.current?.scrollTo({ left: stops[next], behavior: reduce ? "auto" : "smooth" });
     setActive(next);
   };
 
@@ -113,11 +129,11 @@ export function SuitesShowcase() {
       </div>
 
       <div className={styles.controls} data-reveal="fade" style={{ "--reveal-delay": "320ms" } as React.CSSProperties}>
-        <p className={styles.counter} aria-live="polite"><span>{String(active + 1).padStart(2, "0")}</span> / {String(images.length).padStart(2, "0")}</p>
-        <span className={styles.progress} aria-hidden="true"><span style={{ transform: `scaleX(${(active + 1) / images.length})` }} /></span>
+        <p className={styles.counter} aria-live="polite"><span>{String(active + 1).padStart(2, "0")}</span> / {String(stopCount).padStart(2, "0")}</p>
+        <span className={styles.progress} aria-hidden="true"><span style={{ transform: `scaleX(${(active + 1) / stopCount})` }} /></span>
         <div className={styles.buttons}>
           <button type="button" aria-label="Suíte anterior" disabled={active === 0} onClick={() => goTo(active - 1)}><Arrow direction="previous" /></button>
-          <button type="button" aria-label="Próxima suíte" disabled={active === images.length - 1} onClick={() => goTo(active + 1)}><Arrow direction="next" /></button>
+          <button type="button" aria-label="Próxima suíte" disabled={active >= stopCount - 1} onClick={() => goTo(active + 1)}><Arrow direction="next" /></button>
         </div>
       </div>
     </section>

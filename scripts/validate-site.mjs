@@ -387,22 +387,32 @@ await introDone(desktopSuitesPage);
 const desktopSuitesRegion = desktopSuitesPage.getByRole("region", { name: "Suítes da Casa Praiamar" });
 const suitesNext = desktopSuitesRegion.getByRole("button", { name: "Próxima suíte" });
 const suitesPrevious = desktopSuitesRegion.getByRole("button", { name: "Suíte anterior" });
+// Stops are the distinct positions the arrows can reach (wide screens show the last photos together).
+await desktopSuitesRegion.scrollIntoViewIfNeeded();
+await desktopSuitesPage.waitForTimeout(1300);
+const suiteStops = Number((await desktopSuitesRegion.locator('[class*="counter"]').textContent())?.trim().split("/")[1]);
+assert.ok(suiteStops >= 3 && suiteStops <= 5, `Desktop suites expose ${suiteStops} stops`);
 const assertSuiteStage = async (stage) => {
-  await desktopSuitesPage.waitForTimeout(700);
-  assert.equal((await desktopSuitesRegion.locator('[class*="counter"]').textContent())?.trim(), `${String(stage).padStart(2, "0")} / 05`);
+  await desktopSuitesPage.waitForTimeout(800);
+  assert.equal((await desktopSuitesRegion.locator('[class*="counter"]').textContent())?.trim(), `${String(stage).padStart(2, "0")} / ${String(suiteStops).padStart(2, "0")}`);
   const progress = await desktopSuitesRegion.locator('[class*="progress"] > span').evaluate((bar) => {
     const track = bar.parentElement;
     if (!track) throw new Error("Suite progress track was not found.");
     return bar.getBoundingClientRect().width / track.getBoundingClientRect().width;
   });
-  assert.ok(Math.abs(progress - stage / 5) <= .01, `Suite progress is ${progress}, expected ${stage / 5}`);
+  assert.ok(Math.abs(progress - stage / suiteStops) <= .01, `Suite progress is ${progress}, expected ${stage / suiteStops}`);
 };
-for (let stage = 2; stage <= 5; stage += 1) {
+const trackLeft = () => desktopSuitesRegion.locator("[data-reveal='slide']").evaluate((track) => track.scrollLeft);
+let previousLeft = await trackLeft();
+for (let stage = 2; stage <= suiteStops; stage += 1) {
   await suitesNext.click();
   await assertSuiteStage(stage);
+  const left = await trackLeft();
+  assert.ok(left - previousLeft > 40, `Stop ${stage} must visibly advance the photos (moved ${left - previousLeft}px)`);
+  previousLeft = left;
 }
 assert.equal(await suitesNext.isDisabled(), true);
-for (let stage = 4; stage >= 1; stage -= 1) {
+for (let stage = suiteStops - 1; stage >= 1; stage -= 1) {
   await suitesPrevious.click();
   await assertSuiteStage(stage);
 }
@@ -469,7 +479,7 @@ await motionPage.locator("#informacoes").scrollIntoViewIfNeeded(); await motionP
 const faqGrowth = await motionPage.evaluate(async () => {
   const d = document.querySelector("#informacoes details"); const heights = []; d.querySelector("summary").click();
   const t0 = performance.now();
-  await new Promise((done) => { const tick = () => { heights.push(d.getBoundingClientRect().height); performance.now() - t0 < 700 ? requestAnimationFrame(tick) : done(); }; requestAnimationFrame(tick); });
+  await new Promise((done) => { const tick = () => { heights.push(d.getBoundingClientRect().height); if (performance.now() - t0 < 700) requestAnimationFrame(tick); else done(); }; requestAnimationFrame(tick); });
   d.querySelector("summary").click();
   return heights.slice(Math.floor(heights.length * 0.6)).map((h, i, all) => i ? h - all[i - 1] : 0);
 });
