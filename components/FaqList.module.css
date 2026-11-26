@@ -1,6 +1,6 @@
 .list { border-top: 1px solid var(--color-line); }
 .list details { border-bottom: 1px solid var(--color-line); }
-.list summary { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; min-height: 75px; padding: 1rem 0; cursor: pointer; list-style: none; font-family: var(--font-sans-ui); font-size: 1rem; font-weight: 400; line-height: 1.4; letter-spacing: var(--tracking-body); }
+.list summary { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; min-height: 75px; padding: 1rem 0; cursor: pointer; list-style: none; font-family: var(--font-sans-ui); font-size: var(--text-question); font-weight: 400; line-height: 1.4; letter-spacing: var(--tracking-body); }
 .list summary::-webkit-details-marker { display: none; }
 .list summary::marker { content: ""; }
 .list p { max-width: 460px; margin: 0 2rem 0 0; padding-bottom: 1.6rem; /* padding, not margin: a margin would escape the animated box and pop in at the end */ font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }

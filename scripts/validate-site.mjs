@@ -277,16 +277,18 @@ for (const width of widths) {
     });
     const mobile = width === 390;
     assert.match(typography.h1.family, /^newsreader300/i);
-    assert.equal(typography.h1.size, mobile ? "48px" : "88px");
+    // Fluid scale (docs/REGRAS-TIPOGRAFIA.md §2): reference values at 390px and 1440px.
+    const near = (value, expected, label) => assert.ok(Math.abs(parseFloat(value) - expected) <= 0.5, `${label} is ${value}, expected ~${expected}px`);
+    near(typography.h1.size, mobile ? 48 : 96, "h1");
     assert.equal(typography.h1.weight, "300");
     assert.match(typography.h2.family, /^newsreader300/i);
-    assert.equal(typography.h2.size, mobile ? "40px" : "56px");
+    near(typography.h2.size, mobile ? 36 : 60, "h2");
     assert.equal(typography.h2.weight, "300");
     assert.match(typography.paragraph.family, /^urbanist300/i);
-    assert.equal(typography.paragraph.size, mobile ? "17px" : "18px");
+    near(typography.paragraph.size, mobile ? 17 : 19, "body");
     assert.equal(typography.paragraph.weight, "300");
     assert.match(typography.overline.family, /^urbanist400/i);
-    assert.equal(typography.overline.size, mobile ? "12px" : "13px");
+    near(typography.overline.size, mobile ? 12 : 13, "overline");
     assert.equal(typography.overline.weight, "400");
 
     const boxedActions = await page.evaluate(() => {

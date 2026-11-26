@@ -17,20 +17,36 @@
   --font-sans-medium: var(--urbanist-500), system-ui, sans-serif;
   --font-editorial: var(--font-display);
   --font-primary: var(--font-sans);
-  --text-display: 5.5rem;
-  --text-h2: 3.5rem;
-  --text-h3: 1.5rem;
-  --text-lead: 1.1875rem;
-  --text-body: 1.125rem;
-  --text-small: 0.9375rem;
-  --text-label: 0.8125rem;
-  --text-eyebrow: 0.8125rem;
+  /*
+   * Type scale — docs/REGRAS-TIPOGRAFIA.md §2. Fluid between 390px (mobile reference) and 1440px
+   * (desktop reference), capped for large screens: clamp(mobile, intercept + slope·vw, cap).
+   *   role            390px   1440px   cap
+   *   display (h1)     48      96      112
+   *   h2               36      60       68
+   *   h3 / highlight   22      26       28
+   *   question         17      20       21
+   *   lead             18      21       22
+   *   body             17      19       20
+   *   action/nav       15      16       16
+   *   label/eyebrow    12      13       13
+   */
+  --text-display: clamp(3rem, 1.886rem + 4.571vw, 7rem);
+  --text-h2: clamp(2.25rem, 1.693rem + 2.286vw, 4.25rem);
+  --text-h3: clamp(1.375rem, 1.282rem + 0.381vw, 1.75rem);
+  --text-question: clamp(1.0625rem, 0.993rem + 0.286vw, 1.3125rem);
+  --text-lead: clamp(1.125rem, 1.055rem + 0.286vw, 1.375rem);
+  --text-body: clamp(1.0625rem, 1.016rem + 0.19vw, 1.25rem);
+  --text-action: clamp(0.9375rem, 0.914rem + 0.095vw, 1rem);
+  --text-small: clamp(0.9375rem, 0.914rem + 0.095vw, 1rem);
+  --text-label: clamp(0.75rem, 0.727rem + 0.095vw, 0.8125rem);
+  --text-eyebrow: var(--text-label);
   --tracking-eyebrow: 0.2em;
   --tracking-body: 0.025em; /* Urbanist runs tight; serif (Newsreader) rules always set their own non-positive tracking */
   --leading-display: 0.98;
   --leading-heading: 1.06;
   --leading-highlight: 1.35;
-  --leading-body: 1.75;
+  --leading-body: 1.7;
+  --leading-lead: 1.55;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -73,15 +89,9 @@
 @media (min-width: 901px) { :root { --header-h: 94px; } }
 @media (max-width: 900px) {
   :root {
-    --text-display: 3rem;
-    --text-h2: 2.5rem;
-    --text-h3: 1.375rem;
-    --text-lead: 1rem;
-    --text-body: 1.0625rem;
-    --text-label: 0.75rem;
-    --text-eyebrow: 0.75rem;
     --leading-display: 1;
-    --leading-heading: 1.08;
+    --leading-heading: 1.1;
+    --leading-body: 1.72;
     --section-y: 5.5rem;
     --gutter: 1.5rem;
     --header-edge: 1.5rem;

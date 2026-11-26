@@ -3,7 +3,7 @@
 .paragraphs { max-width: var(--container-text); }
 .paragraphs p { margin: 0 0 1.25rem; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 .paragraphs p:last-child { margin-bottom: 0; }
-.textLink { min-height: 52px; padding: .75rem 1.25rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+.textLink { min-height: 52px; padding: .75rem 1.25rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-size: var(--text-action); font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
 
 
 .essenceGrid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .82fr); grid-template-areas: "image copy"; gap: clamp(3rem, 8vw, 8rem); align-items: center; }
@@ -41,7 +41,7 @@
 .hospitalityCopy { max-width: 600px; }
 .hospitalityCopy :global(h2) { max-width: 580px; }
 .hospitalityCopy .paragraphs { margin: clamp(2.5rem, 4vw, 4rem) 0 0; padding-top: clamp(2rem, 3vw, 3rem); border-top: 1px solid var(--color-line-inverse); }
-.hospitalityCopy .paragraphs p:first-child { max-width: 36ch; font-size: var(--text-lead); line-height: 1.55; }
+.hospitalityCopy .paragraphs p:first-child { max-width: 36ch; font-size: var(--text-lead); line-height: var(--leading-lead); }
 
 .lifestyle { position: relative; min-height: 680px; height: 82svh; max-height: 900px; overflow: hidden; background: var(--color-ink); color: var(--color-background); }
 .lifestyleImage, .lifestyleScrim { position: absolute; inset: 0; }
@@ -49,13 +49,13 @@
 .lifestyleInner { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; }
 .lifestyleCopy { max-width: 650px; }
 .lifestyleCopy :global(h2) { max-width: 650px; color: var(--color-background); }
-.lifestyleDescription { max-width: 46ch; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
-.lifestyleAction { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
+.lifestyleDescription { max-width: 46ch; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: var(--leading-lead); }
+.lifestyleAction { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: var(--text-action); font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
 
 .lifestyle :focus-visible { outline-color: var(--color-background); }
 
 .location { background: var(--color-sand); }
-.locationGrid { display: grid; grid-template-columns: 1fr .82fr; gap: clamp(3rem, 9vw, 10rem); align-items: center; }
+.locationGrid { display: grid; grid-template-columns: 1fr .82fr; gap: clamp(3rem, 6vw, 7rem); align-items: center; }
 .locationCopy { max-width: 650px; }
 .locationCopy .paragraphs { margin: 2.5rem 0 0; }
 .locationMeta { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 3rem; padding-top: 1.75rem; }
@@ -75,12 +75,12 @@
     linear-gradient(to top, var(--color-ink) 0%, rgb(35 40 36 / .94) 6%, rgb(35 40 36 / .68) 15%, rgb(35 40 36 / .24) 27%, transparent 42%),
     rgb(0 0 0 / .44);
 }
-.finalCopy { position: relative; z-index: 1; max-width: 770px; padding: 4rem var(--gutter); }
+.finalCopy { position: relative; z-index: 1; max-width: 56rem; padding: 4rem var(--gutter); }
 .finalEyebrow { font-family: var(--font-sans-ui); font-size: var(--text-eyebrow); font-weight: 400; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.3rem; }
 .finalCopy h2 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-h2); line-height: var(--leading-heading); letter-spacing: -.02em; text-wrap: balance; margin-bottom: 2rem; font-optical-sizing: auto; }
-.finalCopy p:not(.finalEyebrow) { max-width: 430px; margin: 0 auto; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
+.finalCopy p:not(.finalEyebrow) { max-width: 32rem; margin: 0 auto; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: var(--leading-lead); }
 .finalCopy p:not(.finalEyebrow) + p { margin-top: 1.25rem; }
-.finalCopy a { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.2rem; padding: .8rem 1.25rem; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; }
+.finalCopy a { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.2rem; padding: .8rem 1.25rem; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: var(--text-action); font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; }
 
 .finalCopy :focus-visible { outline-color: var(--color-background); }
 

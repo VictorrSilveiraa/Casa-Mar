@@ -93,7 +93,7 @@
   border: 1px solid currentColor;
   background: transparent;
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: var(--text-action);
   font-weight: 300;
   letter-spacing: .12em;
   text-align: center;
