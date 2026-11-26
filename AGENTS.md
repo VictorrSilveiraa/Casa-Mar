@@ -195,6 +195,7 @@ Não existe motor de reservas. **Nunca simular disponibilidade nem confirmar res
 - `prefers-reduced-motion`: desligar deslocamentos, zoom e scroll suave; manter só mudanças de opacidade curtas ou nada.
 - Animações de entrada só escondem conteúdo quando JavaScript está ativo (classe `js` no `html`). Sem JS, tudo visível. Nada de parallax, scroll-jacking ou carrossel automático.
 - Hover de imagem: zoom de 1,02 a 1,04 com `--dur-image`. Sem efeitos 3D.
+- **Sistema de movimento (25/11/2026):** abertura em `components/Loader.tsx` (mín. 1,9 s, teto 2,8 s, ligada à foto de capa; arte gerada por `npm run brand:optimize` em `components/LoaderArt.generated.module.css`). Revelações por atributo `data-reveal` (`lines`, `fade`, `image`, `image-x`, `window`, `slide`, `rule`, `settle`) definidas em `app/motion.css` e disparadas uma vez por `lib/motion.ts`. Use essas primitivas; não crie animações avulsas. Detalhes no spec `docs/superpowers/specs/2026-11-25-experiencia-premium-design.md`.
 
 ## 12. Performance e SEO
 

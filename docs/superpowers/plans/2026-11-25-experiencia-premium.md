@@ -45,11 +45,11 @@
 - Produces: `onIntroDone(cb: () => void): void` — runs cb now if `document.documentElement.dataset.intro === "done"`, else on window event `praiamar:intro-done`.
 - Produces CSS primitives: `data-reveal="lines" | "fade" | "image" | "image-x" | "window" | "rule" | "slide"`, optional inline `--reveal-delay`.
 
-- [ ] **Step 1: Add failing checks** in `validate-site.mjs` (1440 px run): after waiting for `html[data-intro="done"]`, `#a-casa h2[data-reveal="lines"]` exists; before scrolling, `#ambientes [data-reveal="image"]` has no `data-visible`; after `scrollIntoViewIfNeeded` + 1200 ms it has `data-visible="true"`; scroll back up and down → still exactly one `data-visible` (no re-trigger).
-- [ ] **Step 2: Run** `npm run build && (npm run start -- -H 127.0.0.1 &) && npm run validate:browser` → FAIL (`data-intro` never set / attribute missing).
-- [ ] **Step 3: Implement** tokens, `app/motion.css`, `lib/motion.ts`, `MotionController` (calls `onIntroDone(startReveals)`; until Task 2 lands, layout sets `data-intro="done"` from the inline script so the test can pass). Lines CSS: `.m-line{display:block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em}`; inner `translateY(105%)` → 0, delay `calc(var(--reveal-delay,0ms) + var(--line-index) * 100ms)`. Line split recomputes on resize (debounced 150 ms) only while `data-visible` is absent.
-- [ ] **Step 4: Run** validation → PASS; `npm run lint && npm run typecheck && npm test` PASS.
-- [ ] **Step 5: Commit** `feat(motion): reveal primitives and controller`.
+- [x] **Step 1: Add failing checks** in `validate-site.mjs` (1440 px run): after waiting for `html[data-intro="done"]`, `#a-casa h2[data-reveal="lines"]` exists; before scrolling, `#ambientes [data-reveal="image"]` has no `data-visible`; after `scrollIntoViewIfNeeded` + 1200 ms it has `data-visible="true"`; scroll back up and down → still exactly one `data-visible` (no re-trigger).
+- [x] **Step 2: Run** `npm run build && (npm run start -- -H 127.0.0.1 &) && npm run validate:browser` → FAIL (`data-intro` never set / attribute missing).
+- [x] **Step 3: Implement** tokens, `app/motion.css`, `lib/motion.ts`, `MotionController` (calls `onIntroDone(startReveals)`; until Task 2 lands, layout sets `data-intro="done"` from the inline script so the test can pass). Lines CSS: `.m-line{display:block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em}`; inner `translateY(105%)` → 0, delay `calc(var(--reveal-delay,0ms) + var(--line-index) * 100ms)`. Line split recomputes on resize (debounced 150 ms) only while `data-visible` is absent.
+- [x] **Step 4: Run** validation → PASS; `npm run lint && npm run typecheck && npm test` PASS.
+- [x] **Step 5: Commit** `feat(motion): reveal primitives and controller`.
 
 ### Task 2: Sunrise loader
 
@@ -64,12 +64,12 @@
 - Produces: sets `document.documentElement.dataset.intro = "done"` and dispatches `window` event `praiamar:intro-done` exactly once.
 - Brand crops (from `assets/brand/praiamar-white-original.png`): `sun {left:105, top:456, width:162, height:64}`, `house {left:105, top:521, width:162, height:68}`, `waves {left:105, top:594, width:162, height:30}`, `wordmark {left:337, top:488, width:1014, height:135}`. Parts stack inside a 162×167 box at tops 0 / 65 / 138 (as percentages of 167).
 
-- [ ] **Step 1: Failing checks:** on load, `[data-loader]` is visible within 200 ms; it is gone (`data-intro="done"`) within 3800 ms; with `page.route('**/hero-villa-*', r => r.abort())` it is still gone within 3800 ms; with `javaScriptEnabled:false` `[data-loader]` is not visible; with `reducedMotion:"reduce"` it is gone within 1200 ms; navigate to `/x`, `goBack()` → `[data-loader]` not visible.
-- [ ] **Step 2: Run** validation → FAIL (no loader).
-- [ ] **Step 3: Implement.** Keyframes per spec §6 timeline (waves 100 ms/650 ms clip L→R; house 420/700 rise in mask; sun 700/800 rise + rotate −8°→0; wordmark 900/900 clip L→R; rule `scaleX` linear 900→2600 ms). Exit: parts fade 250 ms, panel `translateY(-100%)` `--dur-loader-exit` `--ease-in-out-strong`; at exit start set `data-intro="exiting"` (hero entrance CSS keys on `exiting|done`), after exit set `done`, dispatch event, unmount. Scroll lock: `html.js:not([data-intro="done"]) body{overflow:hidden}`. Overlay `aria-hidden="true"`, `pointer-events:none` once exiting.
-- [ ] **Step 4: Hero entrance CSS** in `Hero.module.css` keyed on `:global(html[data-intro])`: photo `scale(1.08)→1` `--dur-settle`; h1 spans as lines (+300 ms, 0/110 ms); eyebrow/description/link fade (+520 ms, 0/60/110 ms); header opacity (+250 ms, 500 ms); scroll cue line draws once.
-- [ ] **Step 5: Run** validation + lint/typecheck/test → PASS. Record a 1440 px video of the load (Playwright `recordVideo`) into the scratchpad and inspect frames at 0.3 / 0.9 / 1.5 / 2.2 / 3.0 s.
-- [ ] **Step 6: Commit** `feat(loader): sunrise opening on every load`.
+- [x] **Step 1: Failing checks:** on load, `[data-loader]` is visible within 200 ms; it is gone (`data-intro="done"`) within 3800 ms; with `page.route('**/hero-villa-*', r => r.abort())` it is still gone within 3800 ms; with `javaScriptEnabled:false` `[data-loader]` is not visible; with `reducedMotion:"reduce"` it is gone within 1200 ms; navigate to `/x`, `goBack()` → `[data-loader]` not visible.
+- [x] **Step 2: Run** validation → FAIL (no loader).
+- [x] **Step 3: Implement.** Keyframes per spec §6 timeline (waves 100 ms/650 ms clip L→R; house 420/700 rise in mask; sun 700/800 rise + rotate −8°→0; wordmark 900/900 clip L→R; rule `scaleX` linear 900→2600 ms). Exit: parts fade 250 ms, panel `translateY(-100%)` `--dur-loader-exit` `--ease-in-out-strong`; at exit start set `data-intro="exiting"` (hero entrance CSS keys on `exiting|done`), after exit set `done`, dispatch event, unmount. Scroll lock: `html.js:not([data-intro="done"]) body{overflow:hidden}`. Overlay `aria-hidden="true"`, `pointer-events:none` once exiting.
+- [x] **Step 4: Hero entrance CSS** in `Hero.module.css` keyed on `:global(html[data-intro])`: photo `scale(1.08)→1` `--dur-settle`; h1 spans as lines (+300 ms, 0/110 ms); eyebrow/description/link fade (+520 ms, 0/60/110 ms); header opacity (+250 ms, 500 ms); scroll cue line draws once.
+- [x] **Step 5: Run** validation + lint/typecheck/test → PASS. Record a 1440 px video of the load (Playwright `recordVideo`) into the scratchpad and inspect frames at 0.3 / 0.9 / 1.5 / 2.2 / 3.0 s.
+- [x] **Step 6: Commit** `feat(loader): sunrise opening on every load`.
 
 ### Task 3: Section signature moments
 
@@ -91,12 +91,12 @@
 | Perguntas | h2 lines | — ; `::details-content` height transition 300 ms under `@supports (interpolate-size: allow-keywords)` |
 | Convite final | `.finalImage` settle `scale(1.08)→1` (`data-reveal="settle"`) | h2 lines; text + action `fade` |
 
-- [ ] **Step 1: Failing checks:** every `main section` except `#topo` contains ≥ 1 `[data-reveal]`; after scrolling the full page at 390 and 1440 px, `document.querySelectorAll('[data-reveal]:not([data-visible])').length === 0`; deep link `/#informacoes` → after intro, `#informacoes h2` has `data-visible` and `scrollY` within 5 px of the section top minus header.
-- [ ] **Step 2: Run** → FAIL.
-- [ ] **Step 3: Implement** attributes + per-section CSS. A Casa image bleeds to the left viewport edge at ≥ 1024 px (`margin-left: calc((100vw - min(100vw - 2*var(--gutter), var(--container))) / -2)`).
-- [ ] **Step 4: Update** `validate-site.mjs` full-page screenshot routine to scroll top→bottom in viewport steps (wait 250 ms each) before capturing.
-- [ ] **Step 5: Run** validation + lint/typecheck/test → PASS; inspect 390/1440 screenshots.
-- [ ] **Step 6: Commit** `feat(sections): signature reveal per section`.
+- [x] **Step 1: Failing checks:** every `main section` except `#topo` contains ≥ 1 `[data-reveal]`; after scrolling the full page at 390 and 1440 px, `document.querySelectorAll('[data-reveal]:not([data-visible])').length === 0`; deep link `/#informacoes` → after intro, `#informacoes h2` has `data-visible` and `scrollY` within 5 px of the section top minus header.
+- [x] **Step 2: Run** → FAIL.
+- [x] **Step 3: Implement** attributes + per-section CSS. A Casa image bleeds to the left viewport edge at ≥ 1024 px (`margin-left: calc((100vw - min(100vw - 2*var(--gutter), var(--container))) / -2)`).
+- [x] **Step 4: Update** `validate-site.mjs` full-page screenshot routine to scroll top→bottom in viewport steps (wait 250 ms each) before capturing.
+- [x] **Step 5: Run** validation + lint/typecheck/test → PASS; inspect 390/1440 screenshots.
+- [x] **Step 6: Commit** `feat(sections): signature reveal per section`.
 
 ### Task 4: Header behaviour and micro-interactions
 
@@ -106,18 +106,18 @@
 
 **Interfaces:** Header sets `data-hidden="true"` when: scrolling down, `scrollY > heroHeight`, menu closed, no `:focus-within`. Clears on any upward scroll ≥ 8 px. CSS: `transform: translateY(-100%)`, 400 ms `--ease-out-strong`; none under reduced motion.
 
-- [ ] **Step 1: Failing checks (1440):** scroll to 3000 then +400 → header `data-hidden="true"`; scroll −200 → attribute absent; focus `header a` while hidden → attribute absent; at 390 with menu open, scrolling never sets it.
-- [ ] **Step 2: Run** → FAIL.
-- [ ] **Step 3: Implement** header logic (rAF-throttled scroll listener) and `[data-fill]` sweep (`::before` `clip-path: inset(100% 0 0 0)` → `inset(0)`, 320 ms in / 200 ms out, `--fill` color per element: sand on light, background on dark/photo) + nav underline (`scaleX` origin left in, origin right out, 300 ms) + `:active { transform: scale(.98) }` 120 ms. Remove the replaced `:hover { background }` rules.
-- [ ] **Step 4: Run** validation + lint/typecheck/test → PASS; existing boxed-action typography checks still pass.
-- [ ] **Step 5: Commit** `feat(interaction): header hide on scroll and refined hovers`.
+- [x] **Step 1: Failing checks (1440):** scroll to 3000 then +400 → header `data-hidden="true"`; scroll −200 → attribute absent; focus `header a` while hidden → attribute absent; at 390 with menu open, scrolling never sets it.
+- [x] **Step 2: Run** → FAIL.
+- [x] **Step 3: Implement** header logic (rAF-throttled scroll listener) and `[data-fill]` sweep (`::before` `clip-path: inset(100% 0 0 0)` → `inset(0)`, 320 ms in / 200 ms out, `--fill` color per element: sand on light, background on dark/photo) + nav underline (`scaleX` origin left in, origin right out, 300 ms) + `:active { transform: scale(.98) }` 120 ms. Remove the replaced `:hover { background }` rules.
+- [x] **Step 4: Run** validation + lint/typecheck/test → PASS; existing boxed-action typography checks still pass.
+- [x] **Step 5: Commit** `feat(interaction): header hide on scroll and refined hovers`.
 
 ### Task 5: Verification, performance, docs
 
 **Files:** `docs/validation.md`, `AGENTS.md` (§11 note), this plan (checkboxes).
 
-- [ ] **Step 1:** Lighthouse mobile **before** (checkout `HEAD` from before Task 1 in a temp dir build, or measure first) and **after**; record perf, LCP, CLS. Accept: CLS = 0, LCP increase ≤ 300 ms; otherwise lower loader cap.
-- [ ] **Step 2:** Reduced-motion and no-JS runs: every section's text visible, no element with non-`none` transform from motion CSS.
-- [ ] **Step 3:** Measure motion JS size (`.next/static/chunks` diff, gzip) < 4 KB.
-- [ ] **Step 4:** Update `docs/validation.md` with real numbers; add §11 note in `AGENTS.md` about the loader and reveal system.
-- [ ] **Step 5:** Commit `docs(validation): premium experience results` and push.
+- [x] **Step 1:** Lighthouse mobile **before** (checkout `HEAD` from before Task 1 in a temp dir build, or measure first) and **after**; record perf, LCP, CLS. Accept: CLS = 0, LCP increase ≤ 300 ms; otherwise lower loader cap.
+- [x] **Step 2:** Reduced-motion and no-JS runs: every section's text visible, no element with non-`none` transform from motion CSS.
+- [x] **Step 3:** Measure motion JS size (`.next/static/chunks` diff, gzip) < 4 KB.
+- [x] **Step 4:** Update `docs/validation.md` with real numbers; add §11 note in `AGENTS.md` about the loader and reveal system.
+- [x] **Step 5:** Commit `docs(validation): premium experience results` and push.

@@ -1,5 +1,20 @@
 # Validação e decisões de entrega
 
+## Experiência premium — 25/11/2026
+
+Abertura "o sol nasce sobre o mar" a cada carregamento, revelações únicas por seção, cabeçalho que se esconde ao rolar e microinterações (spec: `docs/superpowers/specs/2026-11-25-experiencia-premium-design.md`). Medido na versão de produção servida em `127.0.0.1:3000`.
+
+| Verificação | Resultado |
+| --- | --- |
+| `npm run lint`, `npm run typecheck`, `npm test` (3/3), `npm run contrast` (8/8), `npm run build` | Passaram |
+| `npm run validate:browser` | Passou em 360–1920 px, sem erros de console. Inclui: abertura aparece e sai sozinha (≤ 3,8 s), sai no teto mesmo com a foto de capa bloqueada, não reaparece ao voltar pelo navegador, curta com movimento reduzido, ausente sem JavaScript; todas as revelações disparam ao ler a página e nunca se repetem; cabeçalho some ao descer, volta ao subir e com foco de teclado; link direto `/#informacoes` chega à seção. |
+| Lighthouse mobile (13.5.0), antes | Performance **87**, acessibilidade 100, SEO 100, LCP 3,8 s, CLS 0, FCP 1,2 s |
+| Lighthouse mobile, depois (2 execuções) | Performance **83–84**, acessibilidade 100, SEO 100, LCP **3,9 s**, CLS **0**, FCP 1,2 s, Speed Index 4,2 s |
+| JavaScript de movimento | ~2 KB gzip (fonte sem comentários, antes de minificar); arte da abertura vai no CSS, não no JS |
+
+Leitura: a queda de 3–4 pontos vem da abertura cobrir a página por ~2 s (Speed Index), escolha do proprietário. LCP subiu 0,1 s, dentro do critério de 0,3 s do design. A diferença de 15 px no "overflow" das capturas é o espaço de rolagem reservado (`scrollbar-gutter: stable`) no Chromium de teste; não há rolagem horizontal.
+
+
 Data: 12/10/2026. Testes na versão de produção do Next.js servida localmente em `127.0.0.1:3000`.
 
 ## Comandos e resultados
