@@ -63,7 +63,6 @@ export const content = {
     action: "Conheça nossas experiências",
   },
   location: {
-    eyebrow: "LOCALIZAÇÃO",
     title: "Onde você vai ficar",
     description: "Frente ao mar, na Praia de Arpoeiras, a Casa Praiamar fica onde a brisa constante faz do litoral cearense um destino para o kitesurf.",
     place: "Praia de Arpoeiras · Acaraú, Ceará",
@@ -78,6 +77,8 @@ export const content = {
       exitFullscreen: "Reduzir mapa",
       zoomIn: "Aproximar",
       zoomOut: "Afastar",
+      recenter: "Centralizar na casa",
+      controls: "Controles do mapa",
       gestureDesktop: "Use Ctrl + rolagem para aproximar o mapa",
       gestureMac: "Use ⌘ + rolagem para aproximar o mapa",
       gestureMobile: "Use dois dedos para mover o mapa",

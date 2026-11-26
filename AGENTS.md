@@ -210,6 +210,7 @@ Não existe motor de reservas. **Nunca simular disponibilidade nem confirmar res
 - Conteúdo repetido (diferenciais, ambientes, perguntas, links) vem de dados estruturados, não de JSX duplicado.
 - Botões: primário (fundo grafite, texto off-white, Urbanist 500, altura mínima 48 px, cantos ≤ 2 px) e editorial (transparente, sublinhado fino animado, seta que se desloca 4 px no hover). Sem botões grandes arredondados estilo SaaS.
 - Cantos retos, divisórias de 1 px (`--color-line`), sem sombras pesadas, sem gradientes coloridos, sem emojis, sem ícones decorativos.
+- **Exceção do mapa (26/11/2026, pedido do proprietário):** dentro do mapa da localização, os controles (tela cheia, centralizar, zoom, enviar rota) são redondos e brancos com sombra suave, no padrão de apps de viagem. A exceção vale só ali; o resto do site segue cantos retos.
 
 ## 14. Comandos e validação
 

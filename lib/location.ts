@@ -17,25 +17,18 @@ export const nearbyPoints: { icon: LocationIcon; label: string; detail?: string 
 const { latitude, longitude } = siteConfig.coordinates;
 const destination = `${latitude},${longitude}`;
 
-/** MapLibre bounds must be [south-west, north-east]. */
-function frame(a: [number, number], b: [number, number]): [[number, number], [number, number]] {
-  return [[Math.min(a[0], b[0]), Math.min(a[1], b[1])], [Math.max(a[0], b[0]), Math.max(a[1], b[1])]];
-}
-
+/**
+ * The map opens centred on the house (owner's request, 26/11/2026) at a zoom that still shows the
+ * beach and the town of Acaraú; the "Centralizar" button returns to this same view.
+ */
 export const mapView = {
   center: [longitude, latitude] as [number, number],
-  /**
-   * Opening frame: the house plus the centre of Acaraú (approximate, framing only — never shown as
-   * a fact), so guests see the beach and the town together. Padding keeps both clear of the controls.
-   */
-  bounds: frame([longitude, latitude], [-40.1197, -2.8856]),
-  /** Top clears the "De onde você vem?" box plus the ~56px house marker drawn above its point. */
-  padding: { top: 150, right: 72, bottom: 56, left: 48 },
+  zoom: 12.2,
   minZoom: 8,
   maxZoom: 18,
 };
 
-/** OpenFreeMap vector tiles, recoloured with the site palette in lib/map-style.ts. */
+/** OpenFreeMap vector tiles, styled in lib/map-style.ts. */
 export const openFreeMap = {
   tiles: "https://tiles.openfreemap.org/planet",
   glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",

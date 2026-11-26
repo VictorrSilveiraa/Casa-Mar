@@ -2,12 +2,12 @@
 
 ## Localização com mapa — 26/11/2026
 
-Seção `#localizacao` refeita: "Onde você vai ficar", pontos próximos informados pelo proprietário, mapa OpenFreeMap (MapLibre GL 6.17.0) nas cores do site com a posição exata da casa, caixa "De onde você vem?" e modal "Como chegar" (Google Maps / Waze). Medido na versão de produção servida em `localhost:3100`.
+Seção `#localizacao` refeita: "Onde você vai ficar" (sem sobretítulo, fundo off-white), pontos próximos informados pelo proprietário, mapa OpenFreeMap (MapLibre GL 6.17.0) com estilo vivo e detalhado, aberto centralizado na casa, controles redondos (tela cheia, centralizar, zoom), caixa "De onde você vem?" e modal "Como chegar" (Google Maps / Waze). Medido na versão de produção servida em `localhost:3100`.
 
 | Verificação | Resultado |
 | --- | --- |
-| `npm run lint`, `npm run typecheck`, `npm test` (3/3), `npm run contrast` (14/14, inclui oliva escuro sobre areia e rótulos do mapa), `npm run build` | Passaram |
-| `npm run validate:browser` | Passou em 360–1920 px, sem erros de console. Novas checagens: título e sobretítulo, 4 pontos, mapa pronto com marcador da casa, modal abre, links de Google Maps e Waze com as coordenadas, `Esc` fecha e devolve o foco, origem digitada abre a rota certa. |
+| `npm run lint`, `npm run typecheck`, `npm test` (3/3), `npm run contrast` (18/18, inclui rótulos do mapa sobre terra, vegetação, mar e placas), `npm run build` | Passaram |
+| `npm run validate:browser` | Passou em 360–1920 px, sem erros de console. Novas checagens: título sem sobretítulo, 4 pontos, mapa pronto e aberto com a casa no centro, arrastar afasta e "Centralizar na casa" traz de volta, modal abre, links de Google Maps e Waze com as coordenadas, `Esc` fecha e devolve o foco, origem digitada abre a rota certa. |
 | Peso inicial | MapLibre (~1,1 MB sem compressão, mais o worker de 0,5 MB) só baixa quando a seção se aproxima da tela; o carregamento inicial não mudou. |
 | `npm audit --omit=dev` | 0 vulnerabilidades |
 | Lighthouse | Não medido nesta fase (ferramenta não instalada localmente). |

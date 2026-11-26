@@ -127,13 +127,14 @@ Convenção: em números de destaque usar "06"; em texto corrido, "seis".
 
 > Atualizado em 26/11/2026 a pedido do proprietário: a foto do gramado deu lugar a um mapa (OpenFreeMap) com a posição exata da casa e ao botão "Como chegar". Textos e pontos ficam em `lib/content.ts` e `lib/location.ts`; coordenadas em `lib/site.config.ts`.
 
-- **Eyebrow:** LOCALIZAÇÃO
+- **Eyebrow:** nenhum (removido a pedido do proprietário, 26/11/2026).
 - **Título:** Onde você vai ficar
 - **Descrição:** Frente ao mar, na Praia de Arpoeiras, a Casa Praiamar fica onde a brisa constante faz do litoral cearense um destino para o kitesurf.
 - **Local:** Praia de Arpoeiras · Acaraú, Ceará
 - **Pontos próximos (informados pelo proprietário):** Kite point · 10 m · Restaurante · 30 m · Frente ao mar · Destino de kitesurf. Não acrescentar pontos ou distâncias sem confirmação.
 - **Coordenadas da casa:** -2.830807950800169, -40.0895461188842 (confirmadas pelo proprietário).
-- **Mapa:** OpenFreeMap com estilo nas cores do site, marcador da casa, caixa "De onde você vem?" (abre a rota no Google Maps a partir do local digitado), ampliar e zoom.
+- **Mapa:** OpenFreeMap com estilo vivo e detalhado (terra verde-clara, mar azul, ruas brancas com placas de rodovia, praias, vegetação, prédios e pontos de interesse). Abre centralizado na casa. Caixa "De onde você vem?" (abre a rota no Google Maps a partir do local digitado) e botões redondos de tela cheia, centralizar na casa e zoom.
+- **Fundo da seção:** off-white do site (`--color-background`).
 - **CTA:** Como chegar → modal com duas opções, Google Maps e Waze, ambas com destino nas coordenadas da casa, em nova aba (`rel="noopener noreferrer"`).
 
 ## 9. Informações essenciais e FAQ — `#informacoes`

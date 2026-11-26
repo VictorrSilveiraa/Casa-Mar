@@ -160,8 +160,8 @@ for (const width of widths) {
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
   assert.equal(await page.locator('#experiencias button[aria-haspopup="dialog"]').textContent(), "Conheça nossas experiências");
   assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
-  // Location (26/11/2026): eyebrow + title, nearby points, OpenFreeMap map and the "Como chegar" dialog.
-  assert.equal(await page.locator('#localizacao [class*="eyebrow"]').textContent(), "LOCALIZAÇÃO");
+  // Location (26/11/2026): title without eyebrow, nearby points, OpenFreeMap map centred on the house, and the "Como chegar" dialog.
+  assert.equal(await page.locator('#localizacao [class*="eyebrow"]').count(), 0, "Location has no eyebrow (owner, 26/11/2026)");
   assert.equal(await page.locator("#location-title").textContent(), "Onde você vai ficar");
   assert.equal(await page.getByText("ARPOEIRAS, CEARÁ", { exact: true }).count(), 0);
   assert.equal(await page.locator("#localizacao [data-location-point]").count(), 4);
@@ -171,6 +171,28 @@ for (const width of widths) {
   assert.equal(await page.locator("#localizacao .maplibregl-marker").count(), 1, "House marker must be on the map");
   const mapBox = await page.locator("#localizacao [data-location-map]").boundingBox();
   assert.ok(mapBox && mapBox.height >= 380, `Map is ${mapBox?.height}px tall`);
+  const houseOffset = () => page.evaluate(() => {
+    const frame = document.querySelector("[data-location-map]")?.getBoundingClientRect();
+    const marker = document.querySelector("#localizacao .maplibregl-marker")?.getBoundingClientRect();
+    if (!frame || !marker) throw new Error("Map frame or marker missing");
+    return Math.hypot(marker.left + marker.width / 2 - (frame.left + frame.width / 2), marker.top + marker.height / 2 - (frame.top + frame.height / 2));
+  });
+  assert.ok(await houseOffset() <= 2, "The map must open centred on the house");
+  const recenter = page.getByRole("button", { name: "Centralizar na casa" });
+  assert.equal(await recenter.isEnabled(), true);
+  await page.getByRole("button", { name: "Aproximar" }).click();
+  await page.waitForTimeout(500);
+  const dragBox = await page.locator("#localizacao [data-location-map]").boundingBox();
+  if (!dragBox) throw new Error("Map frame lost its box");
+  await page.mouse.move(dragBox.x + dragBox.width * 0.5, dragBox.y + dragBox.height * 0.7);
+  await page.mouse.down();
+  await page.mouse.move(dragBox.x + dragBox.width * 0.2, dragBox.y + dragBox.height * 0.45, { steps: 8 });
+  await page.mouse.up();
+  await page.waitForTimeout(400);
+  assert.ok(await houseOffset() > 40, "Dragging must move the map away from the house");
+  await recenter.click();
+  await page.waitForTimeout(1400);
+  assert.ok(await houseOffset() <= 2, "Centralizar must bring the house back to the centre");
   const directions = page.locator('#localizacao button[aria-haspopup="dialog"]');
   assert.equal(await directions.textContent(), "Como chegar");
   await directions.click();

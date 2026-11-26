@@ -1,4 +1,4 @@
-.section { padding-block: var(--section-y); background: var(--color-sand); }
+.section { padding-block: var(--section-y); background: var(--color-background); }
 .grid { display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); gap: clamp(3rem, 6vw, 7rem); align-items: center; width: min(calc(100% - 2 * var(--gutter)), var(--container)); margin-inline: auto; }
 .copy { max-width: 36rem; }
 
@@ -16,7 +16,6 @@
 
 .actions { margin-top: clamp(2.25rem, 3.5vw, 3rem); }
 .action { min-height: 52px; padding: .75rem 1.5rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--color-ink); background: transparent; color: var(--color-ink); font-family: var(--font-sans); font-size: var(--text-action); font-weight: 300; letter-spacing: .12em; text-align: center; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
-.action { --fill: var(--color-background); }
 
 .map { height: clamp(26rem, 38vw, 36rem); }
 

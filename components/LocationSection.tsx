@@ -14,7 +14,7 @@ export function LocationSection() {
     <section id="localizacao" className={styles.section} aria-labelledby="location-title">
       <div className={styles.grid}>
         <div className={styles.copy}>
-          <SectionHeading id="location-title" eyebrow={copy.eyebrow} title={copy.title} />
+          <SectionHeading id="location-title" title={copy.title} />
           <div data-reveal="fade" style={delay(200)}>
             <p className={styles.description}>{copy.description}</p>
             <p className={styles.place} data-location-place><LocationGlyph name="pin" className={styles.placeIcon} />{copy.place}</p>
