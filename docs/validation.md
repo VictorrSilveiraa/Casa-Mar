@@ -12,6 +12,8 @@ Seção `#localizacao` refeita: "Onde você vai ficar" (sem sobretítulo, fundo 
 | `npm audit --omit=dev` | 0 vulnerabilidades |
 | Lighthouse | Não medido nesta fase (ferramenta não instalada localmente). |
 
+Rota pelo mapa (Geoapify): sugestões, traçado e cartão de resumo testados com respostas simuladas em 1440 e 390 px (lista abre e fecha, setas e Enter escolhem, rota e os dois marcadores enquadrados, "Limpar rota" zera tudo). Sem chave, `/api/geo/*` responde `{ configured: false }` e a caixa abre o Google Maps, também testado. A chamada real à Geoapify só pode ser verificada depois que a chave for configurada.
+
 Sem JavaScript, a seção mostra texto e pontos; o mapa e o modal precisam de JavaScript, como a galeria.
 
 ## Experiência premium — 25/11/2026

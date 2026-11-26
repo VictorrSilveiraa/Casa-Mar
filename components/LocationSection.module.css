@@ -28,5 +28,5 @@
 @media (max-width: 767px) {
   .grid { grid-template-columns: 1fr; gap: 2.75rem; }
   .copy { max-width: none; }
-  .map { height: min(110vw, 28rem); }
+  .map { height: min(128vw, 32rem); }
 }

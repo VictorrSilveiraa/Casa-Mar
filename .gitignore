@@ -5,3 +5,5 @@ out/
 docs/screenshots/
 .impeccable/
 public/vendor/
+.env
+.env*.local

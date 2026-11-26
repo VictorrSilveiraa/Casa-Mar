@@ -206,11 +206,13 @@ for (const width of widths) {
   await page.keyboard.press("Escape");
   await directionsDialog.waitFor({ state: "hidden" });
   assert.equal(await directions.evaluate((button) => button === document.activeElement), true, "Focus must return to Como chegar");
-  // The typed origin opens a Google Maps route; the request is answered locally so the run stays offline.
+  // Without a Geoapify key (/api/geo answers { configured: false }) the typed origin opens a Google Maps route.
+  // Both are answered locally so the run stays offline and does not depend on .env.local.
+  await page.route("**/api/geo/**", (route) => route.fulfill({ json: { configured: false } }));
   await context.route("https://www.google.com/maps/**", (route) => route.fulfill({ status: 200, contentType: "text/html", body: "ok" }));
   const [routePopup] = await Promise.all([
     page.waitForEvent("popup"),
-    (async () => { await page.getByRole("textbox", { name: "De onde você vem?" }).fill("Fortaleza, CE"); await page.keyboard.press("Enter"); })(),
+    (async () => { await page.getByRole("combobox", { name: "De onde você vem?" }).fill("Fortaleza, CE"); await page.keyboard.press("Enter"); })(),
   ]);
   await routePopup.waitForURL(/google\.com\/maps/);
   assert.equal(routePopup.url(), "https://www.google.com/maps/dir/?api=1&origin=Fortaleza%2C%20CE&destination=-2.830807950800169,-40.0895461188842");
@@ -562,6 +564,61 @@ assert.ok(Math.abs(faqTop) <= 120, `Deep link should land on the FAQ (top=${faqT
 assert.equal(await deepPage.locator("#informacoes h2").getAttribute("data-visible"), "true");
 await deep.close();
 console.log("Opening, reveals, header and deep links: PASS");
+
+// Route search (Geoapify via /api/geo): without a key the server says "not configured"...
+const geoProbe = await fetch(`${baseUrl}/api/geo/autocomplete?text=`).then((response) => response.json());
+const geoConfigured = geoProbe.configured !== false;
+const badRoute = await fetch(`${baseUrl}/api/geo/route?lat=abc&lon=1`);
+assert.equal(badRoute.status, geoConfigured ? 400 : 200);
+console.log(`Geoapify key on this server: ${geoConfigured ? "yes" : "no (fallback to Google Maps)"}`);
+// ...and with a key the map suggests places, draws the route and shows its summary (answers mocked).
+for (const width of [1440, 390]) {
+  const geo = await browser.newContext({ viewport: { width, height: width < 768 ? 844 : 900 } });
+  const geoPage = await geo.newPage();
+  const geoErrors = [];
+  geoPage.on("pageerror", (error) => geoErrors.push(error.message));
+  await geoPage.route("**/api/geo/autocomplete**", (route) => route.fulfill({ json: { results: [
+    { id: "a", label: "Acaraúbas, Ubajara, CE, Brasil", lat: -3.85, lon: -40.92 },
+    { id: "b", label: "Acaraú, CE, Brasil", lat: -2.8856, lon: -40.1197 },
+  ] } }));
+  await geoPage.route("**/api/geo/route**", (route) => route.fulfill({ json: { distance: 171800, time: 8400, coordinates: [[-40.1197, -2.8856], [-40.1, -2.86], [-40.0895461188842, -2.830807950800169]] } }));
+  await geoPage.goto(baseUrl, { waitUntil: "networkidle" });
+  await introDone(geoPage);
+  await geoPage.locator("#localizacao").scrollIntoViewIfNeeded();
+  await geoPage.waitForFunction(() => document.querySelector("[data-location-map]")?.dataset.status === "ready", null, { timeout: 20000 });
+  const search = geoPage.getByRole("combobox", { name: "De onde você vem?" });
+  await search.click();
+  await geoPage.mouse.move(1, 1);
+  await search.pressSequentially("acarau", { delay: 30 });
+  await geoPage.getByRole("option", { name: "Acaraú, CE, Brasil" }).waitFor();
+  assert.equal(await search.getAttribute("aria-expanded"), "true");
+  assert.equal(await geoPage.getByText("Powered by", { exact: false }).count(), 1, "Geoapify attribution must show with the suggestions");
+  await geoPage.keyboard.press("ArrowDown");
+  await geoPage.keyboard.press("ArrowDown");
+  assert.match(await search.getAttribute("aria-activedescendant") ?? "", /-1$/);
+  await geoPage.keyboard.press("Enter");
+  const card = geoPage.locator("[data-route-card][data-state=ready]");
+  await card.waitFor();
+  assert.equal(await search.inputValue(), "Acaraú, CE, Brasil");
+  assert.equal(await search.getAttribute("aria-expanded"), "false", "Picking a place must close the list");
+  const cardText = await card.innerText();
+  for (const expected of [/SAINDO DE/i, /Acaraú, CE, Brasil/, /171,8 km/, /2 h 20 min/]) assert.match(cardText, expected);
+  assert.match(await card.getByRole("link", { name: "Abrir no Google Maps" }).getAttribute("href") ?? "", /origin=-2\.8856%2C-40\.1197&destination=-2\.830807950800169,-40\.0895461188842/);
+  await geoPage.waitForTimeout(1300);
+  const routeShown = await geoPage.evaluate(() => {
+    const frame = document.querySelector("[data-location-map]")?.getBoundingClientRect();
+    const dots = Array.from(document.querySelectorAll("#localizacao .maplibregl-marker")).map((marker) => marker.getBoundingClientRect());
+    return { markers: dots.length, inside: frame ? dots.every((dot) => dot.left >= frame.left && dot.right <= frame.right && dot.top >= frame.top && dot.bottom <= frame.bottom) : false };
+  });
+  assert.deepEqual(routeShown, { markers: 2, inside: true }, "House and origin must both be framed on the map");
+  await card.getByRole("button", { name: "Limpar rota" }).click();
+  await geoPage.locator("[data-route-card]").waitFor({ state: "detached" });
+  assert.equal(await search.inputValue(), "");
+  assert.equal(await geoPage.locator("#localizacao .maplibregl-marker").count(), 1, "Clearing removes the origin marker");
+  assert.deepEqual(geoErrors, []);
+  await geo.close();
+}
+console.log("Route search, drawing and summary: PASS");
 
 await browser.close();
 if (problems.length) { console.error(problems.join("\n")); process.exitCode = 1; }

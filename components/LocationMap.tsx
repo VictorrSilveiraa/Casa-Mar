@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
-import type { Map as MapLibreMap } from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import type { GeoJSONSource, Map as MapLibreMap, Marker } from "maplibre-gl";
 import { content } from "@/lib/content";
 import { mapView, routeLinks } from "@/lib/location";
 import { trackEvent } from "@/lib/analytics";
+import { OriginSearch, type Suggestion } from "./OriginSearch";
 import styles from "./LocationMap.module.css";
 
 const copy = content.location.map;
@@ -13,10 +14,28 @@ const WORKER_URL = "/vendor/maplibre-gl-worker.mjs";
 const HOUSE_SVG = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 10.5 12 4.25l7.5 6.25"/><path d="M6.5 9v10.25h11V9"/><path d="M10.25 19.25v-5h3.5v5"/></svg>';
 
 type Status = "idle" | "ready" | "error";
+type RouteState =
+  | { status: "idle" }
+  | { status: "loading" | "error"; place: Suggestion }
+  | { status: "ready"; place: Suggestion; distance: number; time: number };
+
+const ROUTE_SOURCE = "origin-route";
+const emptyLine = { type: "FeatureCollection" as const, features: [] };
+const routeCopy = copy.route;
+const kmFormat = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
+
+/** 171,8 km · 850 m */
+function formatDistance(metres: number) {
+  return metres < 1000 ? `${Math.round(metres / 10) * 10} m` : `${kmFormat.format(metres / 1000)} km`;
+}
+/** 2 h 20 min · 45 min */
+function formatTime(seconds: number) {
+  const minutes = Math.max(1, Math.round(seconds / 60));
+  const hours = Math.floor(minutes / 60);
+  return hours ? `${hours} h${minutes % 60 ? ` ${minutes % 60} min` : ""}` : `${minutes} min`;
+}
 
 const icons = {
-  search: <><circle cx="10.75" cy="10.75" r="6.25" /><path d="m15.5 15.5 4.75 4.75" /></>,
-  arrow: <><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></>,
   expand: <><path d="M4.5 9V4.5H9" /><path d="M15 4.5h4.5V9" /><path d="M19.5 15v4.5H15" /><path d="M9 19.5H4.5V15" /></>,
   collapse: <><path d="M9 4.5V9H4.5" /><path d="M19.5 9H15V4.5" /><path d="M15 19.5V15h4.5" /><path d="M4.5 15H9v4.5" /></>,
   recenter: <><circle cx="12" cy="12" r="3.25" /><circle cx="12" cy="12" r="7.25" /><path d="M12 2.5v2.25M12 19.25v2.25M2.5 12h2.25M19.25 12h2.25" /></>,
@@ -40,7 +59,12 @@ export function LocationMap() {
   const [status, setStatus] = useState<Status>("idle");
   const [fullscreen, setFullscreen] = useState(false);
   const [canFullscreen, setCanFullscreen] = useState(false);
-  const inputId = useId();
+  const [route, setRoute] = useState<RouteState>({ status: "idle" });
+  /** Bumped when the card clears the route, so the search box starts empty again. */
+  const [searchKey, setSearchKey] = useState(0);
+  const maplibreLib = useRef<typeof import("maplibre-gl") | null>(null);
+  const originMarker = useRef<Marker | null>(null);
+  const routeRequest = useRef<AbortController | null>(null);
   const ready = status === "ready";
 
   useEffect(() => {
@@ -89,6 +113,7 @@ export function LocationMap() {
           },
         });
         map.current = instance;
+        maplibreLib.current = maplibre;
         instance.addControl(new maplibre.ScaleControl({ unit: "metric", maxWidth: 80 }), "bottom-left");
         instance.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
         // Route shields ("CE-085") are drawn on demand, so the style needs no sprite sheet.
@@ -107,6 +132,11 @@ export function LocationMap() {
           if (cancelled) return;
           // The compact attribution opens expanded on load; keep only the "i" until someone asks for it.
           canvasEl.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
+          // Route line (graphite on a white casing), drawn under the labels so names stay legible.
+          instance.addSource(ROUTE_SOURCE, { type: "geojson", data: emptyLine });
+          const beforeLabels = instance.getStyle().layers.find((layer) => layer.type === "symbol")?.id;
+          instance.addLayer({ id: "origin-route-casing", type: "line", source: ROUTE_SOURCE, layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#FFFFFF", "line-width": ["interpolate", ["linear"], ["zoom"], 6, 5, 14, 10] } }, beforeLabels);
+          instance.addLayer({ id: "origin-route-line", type: "line", source: ROUTE_SOURCE, layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#232824", "line-width": ["interpolate", ["linear"], ["zoom"], 6, 3, 14, 5.5] } }, beforeLabels);
           setStatus("ready");
         });
       } catch (error) {
@@ -142,24 +172,80 @@ export function LocationMap() {
     else void frame.current?.requestFullscreen();
   };
 
-  const submitOrigin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const origin = new FormData(event.currentTarget).get("origem")?.toString().trim() ?? "";
-    trackEvent("route_click", { app: "google_maps", source: "map_origin" });
-    window.open(origin ? routeLinks.googleMapsFrom(origin) : routeLinks.googleMaps, "_blank", "noopener,noreferrer");
+  const setRouteLine = (coordinates: [number, number][]) => {
+    (map.current?.getSource(ROUTE_SOURCE) as GeoJSONSource | undefined)?.setData(coordinates.length
+      ? { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } }
+      : emptyLine);
+  };
+
+  /** Asks the server for the driving route from the chosen place and draws it. */
+  const showRoute = async (place: Suggestion) => {
+    const instance = map.current;
+    const lib = maplibreLib.current;
+    if (!instance || !lib) return;
+    routeRequest.current?.abort();
+    const controller = new AbortController();
+    routeRequest.current = controller;
+    setRoute({ status: "loading", place });
+    originMarker.current?.remove();
+    const dot = document.createElement("div");
+    dot.className = styles.originMarker;
+    originMarker.current = new lib.Marker({ element: dot, anchor: "center" }).setLngLat([place.lon, place.lat]).addTo(instance);
+    try {
+      const response = await fetch(`/api/geo/route?lat=${place.lat}&lon=${place.lon}`, { signal: controller.signal });
+      if (!response.ok) throw new Error(`route ${response.status}`);
+      const data = (await response.json()) as { distance: number; time: number; coordinates: [number, number][] };
+      setRouteLine(data.coordinates);
+      const bounds = data.coordinates.reduce((box, point) => box.extend(point), new lib.LngLatBounds(mapView.center, mapView.center));
+      bounds.extend([place.lon, place.lat]);
+      const narrow = (frame.current?.clientWidth ?? 800) < 560;
+      instance.fitBounds(bounds, { padding: narrow ? { top: 136, right: 40, bottom: 250, left: 40 } : { top: 110, right: 90, bottom: 60, left: 380 }, maxZoom: 15, duration: reduceMotion() ? 0 : 1100 });
+      setRoute({ status: "ready", place, distance: data.distance, time: data.time });
+      trackEvent("route_drawn", { distance_km: Math.round(data.distance / 1000) });
+    } catch (error) {
+      if ((error as Error).name === "AbortError") return;
+      console.warn("[mapa] rota indisponível", error);
+      setRouteLine([]);
+      setRoute({ status: "error", place });
+    }
+  };
+
+  const clearRoute = () => {
+    routeRequest.current?.abort();
+    originMarker.current?.remove();
+    originMarker.current = null;
+    setRouteLine([]);
+    if (route.status !== "idle") map.current?.flyTo({ center: mapView.center, zoom: mapView.zoom, duration: reduceMotion() ? 0 : 900, essential: false });
+    setRoute({ status: "idle" });
   };
 
   return (
-    <div ref={frame} className={styles.frame} data-status={status} data-fullscreen={fullscreen || undefined} data-location-map>
+    <div ref={frame} className={styles.frame} data-status={status} data-fullscreen={fullscreen || undefined} data-route={route.status !== "idle" || undefined} data-location-map>
       <div className={styles.placeholder} aria-hidden="true" />
       <div ref={canvas} className={styles.canvas} role="region" aria-label={copy.label} />
 
-      <form className={styles.origin} onSubmit={submitOrigin} role="search" aria-label={copy.originLabel}>
-        <label className={styles.srOnly} htmlFor={inputId}>{copy.originLabel}</label>
-        <span className={styles.originIcon}><Icon name="search" /></span>
-        <input id={inputId} name="origem" type="text" autoComplete="address-level2" enterKeyHint="go" placeholder={copy.originLabel} />
-        <button type="submit" className={styles.originSubmit} aria-label={copy.originSubmit}><Icon name="arrow" /></button>
-      </form>
+      <OriginSearch key={searchKey} onSelect={(place) => void showRoute(place)} onClear={clearRoute} hasRoute={route.status !== "idle"} />
+
+      {route.status !== "idle" && (
+        <section className={styles.routeCard} aria-label={routeCopy.region} data-route-card data-state={route.status}>
+          <p className={styles.routeLabel}>{routeCopy.from}</p>
+          <p className={styles.routePlace}>{route.place.label}</p>
+          <div role="status" aria-live="polite">
+            {route.status === "loading" && <p className={styles.routeNote}>{routeCopy.loading}</p>}
+            {route.status === "error" && <p className={styles.routeNote}>{routeCopy.error}</p>}
+            {route.status === "ready" && (
+              <dl className={styles.routeStats}>
+                <div><dt>{routeCopy.distance}</dt><dd>{formatDistance(route.distance)}</dd></div>
+                <div><dt>{routeCopy.time}</dt><dd>{formatTime(route.time)}</dd></div>
+              </dl>
+            )}
+          </div>
+          <div className={styles.routeActions}>
+            <button type="button" onClick={() => { clearRoute(); setSearchKey((key) => key + 1); }}>{routeCopy.clear}</button>
+            <a href={routeLinks.googleMapsFrom(`${route.place.lat},${route.place.lon}`)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("route_click", { app: "google_maps", source: "route_card" })}>{routeCopy.open}</a>
+          </div>
+        </section>
+      )}
 
       <div className={styles.controls} role="group" aria-label={copy.controls}>
         {canFullscreen && <button type="button" className={styles.control} onClick={toggleFullscreen} aria-label={fullscreen ? copy.exitFullscreen : copy.fullscreen} aria-pressed={fullscreen}><Icon name={fullscreen ? "collapse" : "expand"} /></button>}
