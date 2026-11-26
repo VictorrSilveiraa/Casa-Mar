@@ -65,6 +65,8 @@ export function LocationMap() {
   const maplibreLib = useRef<typeof import("maplibre-gl") | null>(null);
   const originMarker = useRef<Marker | null>(null);
   const routeRequest = useRef<AbortController | null>(null);
+  const routeBounds = useRef<import("maplibre-gl").LngLatBounds | null>(null);
+  const routeCard = useRef<HTMLElement>(null);
   const ready = status === "ready";
 
   useEffect(() => {
@@ -115,7 +117,8 @@ export function LocationMap() {
         map.current = instance;
         maplibreLib.current = maplibre;
         instance.addControl(new maplibre.ScaleControl({ unit: "metric", maxWidth: 80 }), "bottom-left");
-        instance.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
+        // Credits sit bottom-right, under the zoom buttons, so the route card can use the bottom-left corner.
+        instance.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-right");
         // Route shields ("CE-085") are drawn on demand, so the style needs no sprite sheet.
         instance.setMissingStyleImageResolver(async (id) => {
           if (id !== SHIELD_IMAGE || instance.hasImage(SHIELD_IMAGE)) return;
@@ -198,8 +201,7 @@ export function LocationMap() {
       setRouteLine(data.coordinates);
       const bounds = data.coordinates.reduce((box, point) => box.extend(point), new lib.LngLatBounds(mapView.center, mapView.center));
       bounds.extend([place.lon, place.lat]);
-      const narrow = (frame.current?.clientWidth ?? 800) < 560;
-      instance.fitBounds(bounds, { padding: narrow ? { top: 136, right: 40, bottom: 250, left: 40 } : { top: 110, right: 90, bottom: 60, left: 380 }, maxZoom: 15, duration: reduceMotion() ? 0 : 1100 });
+      routeBounds.current = bounds;
       setRoute({ status: "ready", place, distance: data.distance, time: data.time });
       trackEvent("route_drawn", { distance_km: Math.round(data.distance / 1000) });
     } catch (error) {
@@ -210,7 +212,19 @@ export function LocationMap() {
     }
   };
 
+  // Once the summary card is on screen, frame the route in the free space between the search bar and the card.
+  useEffect(() => {
+    if (route.status !== "ready" || !routeBounds.current || !map.current || !frame.current) return;
+    const frameBox = frame.current.getBoundingClientRect();
+    const searchBottom = (frame.current.querySelector("form[role=search]")?.firstElementChild?.getBoundingClientRect().bottom ?? frameBox.top + 72) - frameBox.top;
+    const cardTop = (routeCard.current?.getBoundingClientRect().top ?? frameBox.bottom - 24) - frameBox.top;
+    const side = frameBox.width < 560 ? 40 : 88;
+    // Room for the house pin drawn above its point (~56px) and the origin dot below.
+    map.current.fitBounds(routeBounds.current, { padding: { top: searchBottom + 64, bottom: frameBox.height - cardTop + 28, left: side, right: side }, maxZoom: 15, duration: reduceMotion() ? 0 : 1100 });
+  }, [route]);
+
   const clearRoute = () => {
+    routeBounds.current = null;
     routeRequest.current?.abort();
     originMarker.current?.remove();
     originMarker.current = null;
@@ -227,7 +241,7 @@ export function LocationMap() {
       <OriginSearch key={searchKey} onSelect={(place) => void showRoute(place)} onClear={clearRoute} hasRoute={route.status !== "idle"} />
 
       {route.status !== "idle" && (
-        <section className={styles.routeCard} aria-label={routeCopy.region} data-route-card data-state={route.status}>
+        <section ref={routeCard} className={styles.routeCard} aria-label={routeCopy.region} data-route-card data-state={route.status}>
           <p className={styles.routeLabel}>{routeCopy.from}</p>
           <p className={styles.routePlace}>{route.place.label}</p>
           <div role="status" aria-live="polite">
@@ -240,10 +254,7 @@ export function LocationMap() {
               </dl>
             )}
           </div>
-          <div className={styles.routeActions}>
-            <button type="button" onClick={() => { clearRoute(); setSearchKey((key) => key + 1); }}>{routeCopy.clear}</button>
-            <a href={routeLinks.googleMapsFrom(`${route.place.lat},${route.place.lon}`)} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("route_click", { app: "google_maps", source: "route_card" })}>{routeCopy.open}</a>
-          </div>
+          <button type="button" className={styles.routeClear} onClick={() => { clearRoute(); setSearchKey((key) => key + 1); }}>{routeCopy.clear}</button>
         </section>
       )}
 

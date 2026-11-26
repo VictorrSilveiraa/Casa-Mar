@@ -13,7 +13,6 @@ type Availability = "unknown" | "ready" | "unavailable";
 
 const glyph = {
   search: <><circle cx="10.75" cy="10.75" r="6.25" /><path d="m15.5 15.5 4.75 4.75" /></>,
-  arrow: <><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></>,
   close: <path d="M6.5 6.5 17.5 17.5M17.5 6.5 6.5 17.5" />,
   place: <><path d="M12 21s-6.25-5.6-6.25-11a6.25 6.25 0 0 1 12.5 0c0 5.4-6.25 11-6.25 11Z" /><circle cx="12" cy="10" r="2.25" /></>,
 };
@@ -140,9 +139,7 @@ export function OriginSearch({ onSelect, onClear, hasRoute }: { onSelect: (place
           onChange={(event) => { setText(event.target.value); if (event.target.value.trim().length < 3) { setResults([]); setOpen(false); } }}
           onKeyDown={onKeyDown}
         />
-        {smart && (text || hasRoute)
-          ? <button type="button" className={styles.originClear} onClick={clear} aria-label={copy.originClear}><Glyph name="close" size={18} /></button>
-          : <button type="submit" className={styles.originSubmit} aria-label={copy.originSubmit}><Glyph name="arrow" size={18} /></button>}
+        {(text || hasRoute) && <button type="button" className={styles.originClear} onClick={clear} aria-label={copy.originClear}><Glyph name="close" size={16} /></button>}
       </div>
       <div className={styles.suggestions} hidden={!showList}>
         <ul id={listId} role="listbox" aria-label={copy.suggestionsLabel}>

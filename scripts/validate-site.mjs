@@ -603,14 +603,16 @@ for (const width of [1440, 390]) {
   assert.equal(await search.getAttribute("aria-expanded"), "false", "Picking a place must close the list");
   const cardText = await card.innerText();
   for (const expected of [/SAINDO DE/i, /Acaraú, CE, Brasil/, /171,8 km/, /2 h 20 min/]) assert.match(cardText, expected);
-  assert.match(await card.getByRole("link", { name: "Abrir no Google Maps" }).getAttribute("href") ?? "", /origin=-2\.8856%2C-40\.1197&destination=-2\.830807950800169,-40\.0895461188842/);
+  assert.equal(await card.getByRole("link").count(), 0, "The route card stays minimal: no extra links");
+  assert.equal(await geoPage.locator("#localizacao form[role=search] button[type=submit]").count(), 0, "The search bar has no arrow button");
   await geoPage.waitForTimeout(1300);
   const routeShown = await geoPage.evaluate(() => {
     const frame = document.querySelector("[data-location-map]")?.getBoundingClientRect();
     const dots = Array.from(document.querySelectorAll("#localizacao .maplibregl-marker")).map((marker) => marker.getBoundingClientRect());
-    return { markers: dots.length, inside: frame ? dots.every((dot) => dot.left >= frame.left && dot.right <= frame.right && dot.top >= frame.top && dot.bottom <= frame.bottom) : false };
+    const midX = dots.reduce((sum, dot) => sum + dot.left + dot.width / 2, 0) / (dots.length || 1);
+    return { markers: dots.length, inside: frame ? dots.every((dot) => dot.left >= frame.left && dot.right <= frame.right && dot.top >= frame.top && dot.bottom <= frame.bottom) : false, centred: frame ? Math.abs(midX - (frame.left + frame.width / 2)) <= frame.width * 0.12 : false };
   });
-  assert.deepEqual(routeShown, { markers: 2, inside: true }, "House and origin must both be framed on the map");
+  assert.deepEqual(routeShown, { markers: 2, inside: true, centred: true }, "House and origin must both be framed, centred on the map");
   await card.getByRole("button", { name: "Limpar rota" }).click();
   await geoPage.locator("[data-route-card]").waitFor({ state: "detached" });
   assert.equal(await search.inputValue(), "");

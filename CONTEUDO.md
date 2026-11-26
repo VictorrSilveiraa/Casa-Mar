@@ -135,7 +135,7 @@ Convenção: em números de destaque usar "06"; em texto corrido, "seis".
 - **Coordenadas da casa:** -2.830807950800169, -40.0895461188842 (confirmadas pelo proprietário).
 - **Mapa:** OpenFreeMap com estilo vivo e detalhado (terra verde-clara, mar azul, ruas brancas com placas de rodovia, praias, vegetação, prédios e pontos de interesse). Abre centralizado na casa. Caixa "De onde você vem?" (abre a rota no Google Maps a partir do local digitado) e botões redondos de tela cheia, centralizar na casa e zoom.
 - **Fundo da seção:** off-white do site (`--color-background`).
-- **Rota pelo mapa (Geoapify, 26/11/2026):** ao digitar em "De onde você vem?" aparecem sugestões de lugares (Geoapify, com o crédito "Powered by Geoapify"). Ao escolher uma, o mapa traça a rota de carro até a casa e mostra um cartão: SAINDO DE (lugar), DISTÂNCIA, TEMPO ESTIMADO, "Limpar rota" e "Abrir no Google Maps". A chave fica só no servidor, na variável `GEOAPIFY_API_KEY`. Sem chave, a caixa abre a rota no Google Maps.
+- **Rota pelo mapa (Geoapify, 26/11/2026):** ao digitar em "De onde você vem?" aparecem sugestões de lugares (Geoapify, com o crédito "Powered by Geoapify"). Ao escolher uma, o mapa traça a rota de carro até a casa, centralizada entre a barra e o cartão, e mostra um cartão minimalista no canto inferior esquerdo: SAINDO DE (lugar), DISTÂNCIA, TEMPO ESTIMADO e "Limpar rota". A barra não tem botão de enviar; o × limpa a busca. A chave fica só no servidor, na variável `GEOAPIFY_API_KEY`. Sem chave, a caixa abre a rota no Google Maps.
 - **CTA:** Como chegar → modal com duas opções, Google Maps e Waze, ambas com destino nas coordenadas da casa, em nova aba (`rel="noopener noreferrer"`).
 
 ## 9. Informações essenciais e FAQ — `#informacoes`
