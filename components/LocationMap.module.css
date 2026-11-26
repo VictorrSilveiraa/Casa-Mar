@@ -1,0 +1,55 @@
+/* Map colours mirror lib/map-style.ts (land #ECE7DB) so the placeholder and the map read as one surface. */
+.frame { position: relative; isolation: isolate; height: 100%; min-height: inherit; overflow: hidden; background: #ECE7DB; box-shadow: 0 28px 60px -34px rgb(35 40 36 / .32); }
+.frame:fullscreen { box-shadow: none; }
+
+.placeholder { position: absolute; inset: 0; background:
+  linear-gradient(90deg, rgb(35 40 36 / .045) 1px, transparent 1px) 0 0 / 64px 64px,
+  linear-gradient(0deg, rgb(35 40 36 / .045) 1px, transparent 1px) 0 0 / 64px 64px; transition: opacity var(--dur) var(--ease-out); }
+/* Doubled selector: maplibre-gl.css sets `.maplibregl-map { position: relative }` and loads later. */
+.frame .canvas { position: absolute; inset: 0; opacity: 0; transition: opacity var(--dur-slow) var(--ease-out); }
+.frame[data-status="ready"] .canvas { opacity: 1; }
+.frame[data-status="ready"] .placeholder { opacity: 0; }
+
+/* House marker — graphite disc, off-white house, a fine point toward the exact spot. */
+.marker { position: relative; display: grid; place-items: center; width: 46px; height: 46px; border: 2px solid var(--color-background); border-radius: 50%; background: var(--color-ink); color: var(--color-background); box-shadow: 0 8px 18px -6px rgb(35 40 36 / .5); cursor: default; }
+.marker::after { content: ""; position: absolute; bottom: -8px; left: 50%; width: 0; height: 0; border-top: 7px solid var(--color-ink); border-right: 6px solid transparent; border-left: 6px solid transparent; transform: translateX(-50%); }
+.marker svg { width: 20px; height: 20px; }
+.canvas :global(.maplibregl-marker) { margin-top: -8px; }
+
+/* "De onde você vem?" — opens the route from the typed origin. */
+.origin { position: absolute; z-index: 2; top: clamp(.75rem, 1.6vw, 1.25rem); left: clamp(.75rem, 1.6vw, 1.25rem); display: flex; align-items: center; width: min(19rem, calc(100% - 4.75rem)); min-height: 52px; padding-left: 1rem; border: 1px solid var(--color-line); background: var(--color-background); box-shadow: 0 14px 30px -20px rgb(35 40 36 / .35); }
+.origin:focus-within { outline: 2px solid var(--color-olive-deep); outline-offset: 2px; }
+.originIcon { flex: 0 0 auto; color: var(--color-olive-deep); }
+.origin input { flex: 1 1 auto; min-width: 0; height: 50px; padding: 0 .5rem 0 .75rem; border: 0; background: transparent; color: var(--color-ink); font-family: var(--font-sans-ui); font-size: var(--text-small); font-weight: 400; letter-spacing: .03em; }
+.origin input::placeholder { color: var(--color-olive-deep); opacity: 1; }
+.origin input:focus { outline: none; }
+.origin button { flex: 0 0 auto; display: grid; place-items: center; width: 48px; height: 50px; border: 0; border-left: 1px solid var(--color-line); background: transparent; color: var(--color-ink); transition: background var(--dur-fast) var(--ease-out); }
+.origin button svg { transition: transform var(--dur-fast) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .origin button:hover { background: var(--color-sand); }
+  .origin button:hover svg { transform: translate(2px, -2px); }
+}
+.origin button:focus-visible { outline-offset: -4px; }
+
+.fallback { position: absolute; z-index: 2; left: 50%; bottom: 1.5rem; transform: translateX(-50%); min-height: 48px; display: inline-flex; align-items: center; padding: .75rem 1.25rem; background: var(--color-background); font-family: var(--font-sans-ui); font-size: var(--text-small); font-weight: 400; letter-spacing: .03em; }
+
+.srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* MapLibre controls in the site language: square, off-white, hairline borders. */
+.frame :global(.maplibregl-ctrl-top-right) { top: clamp(.75rem, 1.6vw, 1.25rem); right: clamp(.75rem, 1.6vw, 1.25rem); display: grid; gap: .5rem; }
+.frame :global(.maplibregl-ctrl-top-right .maplibregl-ctrl) { margin: 0; }
+.frame :global(.maplibregl-ctrl-group) { border: 1px solid var(--color-line); border-radius: 0; background: var(--color-background); box-shadow: 0 14px 30px -20px rgb(35 40 36 / .35); }
+.frame :global(.maplibregl-ctrl-group button) { width: 44px; height: 44px; }
+.frame :global(.maplibregl-ctrl-group button + button) { border-top: 1px solid var(--color-line); }
+.frame :global(.maplibregl-ctrl-group button:focus-visible) { box-shadow: inset 0 0 0 2px var(--color-olive-deep); }
+.frame :global(.maplibregl-ctrl button:not(:disabled):hover) { background-color: var(--color-sand); }
+.frame :global(.maplibregl-ctrl-bottom-left) { left: .5rem; bottom: .5rem; }
+.frame :global(.maplibregl-ctrl-scale) { border-color: var(--color-ink); border-width: 0 1px 1px; background: rgb(245 243 238 / .8); color: var(--color-ink); font-family: var(--font-sans-ui); font-size: var(--text-label); letter-spacing: .02em; }
+.frame :global(.maplibregl-ctrl-attrib) { font-family: var(--font-sans); font-size: var(--text-label); letter-spacing: .02em; }
+.frame :global(.maplibregl-ctrl-attrib.maplibregl-compact) { border-radius: 0; background: rgb(245 243 238 / .92); }
+.frame :global(.maplibregl-ctrl-attrib a) { color: var(--color-ink); }
+.frame :global(.maplibregl-cooperative-gesture-screen) { background: rgb(35 40 36 / .55); color: var(--color-background); font-family: var(--font-sans-ui); font-size: var(--text-small); letter-spacing: .03em; }
+
+@media (max-width: 600px) {
+  .origin { width: calc(100% - 4.75rem); }
+}

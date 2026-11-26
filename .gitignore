@@ -4,3 +4,4 @@ out/
 *.tsbuildinfo
 docs/screenshots/
 .impeccable/
+public/vendor/

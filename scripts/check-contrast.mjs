@@ -5,6 +5,14 @@ const colors = {
   terracottaDeep: "#8A6240",
   ink: "#232824",
   white: "#FFFFFF",
+  // Map palette (lib/map-style.ts): small labels must pass AA on every surface they sit on.
+  mapLand: "#ECE7DB",
+  mapResidential: "#E5DFD1",
+  mapGreen: "#DCDDC6",
+  mapWater: "#C7D4CF",
+  mapLabel: "#454A43",
+  mapLabelSoft: "#5B5F55",
+  mapWaterLabel: "#43544C",
 };
 
 function luminance(hex) {
@@ -21,6 +29,12 @@ const pairs = [
   ["background", "oliveDeep"],
   ["oliveDeep", "background"],
   ["terracottaDeep", "background"],
+  ["oliveDeep", "sand"],
+  ["mapLabel", "mapGreen"],
+  ["mapLabelSoft", "mapLand"],
+  ["mapLabelSoft", "mapResidential"],
+  ["mapLabelSoft", "mapGreen"],
+  ["mapWaterLabel", "mapWater"],
 ];
 let failed = false;
 for (const [front, back] of pairs) {

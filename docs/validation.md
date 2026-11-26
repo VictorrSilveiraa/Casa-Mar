@@ -1,5 +1,19 @@
 # Validação e decisões de entrega
 
+## Localização com mapa — 26/11/2026
+
+Seção `#localizacao` refeita: "Onde você vai ficar", pontos próximos informados pelo proprietário, mapa OpenFreeMap (MapLibre GL 6.17.0) nas cores do site com a posição exata da casa, caixa "De onde você vem?" e modal "Como chegar" (Google Maps / Waze). Medido na versão de produção servida em `localhost:3100`.
+
+| Verificação | Resultado |
+| --- | --- |
+| `npm run lint`, `npm run typecheck`, `npm test` (3/3), `npm run contrast` (14/14, inclui oliva escuro sobre areia e rótulos do mapa), `npm run build` | Passaram |
+| `npm run validate:browser` | Passou em 360–1920 px, sem erros de console. Novas checagens: título e sobretítulo, 4 pontos, mapa pronto com marcador da casa, modal abre, links de Google Maps e Waze com as coordenadas, `Esc` fecha e devolve o foco, origem digitada abre a rota certa. |
+| Peso inicial | MapLibre (~1,1 MB sem compressão, mais o worker de 0,5 MB) só baixa quando a seção se aproxima da tela; o carregamento inicial não mudou. |
+| `npm audit --omit=dev` | 0 vulnerabilidades |
+| Lighthouse | Não medido nesta fase (ferramenta não instalada localmente). |
+
+Sem JavaScript, a seção mostra texto e pontos; o mapa e o modal precisam de JavaScript, como a galeria.
+
 ## Experiência premium — 25/11/2026
 
 Abertura "o sol nasce sobre o mar" a cada carregamento, revelações únicas por seção, cabeçalho que se esconde ao rolar e microinterações (spec: `docs/superpowers/specs/2026-11-25-experiencia-premium-design.md`). Medido na versão de produção servida em `127.0.0.1:3000`.
@@ -42,7 +56,7 @@ As capturas ficam em `docs/screenshots/`, excluída do Git pelo `.gitignore`. O 
 
 ## Pendências e limites
 
-- Configurar WhatsApp, Instagram, domínio e, se houver, link oficial da localização em `lib/site.config.ts`. O link atual busca a Praia de Arpoeiras sem marcar a casa.
+- Configurar WhatsApp, Instagram e domínio em `lib/site.config.ts`. A localização exata da casa já está configurada (26/11/2026).
 - O domínio é necessário para publicar canonical, sitemap e URL absoluta adequada da imagem Open Graph. O projeto não publica canonical enquanto `siteUrl` estiver vazio.
 - Não há fotos verificadas do interior das suítes nem uma imagem isolada da praia; a seção de acomodações usa tipografia e fatos oficiais, e seu CTA leva às informações essenciais. A foto do ambiente social é identificada por legenda para não ser tomada como fotografia do terraço.
 - Os PNGs chamados “Imagem do ChatGPT” foram aprovados no mapa visual, mas sua origem fotográfica ou grau de edição ainda deve ser confirmado antes da publicação. O site não atribui a eles amenidades ou ambientes que não aparecem na imagem.

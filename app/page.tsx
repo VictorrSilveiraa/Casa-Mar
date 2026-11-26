@@ -9,6 +9,7 @@ import { FaqList } from "@/components/FaqList";
 import { SuitesShowcase } from "@/components/SuitesShowcase";
 import { Footer } from "@/components/Footer";
 import { ReserveLink } from "@/components/ReserveLink";
+import { LocationSection } from "@/components/LocationSection";
 import styles from "./page.module.css";
 
 const jsonLd = {
@@ -93,12 +94,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="localizacao" className={`${styles.section} ${styles.location}`} aria-labelledby="location-title">
-        <div className={`${styles.container} ${styles.locationGrid}`}>
-          <div className={styles.locationCopy}><SectionHeading id="location-title" title={content.location.title} /><div className={styles.paragraphs} data-reveal="fade" style={{ "--reveal-delay": "200ms" } as React.CSSProperties}>{content.location.paragraphs.map((text) => <p key={text}>{text}</p>)}</div><div className={styles.locationMeta} data-location-meta data-reveal="rule" style={{ "--reveal-delay": "150ms" } as React.CSSProperties}><p>{content.location.highlight}</p><TextLink href={siteConfig.locationUrl} external>{content.location.action}</TextLink></div></div>
-          <div className={styles.locationImage} data-reveal="image"><ResponsiveImage image="lawnPortrait" sizes="(max-width: 767px) 100vw, 35vw" /></div>
-        </div>
-      </section>
+      <LocationSection />
 
       <section id="informacoes" className={`${styles.section} ${styles.faq}`} aria-labelledby="faq-title">
         <div className={`${styles.container} ${styles.faqGrid}`}><div><SectionHeading id="faq-title" title={content.faq.title} /><div data-reveal="fade" style={{ "--reveal-delay": "200ms" } as React.CSSProperties}><ReserveLink className={styles.textLink} source="faq" fill>{content.faq.action}</ReserveLink></div></div><FaqList /></div>

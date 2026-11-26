@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/copy-map-worker.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/copy-map-worker.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -13,9 +15,11 @@
     "images:optimize": "node scripts/optimize-images.mjs",
     "brand:optimize": "node scripts/optimize-brand-assets.mjs",
     "contrast": "node scripts/check-contrast.mjs",
-    "validate:browser": "node scripts/validate-site.mjs"
+    "validate:browser": "node scripts/validate-site.mjs",
+    "map:worker": "node scripts/copy-map-worker.mjs"
   },
   "dependencies": {
+    "maplibre-gl": "6.17.0",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0"

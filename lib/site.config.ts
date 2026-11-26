@@ -3,5 +3,6 @@ export const siteConfig = {
   whatsappNumber: "",
   instagramHandle: "",
   siteUrl: "",
-  locationUrl: "https://www.google.com/maps/search/?api=1&query=Praia+de+Arpoeiras+Acara%C3%BA+CE",
+  /** Exact position of the house (confirmed by the owner, 26/11/2026). Feeds the map and every route link. */
+  coordinates: { latitude: -2.830807950800169, longitude: -40.0895461188842 },
 } as const;

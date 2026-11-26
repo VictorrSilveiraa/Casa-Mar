@@ -1,0 +1,21 @@
+.dialog { width: min(calc(100vw - 2rem), 30rem); max-width: none; margin: auto; padding: 0; border: 0; background: var(--color-background); color: var(--color-ink); box-shadow: 0 30px 80px -30px rgb(35 40 36 / .45); opacity: 1; transition: opacity var(--dur-fast) var(--ease-out), overlay var(--dur-fast) allow-discrete, display var(--dur-fast) allow-discrete; }
+.dialog::backdrop { background: rgb(35 40 36 / .55); opacity: 1; transition: opacity var(--dur-fast) var(--ease-out), overlay var(--dur-fast) allow-discrete, display var(--dur-fast) allow-discrete; }
+.dialog:not([open]), .dialog:not([open])::backdrop { opacity: 0; }
+@starting-style { .dialog[open], .dialog[open]::backdrop { opacity: 0; } }
+
+.panel { padding: clamp(1.5rem, 4vw, 2.25rem); }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.top h2 { margin: 0; font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; font-optical-sizing: auto; }
+.close { min-width: 72px; min-height: 44px; margin-right: -.5rem; display: flex; align-items: center; justify-content: flex-end; gap: .5rem; padding: 0 .5rem; border: 0; background: none; color: var(--color-ink); font-family: var(--font-sans-ui); font-size: var(--text-small); font-weight: 400; letter-spacing: .03em; }
+.close span { font-size: 1.6rem; line-height: 1; }
+.description { max-width: 34ch; margin: 1rem 0 0; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
+
+.options { margin: clamp(1.5rem, 3vw, 2rem) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--color-line); }
+.options li { border-bottom: 1px solid var(--color-line); }
+.options a { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; padding: 0 .25rem; color: var(--color-ink); font-family: var(--font-sans); font-size: var(--text-action); font-weight: 300; letter-spacing: .12em; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), padding var(--dur-fast) var(--ease-out); }
+.arrow { flex: 0 0 auto; transition: transform var(--dur-fast) var(--ease-out); }
+.options a:focus-visible { padding-inline: 1rem; outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) {
+  .options a:hover { padding-inline: 1rem; background: var(--color-sand); }
+  .options a:hover .arrow { transform: translate(2px, -2px); }
+}

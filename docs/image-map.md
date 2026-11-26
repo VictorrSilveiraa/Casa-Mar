@@ -28,7 +28,7 @@ As dimensões e descrições foram verificadas abrindo os 15 arquivos. A extens�
 - **Ambientes:** composição assimétrica com a piscina noturna central (`13_47_46-2`) em imagem grande, cozinha (`13_47_25-1`) em bloco secundário e ambiente social coberto (`13_47_31-2`) em retrato/corte menor. A foto de fim de tarde (`13_48_02-3`) pode pontuar a transição.
 - **Galeria de ambientes:** piscina diurna e noturna, cozinha e ambiente social. Evitar fotos quase repetidas em sequência.
 - **Acomodações:** não há foto identificável do interior de suíte. Manter a seção com os fatos e texto oficiais, apoiada por arquitetura exterior quando fizer sentido; não apresentar fachada como quarto. O CTA “Conheça as acomodações” deve virar âncora para `#informacoes` enquanto não houver ao menos duas fotos de suíte, conforme `PROMPT-TAREFA.md`.
-- **Lifestyle e localização:** não há foto autônoma de praia/mar nem imagem que comprove o terraço com vista para o pôr do sol. Usar as fotos externas da casa e um layout tipográfico, sem criar falsa imagem de praia ou marcar o imóvel no mapa. Se chegarem fotos adequadas, substituir o mapeamento no arquivo de dados.
+- **Lifestyle e localização:** não há foto autônoma de praia/mar nem imagem que comprove o terraço com vista para o pôr do sol. Usar as fotos externas da casa e um layout tipográfico, sem criar falsa imagem de praia. Desde 26/11/2026 a localização usa um mapa com a posição confirmada da casa no lugar da foto do gramado (`lawnPortrait` segue no mapeamento, fora da página). Se chegarem fotos adequadas, substituir o mapeamento no arquivo de dados.
 
 ## PDF de referência: o que aproveitar
 

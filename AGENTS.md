@@ -179,7 +179,7 @@ Não existe motor de reservas. **Nunca simular disponibilidade nem confirmar res
   - "O check-out deve ser depois do check-in."
   - "Informe de 1 a 24 hóspedes."
 - Envio válido: abrir `https://wa.me/<número>?text=<mensagem>` com `encodeURIComponent`. Mensagem em `docs/CONTEUDO.md`. Datas na mensagem em formato dd/mm/aaaa.
-- Configuração em um arquivo único (ex.: `site.config.ts`): `whatsappNumber` (vazio por enquanto), `instagramHandle` (vazio até confirmação), `siteUrl` (vazio até definir domínio), `locationUrl`.
+- Configuração em um arquivo único (ex.: `site.config.ts`): `whatsappNumber` (vazio por enquanto), `instagramHandle` (vazio até confirmação), `siteUrl` (vazio até definir domínio), `coordinates` (posição exata da casa, confirmada em 26/11/2026; links de rota em `lib/location.ts`).
 - **Se `whatsappNumber` estiver vazio:** não invente número. Após validação, mostre a mensagem pronta com botão "Copiar mensagem" e registre um aviso no console de desenvolvimento ("integração de contato pendente"). Tudo que depende do número deve sair de um único ponto de código.
 - Separe a interface da lógica de envio (uma função `submitInquiry` trocável por WhatsApp, motor de reservas ou formulário com backend).
 - Preserve datas e hóspedes ao entrar no fluxo (query string `?checkin=&checkout=&hospedes=` via `history.replaceState` e leitura no carregamento).

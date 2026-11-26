@@ -6,7 +6,9 @@ import { resolve } from "node:path";
 const output = resolve(import.meta.dirname, "../docs/screenshots");
 const baseUrl = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3000";
 await mkdir(output, { recursive: true });
-const browser = await chromium.launch({ headless: true });
+// Software WebGL so the MapLibre map can render in headless runs.
+const browser = await chromium.launch({ headless: true, args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader"] });
+const glNoise = /GL Driver Message|GPU stall due to ReadPixels/;
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
 const problems = [];
 const introDone = (page) => page.waitForFunction(() => document.documentElement.dataset.intro === "done", null, { timeout: 4500 });
@@ -23,7 +25,7 @@ for (const width of widths) {
   const context = await browser.newContext({ viewport: { width, height: width < 768 ? 800 : 900 }, deviceScaleFactor: 1 });
   const page = await context.newPage();
   const consoleProblems = [];
-  page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) consoleProblems.push(`${msg.type()}: ${msg.text()}`); });
+  page.on("console", (msg) => { if (["error", "warning"].includes(msg.type()) && !glNoise.test(msg.text())) consoleProblems.push(`${msg.type()}: ${msg.text()}`); });
   page.on("pageerror", (error) => consoleProblems.push(`pageerror: ${error.message}`));
   await page.goto(baseUrl, { waitUntil: "networkidle" });
   await introDone(page);
@@ -158,24 +160,39 @@ for (const width of widths) {
   assert.equal(await page.locator("#experiencias h2").textContent(), "Experiências para viver sem pressa.");
   assert.equal(await page.locator('#experiencias button[aria-haspopup="dialog"]').textContent(), "Conheça nossas experiências");
   assert.equal(await page.getByText("A ARTE DE VIVER SEM PRESSA", { exact: true }).count(), 0);
-  assert.equal(await page.locator('#localizacao [class*="eyebrow"]').count(), 0);
+  // Location (26/11/2026): eyebrow + title, nearby points, OpenFreeMap map and the "Como chegar" dialog.
+  assert.equal(await page.locator('#localizacao [class*="eyebrow"]').textContent(), "LOCALIZAÇÃO");
+  assert.equal(await page.locator("#location-title").textContent(), "Onde você vai ficar");
   assert.equal(await page.getByText("ARPOEIRAS, CEARÁ", { exact: true }).count(), 0);
-  const locationMeta = await page.locator("#localizacao [data-location-meta]").evaluate((element) => {
-    const style = getComputedStyle(element);
-    const place = element.querySelector("p")?.getBoundingClientRect();
-    const action = element.querySelector("a")?.getBoundingClientRect();
-    if (!place || !action) throw new Error("Location metadata content was not found.");
-    return {
-      borderTopWidth: getComputedStyle(element, "::after").height,
-      borderBottomWidth: style.borderBottomWidth,
-      placeCenter: place.top + place.height / 2,
-      actionCenter: action.top + action.height / 2,
-    };
-  });
-  assert.equal(locationMeta.borderTopWidth, "1px");
-  assert.equal(locationMeta.borderBottomWidth, "0px");
-  if (width > 767) assert.ok(Math.abs(locationMeta.placeCenter - locationMeta.actionCenter) <= 1, "Location and action must share one editorial row");
-  else assert.ok(locationMeta.actionCenter > locationMeta.placeCenter, "Location action must stack below the place on mobile");
+  assert.equal(await page.locator("#localizacao [data-location-point]").count(), 4);
+  assert.match(await page.locator("#localizacao [data-location-point]").first().textContent(), /Kite point.*10 m/);
+  await page.locator("#localizacao").scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector("[data-location-map]")?.dataset.status === "ready", null, { timeout: 20000 });
+  assert.equal(await page.locator("#localizacao .maplibregl-marker").count(), 1, "House marker must be on the map");
+  const mapBox = await page.locator("#localizacao [data-location-map]").boundingBox();
+  assert.ok(mapBox && mapBox.height >= 380, `Map is ${mapBox?.height}px tall`);
+  const directions = page.locator('#localizacao button[aria-haspopup="dialog"]');
+  assert.equal(await directions.textContent(), "Como chegar");
+  await directions.click();
+  const directionsDialog = page.getByRole("dialog", { name: "Como chegar" });
+  await directionsDialog.waitFor({ state: "visible" });
+  const routeHrefs = await directionsDialog.locator("a").evaluateAll((links) => links.map((link) => [link.textContent?.trim(), link.getAttribute("href"), link.getAttribute("target")]));
+  assert.deepEqual(routeHrefs, [
+    ["Google Maps", "https://www.google.com/maps/dir/?api=1&destination=-2.830807950800169,-40.0895461188842", "_blank"],
+    ["Waze", "https://waze.com/ul?ll=-2.830807950800169,-40.0895461188842&navigate=yes", "_blank"],
+  ]);
+  await page.keyboard.press("Escape");
+  await directionsDialog.waitFor({ state: "hidden" });
+  assert.equal(await directions.evaluate((button) => button === document.activeElement), true, "Focus must return to Como chegar");
+  // The typed origin opens a Google Maps route; the request is answered locally so the run stays offline.
+  await context.route("https://www.google.com/maps/**", (route) => route.fulfill({ status: 200, contentType: "text/html", body: "ok" }));
+  const [routePopup] = await Promise.all([
+    page.waitForEvent("popup"),
+    (async () => { await page.getByRole("textbox", { name: "De onde você vem?" }).fill("Fortaleza, CE"); await page.keyboard.press("Enter"); })(),
+  ]);
+  await routePopup.waitForURL(/google\.com\/maps/);
+  assert.equal(routePopup.url(), "https://www.google.com/maps/dir/?api=1&origin=Fortaleza%2C%20CE&destination=-2.830807950800169,-40.0895461188842");
+  await routePopup.close();
   const finalSection = page.locator("main section:last-of-type");
   const finalImage = finalSection.locator("img");
   assert.match(await finalImage.getAttribute("src"), /final-jardim-espreguicadeiras-/);
@@ -299,7 +316,7 @@ for (const width of widths) {
         '#suites button[aria-haspopup="dialog"]',
         '#ambientes button',
         '#experiencias button[aria-haspopup="dialog"]',
-        '#localizacao a',
+        '#localizacao button[aria-haspopup="dialog"]',
         '#informacoes a[data-reserve]',
         'main section:last-of-type a[data-reserve]',
         '#rodape a[data-reserve][class]',

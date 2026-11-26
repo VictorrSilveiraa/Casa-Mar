@@ -125,14 +125,16 @@ Convenção: em números de destaque usar "06"; em texto corrido, "seis".
 
 ## 8. Localização — `#localizacao`
 
-- **Eyebrow:** ARPOEIRAS, CEARÁ
-- **Título:** Um cenário especial. Uma conexão natural com o mar.
-- **Descrição:**
-  Localizada na Praia de Arpoeiras, em Acaraú, no litoral cearense, a Casa Praiamar convida você a descobrir o encanto de viver diante do oceano.
+> Atualizado em 26/11/2026 a pedido do proprietário: a foto do gramado deu lugar a um mapa (OpenFreeMap) com a posição exata da casa e ao botão "Como chegar". Textos e pontos ficam em `lib/content.ts` e `lib/location.ts`; coordenadas em `lib/site.config.ts`.
 
-  Entre o movimento das ondas, a brisa constante e a beleza do horizonte, cada dia oferece uma nova oportunidade de desacelerar.
-- **Destaque:** Praia de Arpoeiras — Acaraú, Ceará
-- **CTA:** Ver localização → `locationUrl` (nova aba, `rel="noopener noreferrer"`). Sem localização oficial da casa, usar uma busca genérica pela praia, sem marcar posição do imóvel, por exemplo `https://www.google.com/maps/search/?api=1&query=Praia+de+Arpoeiras+Acara%C3%BA+CE`.
+- **Eyebrow:** LOCALIZAÇÃO
+- **Título:** Onde você vai ficar
+- **Descrição:** Frente ao mar, na Praia de Arpoeiras, a Casa Praiamar fica onde a brisa constante faz do litoral cearense um destino para o kitesurf.
+- **Local:** Praia de Arpoeiras · Acaraú, Ceará
+- **Pontos próximos (informados pelo proprietário):** Kite point · 10 m · Restaurante · 30 m · Frente ao mar · Destino de kitesurf. Não acrescentar pontos ou distâncias sem confirmação.
+- **Coordenadas da casa:** -2.830807950800169, -40.0895461188842 (confirmadas pelo proprietário).
+- **Mapa:** OpenFreeMap com estilo nas cores do site, marcador da casa, caixa "De onde você vem?" (abre a rota no Google Maps a partir do local digitado), ampliar e zoom.
+- **CTA:** Como chegar → modal com duas opções, Google Maps e Waze, ambas com destino nas coordenadas da casa, em nova aba (`rel="noopener noreferrer"`).
 
 ## 9. Informações essenciais e FAQ — `#informacoes`
 
