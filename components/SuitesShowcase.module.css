@@ -24,8 +24,13 @@
 .previousIcon { transform: rotate(180deg); }
 .section :focus-visible { outline-color: var(--color-background); }
 @media (max-width: 900px) {
-  .intro { grid-template-columns: 1fr; align-items: start; }
-  .cta { justify-self: start; }
+  /* Mobile/tablet: photos first, then the invitation. The intro dissolves so the CTA can follow the controls. */
+  .section { display: flex; flex-direction: column; }
+  .intro { display: contents; }
+  .intro > :first-child { order: 1; width: min(calc(100% - 2 * var(--gutter)), var(--container)); margin-inline: auto; }
+  .track { order: 2; }
+  .controls { order: 3; }
+  .cta { order: 4; align-self: flex-start; margin: 2.5rem 0 0 var(--gutter); }
   .track { margin-top: 2.5rem; padding: 0 var(--gutter) 2.5rem; scroll-padding-inline: var(--gutter); }
   .frame, .frame:nth-child(2n), .frame:nth-child(3) { flex-basis: 84vw; height: min(100vw, 31rem); margin-top: 0; }
   .frame:first-child { scroll-snap-align: center; }
@@ -33,8 +38,7 @@
   .controls { gap: 1rem; }
 }
 @media (max-width: 480px) {
-  .intro { gap: 1.5rem; }
-  .cta { width: 100%; }
+  .cta { align-self: stretch; margin-inline: var(--gutter); }
   .controls { grid-template-columns: auto 1fr; }
   .progress { grid-column: 1 / -1; grid-row: 2; }
   .buttons { justify-self: end; }

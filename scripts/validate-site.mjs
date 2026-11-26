@@ -458,6 +458,22 @@ assert.equal(await motionPage.locator("#ambientes [data-reveal='image']").first(
 await motionPage.evaluate(() => window.scrollTo(0, 0)); await motionPage.waitForTimeout(300);
 await motionPage.locator("#ambientes").scrollIntoViewIfNeeded(); await motionPage.waitForTimeout(300);
 assert.equal(await motionPage.locator("#ambientes [data-reveal='image']").first().getAttribute("data-visible"), "true", "Reveals never replay");
+// suite arrows scroll only the track: the page must not move even when the section is partly off screen
+await motionPage.evaluate(() => { const section = document.querySelector("#suites"); window.scrollTo({ top: section.getBoundingClientRect().top + scrollY + 330, behavior: "instant" }); }); // photos partly above the fold (where scrollIntoView used to jump)
+await motionPage.waitForTimeout(1400);
+const beforeArrows = await motionPage.evaluate(() => Math.round(scrollY));
+for (let i = 0; i < 3; i++) { await motionPage.evaluate(() => document.querySelector("#suites button[aria-label='Próxima suíte']").click()); await motionPage.waitForTimeout(700); }
+assert.equal(await motionPage.evaluate(() => Math.round(scrollY)), beforeArrows, "Suite arrows must not scroll the page vertically");
+// FAQ answers open without a late jump (spacing lives inside the animated box)
+await motionPage.locator("#informacoes").scrollIntoViewIfNeeded(); await motionPage.waitForTimeout(800);
+const faqGrowth = await motionPage.evaluate(async () => {
+  const d = document.querySelector("#informacoes details"); const heights = []; d.querySelector("summary").click();
+  const t0 = performance.now();
+  await new Promise((done) => { const tick = () => { heights.push(d.getBoundingClientRect().height); performance.now() - t0 < 700 ? requestAnimationFrame(tick) : done(); }; requestAnimationFrame(tick); });
+  d.querySelector("summary").click();
+  return heights.slice(Math.floor(heights.length * 0.6)).map((h, i, all) => i ? h - all[i - 1] : 0);
+});
+assert.ok(Math.max(...faqGrowth) <= 2, "FAQ answer must not jump at the end of its opening");
 // header hides while reading down, returns on scroll up and on keyboard focus
 await motionPage.evaluate(() => window.scrollTo(0, 3000)); await motionPage.waitForTimeout(200);
 await motionPage.evaluate(() => window.scrollTo(0, 3400)); await motionPage.waitForTimeout(300);

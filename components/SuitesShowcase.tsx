@@ -61,11 +61,22 @@ export function SuitesShowcase() {
     const firstStageAtDesktopEdge = next === 0 && window.matchMedia("(min-width: 901px)").matches;
     const lastStage = next === images.length - 1;
     targetRef.current = next;
-    itemRefs.current[next]?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: firstStageAtDesktopEdge ? "start" : lastStage ? "end" : "center",
-    });
+    const track = trackRef.current;
+    const item = itemRefs.current[next];
+    if (track && item) {
+      // Scroll only the track horizontally. scrollIntoView would also move the page vertically
+      // whenever the section is not fully in view, making the page jump on every arrow click.
+      const style = getComputedStyle(track);
+      const trackRect = track.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      const offset = firstStageAtDesktopEdge
+        ? parseFloat(style.scrollPaddingLeft) || 0
+        : lastStage
+          ? track.clientWidth - itemRect.width - (parseFloat(style.scrollPaddingRight) || 0)
+          : (track.clientWidth - itemRect.width) / 2;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      track.scrollTo({ left: track.scrollLeft + itemRect.left - trackRect.left - offset, behavior: reduce ? "auto" : "smooth" });
+    }
     setActive(next);
   };
 
