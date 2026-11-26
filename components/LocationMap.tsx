@@ -108,7 +108,6 @@ export function LocationMap() {
           locale: {
             "Map.Title": copy.label,
             "Marker.Title": copy.marker,
-            "AttributionControl.ToggleAttribution": "Créditos do mapa",
             "CooperativeGesturesHandler.WindowsHelpText": copy.gestureDesktop,
             "CooperativeGesturesHandler.MacHelpText": copy.gestureMac,
             "CooperativeGesturesHandler.MobileHelpText": copy.gestureMobile,
@@ -117,8 +116,7 @@ export function LocationMap() {
         map.current = instance;
         maplibreLib.current = maplibre;
         instance.addControl(new maplibre.ScaleControl({ unit: "metric", maxWidth: 80 }), "bottom-left");
-        // Credits sit bottom-right, under the zoom buttons, so the route card can use the bottom-left corner.
-        instance.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-right");
+        // No credits button on the map (owner, 26/11/2026): the required credits are printed under the map (LocationSection).
         // Route shields ("CE-085") are drawn on demand, so the style needs no sprite sheet.
         instance.setMissingStyleImageResolver(async (id) => {
           if (id !== SHIELD_IMAGE || instance.hasImage(SHIELD_IMAGE)) return;

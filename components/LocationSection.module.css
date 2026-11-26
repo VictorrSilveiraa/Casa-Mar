@@ -19,6 +19,10 @@
 
 .map { height: clamp(26rem, 38vw, 36rem); }
 
+/* Map data credits (required by the OpenStreetMap/OpenFreeMap licences), printed under the map. */
+.mapCredits { margin: .75rem 0 0; color: var(--color-olive-deep); font-family: var(--font-sans); font-size: var(--text-label); line-height: 1.5; letter-spacing: .02em; }
+.mapCredits a { color: inherit; text-underline-offset: 3px; }
+
 .srOnly { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* Structural breakpoints: 1024 (tighter grid), 767 (single column, map after the copy). Points reflow on their own (auto-fit). */

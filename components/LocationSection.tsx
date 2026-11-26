@@ -31,8 +31,9 @@ export function LocationSection() {
             <DirectionsDialog label={copy.action} className={styles.action} />
           </div>
         </div>
-        <div className={styles.map} data-reveal="fade" style={delay(160)}>
-          <LocationMap />
+        <div data-reveal="fade" style={delay(160)}>
+          <div className={styles.map}><LocationMap /></div>
+          <p className={styles.mapCredits}>Mapa: <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap</a> · © <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener noreferrer">OpenMapTiles</a> · © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">colaboradores do OpenStreetMap</a></p>
         </div>
       </div>
     </section>
