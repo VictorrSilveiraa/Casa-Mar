@@ -17,7 +17,7 @@ export function Lightbox({ label, gallery, className }: Props) {
   const close = () => dialog.current?.close();
   const move = (delta: number) => setIndex((current) => (current + delta + keys.length) % keys.length);
   return <>
-    <button ref={trigger} className={className ?? styles.trigger} type="button" aria-haspopup="dialog" onClick={() => { setIndex(0); dialog.current?.showModal(); }}>{label}</button>
+    <button ref={trigger} className={className ?? styles.trigger} type="button" aria-haspopup="dialog" data-fill onClick={() => { setIndex(0); dialog.current?.showModal(); }}>{label}</button>
     <dialog ref={dialog} className={styles.dialog} aria-label={dialogLabel} aria-describedby={captionId} onClose={() => trigger.current?.focus()} onKeyDown={(event) => { if (event.key === "ArrowLeft") move(-1); if (event.key === "ArrowRight") move(1); }}>
       <div className={styles.top}><span>{heading}</span><button type="button" onClick={close} aria-label="Fechar galeria">Fechar <span aria-hidden>×</span></button></div>
       <div className={styles.frame}><ResponsiveImage image={keys[index]} sizes="90vw" /></div>

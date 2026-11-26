@@ -7,13 +7,32 @@
 .content { position: absolute; z-index: 1; top: 61%; left: var(--header-edge); width: min(740px, calc(100% - 2 * var(--header-edge))); transform: translateY(-50%); }
 .eyebrow { font-size: var(--text-eyebrow); font-family: var(--font-sans-ui); font-weight: 400; letter-spacing: var(--tracking-eyebrow); margin-bottom: 1.4rem; }
 .content h1 { font-family: var(--font-display); font-weight: 300; font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: -.02em; margin-bottom: 1.625rem; max-width: 720px; text-shadow: 0 2px 28px rgb(12 42 46 / .35); font-optical-sizing: auto; }
-.content h1 span { display: block; }
+.content h1 .line { display: block; }
 .description { max-width: 430px; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; margin-bottom: 1.125rem; }
 .link { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: .75rem 1.25rem; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-weight: 300; font-size: 1rem; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
-.link:hover { background: var(--color-background); color: var(--color-ink); }
+.link { --fill: var(--color-background); }
+@media (hover: hover) and (pointer: fine) { .link:hover { color: var(--color-ink); } }
 .scroll { position: absolute; right: var(--header-edge); bottom: 3.25rem; z-index: 1; display: flex; gap: .875rem; align-items: center; text-decoration: none; font-family: var(--font-sans-ui); font-size: .8125rem; font-weight: 400; letter-spacing: .14em; writing-mode: vertical-rl; }
 .scroll span { width: 1px; height: 50px; background: currentColor; }
 .hero :focus-visible { outline-color: var(--color-white); }
+
+/* Entrance after the opening curtain (spec §6). States key on html[data-intro]: absent → hidden, exiting/done → shown. */
+:global(html.js) .photo img { transition: transform var(--dur-settle) var(--ease-out-strong); }
+:global(html.js:not([data-intro])) .photo img { transform: scale(1.08); }
+:global(html.js) .line { overflow: clip; overflow-clip-margin: 2rem; padding-bottom: .1em; margin-bottom: -.1em; }
+:global(html.js) .line > span { display: block; transition: transform 1000ms var(--ease-out-strong); transition-delay: calc(300ms + var(--i, 0) * 110ms); }
+:global(html.js:not([data-intro])) .line > span { transform: translateY(105%); }
+:global(html.js) :is(.eyebrow, .description, .link) { transition: opacity 700ms var(--ease-out-strong), transform 700ms var(--ease-out-strong), background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
+:global(html.js) .eyebrow { transition-delay: 520ms, 520ms, 0ms, 0ms; }
+:global(html.js) .description { transition-delay: 580ms, 580ms, 0ms, 0ms; }
+:global(html.js) .link { transition-delay: 630ms, 630ms, 0ms, 0ms; }
+:global(html.js:not([data-intro])) :is(.eyebrow, .description, .link) { opacity: 0; transform: translateY(12px); }
+:global(html.js) .scroll span { transform-origin: top center; transition: transform 900ms var(--ease-out-strong) 900ms; }
+:global(html.js:not([data-intro])) .scroll span { transform: scaleY(0); }
+@media (prefers-reduced-motion: reduce) {
+  :global(html.js) :is(.photo img, .line > span, .scroll span) { transform: none !important; }
+  :global(html.js) :is(.eyebrow, .description, .link) { transform: none !important; transition: opacity 300ms ease-out !important; }
+}
 @media (max-width: 900px) {
   .hero { min-height: 600px; }
   .photo img { object-position: 50% 57%; }

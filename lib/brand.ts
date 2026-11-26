@@ -13,4 +13,15 @@ export const brandAssets = {
       webp: "/brand/praiamar-solid.webp",
     },
   },
+  /** Sunrise loader parts, cut in horizontal bands from the official white logo (gaps between bands are empty). */
+  loader: {
+    source: "assets/brand/praiamar-white-original.png",
+    symbolBox: { top: 456, height: 168 },
+    parts: {
+      sun: { left: 105, top: 456, width: 162, height: 64 },
+      house: { left: 105, top: 521, width: 162, height: 68 },
+      waves: { left: 105, top: 594, width: 162, height: 30 },
+      wordmark: { left: 337, top: 488, width: 1014, height: 135 },
+    },
+  },
 } as const;

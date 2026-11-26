@@ -102,9 +102,10 @@
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 
-.action:hover {
-  background: var(--color-background);
-  color: var(--color-ink);
+.action { --fill: var(--color-background); }
+
+@media (hover: hover) and (pointer: fine) {
+  .action:hover { color: var(--color-ink); }
 }
 
 .wordmarkFrame {

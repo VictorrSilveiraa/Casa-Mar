@@ -1,0 +1,103 @@
+/*
+ * Reveal primitives — docs/superpowers/specs/2026-11-25-experiencia-premium-design.md §5.
+ * Hidden states only exist under html.js (set by the inline head script) and before
+ * MotionController marks an element with data-visible. Without JS everything is visible.
+ * Only transform, opacity and clip-path animate.
+ */
+
+/* Opening: keep the page still while the loader is on screen (gutter stays, so nothing shifts) */
+html { scrollbar-gutter: stable; }
+html.js:not([data-intro="done"]) { overflow: hidden; }
+
+/* Lines: headings split into masked lines by lib/motion.ts */
+.m-line { display: block; overflow: clip; padding-bottom: .1em; margin-bottom: -.1em; }
+.m-line-inner { display: block; }
+html.js [data-reveal="lines"]:not([data-split]) { opacity: 0; }
+html.js [data-reveal="lines"] .m-line-inner {
+  transition: transform var(--dur-reveal) var(--ease-out-strong);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--line-index, 0) * 100ms);
+}
+html.js [data-reveal="lines"]:not([data-visible]) .m-line-inner { transform: translateY(105%); }
+
+/* Fade: supporting copy and actions */
+html.js [data-reveal="fade"] {
+  transition: opacity 700ms var(--ease-out-strong), transform 700ms var(--ease-out-strong);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js [data-reveal="fade"]:not([data-visible]) { opacity: 0; transform: translateY(12px); }
+
+/* Image curtains: the photo inside the frame unveils and settles. The clip sits on the child, never on the
+   observed frame, because IntersectionObserver treats a fully clipped target as not intersecting. */
+html.js :is([data-reveal="image"], [data-reveal="image-x"], [data-reveal="window"]) > * {
+  clip-path: inset(0);
+  transition: clip-path var(--dur-reveal) var(--ease-in-out-strong) var(--reveal-delay, 0ms);
+}
+html.js [data-reveal="image"]:not([data-visible]) > * { clip-path: inset(100% 0 0 0); }
+html.js [data-reveal="image-x"]:not([data-visible]) > * { clip-path: inset(0 100% 0 0); }
+html.js [data-reveal="window"] > * { transition-duration: 1200ms; }
+html.js [data-reveal="window"]:not([data-visible]) > * { clip-path: inset(9% 7% round 2px); }
+html.js :is([data-reveal="image"], [data-reveal="image-x"], [data-reveal="window"], [data-reveal="settle"]) img {
+  transition: transform var(--dur-settle) var(--ease-out-strong) var(--reveal-delay, 0ms);
+}
+html.js :is([data-reveal="image"], [data-reveal="image-x"]):not([data-visible]) img { transform: scale(1.12); }
+html.js :is([data-reveal="window"], [data-reveal="settle"]):not([data-visible]) img { transform: scale(1.08); }
+
+/* Slide: a whole group (the suites track) arrives as one block */
+html.js [data-reveal="slide"] {
+  transition: opacity 1000ms var(--ease-out-strong), transform 1000ms var(--ease-out-strong);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html.js [data-reveal="slide"]:not([data-visible]) { opacity: 0; transform: translateX(64px); }
+
+/* Rule: the element's ::after hairline draws from the left */
+html.js [data-reveal="rule"]::after {
+  transform-origin: left center;
+  transition: transform 1000ms var(--ease-out-strong) var(--reveal-delay, 0ms);
+}
+html.js [data-reveal="rule"]:not([data-visible])::after { transform: scaleX(0); }
+
+/* Micro-interactions (spec §8): fill sweep on boxed actions, drawn underline on navigation, press feedback */
+@media (hover: hover) and (pointer: fine) {
+  [data-fill] { position: relative; isolation: isolate; overflow: hidden; }
+  [data-fill]::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--fill, var(--color-sand));
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 200ms var(--ease-out-strong);
+  }
+  [data-fill]:hover::before { clip-path: inset(0); transition-duration: 320ms; }
+  [data-underline] { position: relative; }
+  [data-underline]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: .55rem;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 300ms var(--ease-out-strong);
+  }
+  [data-underline]:hover::after { transform: scaleX(1); transform-origin: left center; }
+}
+[data-fill]:active { transform: scale(.98); transition: transform 120ms var(--ease-out-strong); }
+
+/* Reduced motion: opacity only, no movement, no curtains */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  html.js [data-reveal] > *,
+  html.js [data-reveal] .m-line-inner,
+  html.js [data-reveal] img,
+  html.js [data-reveal]::after {
+    transform: none !important;
+    clip-path: none !important;
+    transition: opacity 300ms ease-out !important;
+  }
+  html.js [data-reveal]:not([data-visible]) { opacity: 0; }
+  [data-fill]::before, [data-underline]::after { transition: none; }
+  [data-fill]:active { transform: none; }
+}

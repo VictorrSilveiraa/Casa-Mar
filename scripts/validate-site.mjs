@@ -9,6 +9,15 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const widths = [360, 375, 390, 430, 768, 1024, 1440, 1920];
 const problems = [];
+const introDone = (page) => page.waitForFunction(() => document.documentElement.dataset.intro === "done", null, { timeout: 4500 });
+/** Scroll through the whole page like a reader so every one-shot reveal fires. */
+const sweep = async (page) => {
+  const { total, step } = await page.evaluate(() => ({ total: document.documentElement.scrollHeight, step: Math.round(window.innerHeight * 0.6) }));
+  for (let y = 0; y <= total; y += step) { await page.evaluate((top) => window.scrollTo(0, top), y); await page.waitForTimeout(110); }
+  await page.waitForTimeout(1600);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(300);
+};
 
 for (const width of widths) {
   const context = await browser.newContext({ viewport: { width, height: width < 768 ? 800 : 900 }, deviceScaleFactor: 1 });
@@ -17,6 +26,7 @@ for (const width of widths) {
   page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) consoleProblems.push(`${msg.type()}: ${msg.text()}`); });
   page.on("pageerror", (error) => consoleProblems.push(`pageerror: ${error.message}`));
   await page.goto(baseUrl, { waitUntil: "networkidle" });
+  await introDone(page);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(async () => {
     const imgs = Array.from(document.querySelectorAll("img"));
@@ -80,7 +90,11 @@ for (const width of widths) {
   } else {
     assert.equal(essenceLayout.copyAboveImage, true, `${width}px essence copy must remain above its image on mobile`);
   }
+  await page.locator("#suites [data-reveal='slide']").scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector("#suites [data-reveal='slide']")?.dataset.visible === "true");
+  await page.waitForTimeout(1300);
   const firstSuiteLeft = await page.locator("#suites article").first().evaluate((element) => element.getBoundingClientRect().left);
+  await page.evaluate(() => window.scrollTo(0, 0));
   if (width > 900) assert.ok(Math.abs(firstSuiteLeft) <= 1, `${width}px first suite starts at x=${firstSuiteLeft}, expected x=0`);
   else assert.ok(firstSuiteLeft > 0, `${width}px first suite must retain its mobile gutter`);
   assert.equal(await page.locator("#diferenciais").count(), 1);
@@ -104,7 +118,7 @@ for (const width of widths) {
       const titleRect = title.getBoundingClientRect();
       return {
         titleCenter: titleRect.left + titleRect.width / 2,
-        viewportCenter: window.innerWidth / 2,
+        viewportCenter: (() => { const r = section.getBoundingClientRect(); return r.left + r.width / 2; })(),
         images: images.map((image) => {
           const rect = image.getBoundingClientRect();
           return { top: rect.top, width: rect.width, height: rect.height };
@@ -152,7 +166,7 @@ for (const width of widths) {
     const action = element.querySelector("a")?.getBoundingClientRect();
     if (!place || !action) throw new Error("Location metadata content was not found.");
     return {
-      borderTopWidth: style.borderTopWidth,
+      borderTopWidth: getComputedStyle(element, "::after").height,
       borderBottomWidth: style.borderBottomWidth,
       placeCenter: place.top + place.height / 2,
       actionCenter: action.top + action.height / 2,
@@ -310,6 +324,8 @@ for (const width of widths) {
       assert.equal(action.hasArrow, false, `${action.selector} must not include a decorative arrow`);
     }
   }
+  await sweep(page);
+  assert.equal(await page.locator("[data-reveal]:not([data-visible])").count(), 0, `${width}px every reveal must fire after reading the page`);
   await page.screenshot({ path: resolve(output, `${width}.png`), fullPage: true, animations: "disabled" });
   if (width === 390 || width === 1440) await page.screenshot({ path: resolve(output, `${width}-hero.png`), animations: "disabled" });
   if (consoleProblems.length) problems.push(`${width}px console: ${consoleProblems.join(" | ")}`);
@@ -323,6 +339,7 @@ const interactiveProblems = [];
 page.on("console", (msg) => { if (["error", "warning"].includes(msg.type())) interactiveProblems.push(`${msg.type()}: ${msg.text()}`); });
 page.on("pageerror", (error) => interactiveProblems.push(`pageerror: ${error.message}`));
 await page.goto(baseUrl, { waitUntil: "networkidle" });
+await introDone(page);
 const reserveLinks = await page.locator("[data-reserve]").evaluateAll((links) => links.map((link) => link.getAttribute("href")));
 assert.ok(reserveLinks.length >= 5, "Header, menu, FAQ, final CTA and footer must share the reservation link");
 assert.ok(reserveLinks.every((href) => href === "#informacoes"), "Without a WhatsApp number every reservation link must lead to the FAQ");
@@ -366,6 +383,7 @@ await context.close();
 const desktopSuites = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const desktopSuitesPage = await desktopSuites.newPage();
 await desktopSuitesPage.goto(baseUrl, { waitUntil: "networkidle" });
+await introDone(desktopSuitesPage);
 const desktopSuitesRegion = desktopSuitesPage.getByRole("region", { name: "Suítes da Casa Praiamar" });
 const suitesNext = desktopSuitesRegion.getByRole("button", { name: "Próxima suíte" });
 const suitesPrevious = desktopSuitesRegion.getByRole("button", { name: "Suíte anterior" });
@@ -398,7 +416,13 @@ await desktopSuites.close();
 
 const reduced = await browser.newContext({ viewport: { width: 390, height: 800 }, reducedMotion: "reduce" });
 const reducedPage = await reduced.newPage();
+const reducedStart = Date.now();
 await reducedPage.goto(baseUrl);
+await introDone(reducedPage);
+assert.ok(Date.now() - reducedStart < 2500, "Reduced motion: the opening must be brief");
+await sweep(reducedPage);
+assert.equal(await reducedPage.locator("[data-reveal]:not([data-visible])").count(), 0);
+assert.equal(await reducedPage.evaluate(() => [...document.querySelectorAll("[data-reveal], [data-reveal] > *")].filter((e) => getComputedStyle(e).transform !== "none").length), 0, "Reduced motion: reveals must not move anything");
 assert.equal(await reducedPage.locator("h1").isVisible(), true);
 assert.equal(await reducedPage.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), "auto");
 assert.equal(await reducedPage.locator("#rodape").getAttribute("data-motion"), null);
@@ -407,11 +431,70 @@ await reduced.close();
 const noJs = await browser.newContext({ viewport: { width: 390, height: 800 }, javaScriptEnabled: false });
 const noJsPage = await noJs.newPage();
 await noJsPage.goto(baseUrl);
+assert.equal(await noJsPage.locator("[data-loader]").isVisible(), false, "Without JavaScript the opening must not appear");
+assert.equal(await noJsPage.locator("#a-casa h2").isVisible(), true);
 assert.equal(await noJsPage.getByText("Há lugares que nos fazem esquecer das horas.").isVisible(), true);
 assert.equal(await noJsPage.locator("details summary").first().isVisible(), true);
 assert.equal(await noJsPage.getByText("PRAIAMAR", { exact: true }).isVisible(), true);
 await noJs.close();
 console.log("Reduced motion and no-JavaScript content: PASS");
+
+// Opening (loader), reveals and header behaviour
+const motion = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const motionPage = await motion.newPage();
+const motionErrors = [];
+motionPage.on("pageerror", (error) => motionErrors.push(error.message));
+let start = Date.now();
+await motionPage.goto(baseUrl);
+await motionPage.locator("[data-loader]").waitFor({ state: "visible", timeout: 1500 });
+await introDone(motionPage);
+const openingMs = Date.now() - start;
+assert.ok(openingMs <= 3800, `Opening took ${openingMs}ms, expected at most 3800ms`);
+assert.equal(await motionPage.locator("[data-loader]").count(), 0, "Loader must unmount after the opening");
+assert.equal(await motionPage.locator("#ambientes [data-reveal='image'][data-visible]").count(), 0, "Below-the-fold reveals wait for the reader");
+await motionPage.locator("#ambientes [data-reveal='image']").first().scrollIntoViewIfNeeded();
+await motionPage.waitForTimeout(1200);
+assert.equal(await motionPage.locator("#ambientes [data-reveal='image']").first().getAttribute("data-visible"), "true");
+await motionPage.evaluate(() => window.scrollTo(0, 0)); await motionPage.waitForTimeout(300);
+await motionPage.locator("#ambientes").scrollIntoViewIfNeeded(); await motionPage.waitForTimeout(300);
+assert.equal(await motionPage.locator("#ambientes [data-reveal='image']").first().getAttribute("data-visible"), "true", "Reveals never replay");
+// header hides while reading down, returns on scroll up and on keyboard focus
+await motionPage.evaluate(() => window.scrollTo(0, 3000)); await motionPage.waitForTimeout(200);
+await motionPage.evaluate(() => window.scrollTo(0, 3400)); await motionPage.waitForTimeout(300);
+assert.equal(await motionPage.locator("header").getAttribute("data-hidden"), "true", "Header hides while scrolling down");
+await motionPage.evaluate(() => window.scrollTo(0, 3150)); await motionPage.waitForTimeout(300);
+assert.equal(await motionPage.locator("header").getAttribute("data-hidden"), null, "Header returns on scroll up");
+await motionPage.evaluate(() => window.scrollTo(0, 3600)); await motionPage.waitForTimeout(300);
+await motionPage.locator("header a").first().focus(); await motionPage.waitForTimeout(100);
+assert.equal(await motionPage.locator("header").getAttribute("data-hidden"), null, "Header returns when focused from the keyboard");
+// back/forward navigation skips the opening
+await motionPage.goto(`${baseUrl}/pagina-inexistente`);
+start = Date.now();
+await motionPage.goBack();
+await introDone(motionPage);
+assert.ok(Date.now() - start < 1500, "Back navigation must not replay the opening");
+assert.deepEqual(motionErrors, []);
+await motion.close();
+// Slow or failed hero image: the opening still leaves at its cap
+const blocked = await browser.newContext({ viewport: { width: 390, height: 844 } });
+const blockedPage = await blocked.newPage();
+await blockedPage.route("**/media/hero-villa-*", (route) => route.abort());
+start = Date.now();
+await blockedPage.goto(baseUrl);
+await introDone(blockedPage);
+assert.ok(Date.now() - start <= 3800, "Opening must leave at its cap when the hero photo fails");
+await blocked.close();
+// Deep link to a section: opening runs, then the visitor lands on that section
+const deep = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const deepPage = await deep.newPage();
+await deepPage.goto(`${baseUrl}/#informacoes`);
+await introDone(deepPage);
+await deepPage.waitForTimeout(1500);
+const faqTop = await deepPage.locator("#informacoes").evaluate((section) => section.getBoundingClientRect().top);
+assert.ok(Math.abs(faqTop) <= 120, `Deep link should land on the FAQ (top=${faqTop})`);
+assert.equal(await deepPage.locator("#informacoes h2").getAttribute("data-visible"), "true");
+await deep.close();
+console.log("Opening, reveals, header and deep links: PASS");
 
 await browser.close();
 if (problems.length) { console.error(problems.join("\n")); process.exitCode = 1; }

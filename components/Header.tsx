@@ -9,6 +9,8 @@ import styles from "./Header.module.css";
 export function Header() {
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLDivElement>(null);
 
@@ -17,6 +19,29 @@ export function Header() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Hide while reading downward past the hero; any upward scroll, focus inside, or the hero brings it back.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const y = window.scrollY;
+        const heroBottom = document.querySelector<HTMLElement>("#topo")?.offsetHeight ?? window.innerHeight;
+        const delta = y - lastY;
+        if (y <= heroBottom || delta < -8) setHidden(false);
+        else if (delta > 4 && !header.current?.matches(":focus-within")) setHidden(true);
+        lastY = y;
+      });
+    };
+    const onFocus = () => setHidden(false);
+    const element = header.current;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    element?.addEventListener("focusin", onFocus);
+    return () => { window.removeEventListener("scroll", onScroll); element?.removeEventListener("focusin", onFocus); window.cancelAnimationFrame(frame); };
   }, []);
 
   useEffect(() => {
@@ -41,7 +66,7 @@ export function Header() {
   const close = () => { setOpen(false); toggle.current?.focus(); };
   const logo = solid || open ? brandAssets.header.solid : brandAssets.header.transparent;
   return (
-    <header className={`${styles.header} ${solid || open ? styles.solid : ""}`}>
+    <header ref={header} className={`${styles.header} ${solid || open ? styles.solid : ""}`} data-hidden={hidden && !open ? "true" : undefined}>
       <div className={styles.inner}>
         <a href="#topo" className={styles.wordmark} aria-label="Casa Praiamar — voltar ao início" onClick={() => setOpen(false)}>
           <picture>
@@ -51,7 +76,7 @@ export function Header() {
           </picture>
         </a>
         <nav className={styles.desktopNav} aria-label="Navegação principal">
-          {content.navigation.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+          {content.navigation.map((item) => <a key={item.href} href={item.href} data-underline>{item.label}</a>)}
         </nav>
         <ReserveLink className={styles.reserve} source="header">Reservar</ReserveLink>
         <button ref={toggle} className={styles.menuToggle} type="button" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}><span /><span /></button>

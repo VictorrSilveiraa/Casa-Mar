@@ -88,7 +88,7 @@ export function SuitesShowcase() {
         <Lightbox label={content.suites.action} gallery="suites" className={styles.cta} />
       </div>
 
-      <div ref={trackRef} className={styles.track} onScroll={updateActive}>
+      <div ref={trackRef} className={styles.track} onScroll={updateActive} data-reveal="slide" style={{ "--reveal-delay": "120ms" } as React.CSSProperties}>
         {images.map((image, index) => (
           <article
             ref={(node) => { itemRefs.current[index] = node; }}
@@ -101,7 +101,7 @@ export function SuitesShowcase() {
         ))}
       </div>
 
-      <div className={styles.controls}>
+      <div className={styles.controls} data-reveal="fade" style={{ "--reveal-delay": "320ms" } as React.CSSProperties}>
         <p className={styles.counter} aria-live="polite"><span>{String(active + 1).padStart(2, "0")}</span> / {String(images.length).padStart(2, "0")}</p>
         <span className={styles.progress} aria-hidden="true"><span style={{ transform: `scaleX(${(active + 1) / images.length})` }} /></span>
         <div className={styles.buttons}>

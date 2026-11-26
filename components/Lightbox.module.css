@@ -1,5 +1,5 @@
 .trigger { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: .75rem 1.25rem; border: 1px solid var(--color-ink); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
-.trigger:hover { background: var(--color-sand); }
+
 .dialog { position: fixed; inset: 0; width: min(94vw, 1400px); height: min(94svh, 900px); max-width: none; max-height: none; margin: auto; padding: clamp(1rem, 2vw, 2rem); border: 0; background: var(--color-background); color: var(--color-ink); box-shadow: 0 24px 80px rgb(0 0 0 / .3); }
 .dialog::backdrop { background: rgb(0 0 0 / .84); }
 .top, .bottom { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }

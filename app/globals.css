@@ -55,10 +55,18 @@
   --dur: 500ms;
   --dur-slow: 800ms;
   --dur-image: 1200ms;
+  /* premium motion — docs/superpowers/specs/2026-11-25-experiencia-premium-design.md §5 */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-reveal: 900ms;
+  --dur-settle: 1400ms;
+  --dur-loader-exit: 900ms;
+  --reveal-distance: 28px;
   --z-sticky-cta: 40;
   --z-header: 50;
   --z-mobile-nav: 60;
   --z-lightbox: 70;
+  --z-loader: 80;
   color-scheme: light;
 }
 /* Typography breakpoint: desktop above 900px; mobile at 900px and below. */
@@ -77,6 +85,7 @@
     --section-y: 5.5rem;
     --gutter: 1.5rem;
     --header-edge: 1.5rem;
+    --reveal-distance: 18px;
   }
 }
 *, *::before, *::after { box-sizing: border-box; }

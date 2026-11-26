@@ -1,0 +1,48 @@
+/* Sunrise loader — spec §6. Keyframes start at first paint; Loader.tsx only decides the exit. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loader);
+  display: none;
+  place-items: center;
+  background: var(--color-olive-deep);
+  color: var(--color-background);
+  /* Failsafe: if scripts never run the exit, the overlay still disappears. */
+  animation: failsafe 1ms linear 6s forwards;
+}
+:global(html.js:not([data-intro="done"])) .loader { display: grid; }
+
+.mark { display: flex; flex-direction: column; align-items: center; }
+
+.symbol { position: relative; width: clamp(72px, 6.6vw, 104px); aspect-ratio: 162 / 168; }
+.part { position: absolute; left: 0; width: 100%; }
+.art { display: block; width: 100%; height: 100%; background-repeat: no-repeat; background-position: center; background-size: 100% 100%; }
+.sun { top: 0; height: 38.1%; clip-path: inset(-30% -30% 0 -30%); } /* only the horizon clips the sun */
+.house { top: 38.69%; height: 40.48%; overflow: clip; }
+.waves { top: 82.14%; height: 17.86%; }
+
+.waves { animation: draw 650ms var(--ease-in-out-strong) 100ms both; }
+.house .art { animation: rise 700ms var(--ease-out-strong) 420ms both; }
+.sun .art { transform-origin: 50% 100%; animation: sunrise 800ms var(--ease-out-strong) 700ms both; }
+
+.wordmark { display: block; width: clamp(184px, 17vw, 264px); margin-top: clamp(1.5rem, 2.2vw, 2rem); animation: draw 900ms var(--ease-out-strong) 900ms both; }
+.wordmark .art { aspect-ratio: 400 / 53; height: auto; }
+
+.rule { position: relative; display: block; width: clamp(184px, 17vw, 264px); height: 1px; margin-top: 1.375rem; background: var(--color-line-inverse); overflow: hidden; }
+.rule::after { content: ""; position: absolute; inset: 0; background: var(--color-background); transform-origin: left center; animation: progress 1700ms linear 900ms both; }
+
+/* Exit: one gesture — the curtain lifts over the hero carrying the mark, which drifts up and fades a little faster */
+.loader[data-stage="exiting"] { pointer-events: none; transform: translateY(-100%); transition: transform var(--dur-loader-exit) var(--ease-in-out-strong); }
+.loader[data-stage="exiting"] .mark { opacity: 0; transform: translateY(-6vh); transition: opacity 450ms var(--ease-out-strong), transform var(--dur-loader-exit) var(--ease-in-out-strong); }
+
+@keyframes draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@keyframes rise { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes sunrise { from { transform: translateY(115%) rotate(-8deg); } to { transform: translateY(0) rotate(0); } }
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes failsafe { to { visibility: hidden; opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .waves, .wordmark, .house .art, .sun .art, .rule::after { animation: none; }
+  .loader[data-stage="exiting"] { transform: none; opacity: 0; transition: opacity 300ms ease-out !important; }
+  .loader[data-stage="exiting"] .mark { transform: none; }
+}

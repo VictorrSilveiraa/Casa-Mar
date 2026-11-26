@@ -3,7 +3,16 @@ import localFont from "next/font/local";
 import { content } from "@/lib/content";
 import { imageSrcSet } from "@/lib/images";
 import { siteConfig } from "@/lib/site.config";
+import { Loader } from "@/components/Loader";
+import { MotionController } from "@/components/MotionController";
 import "./globals.css";
+import "./motion.css";
+
+/**
+ * Runs before first paint: enables motion styles (html.js), skips the opening on back/forward
+ * navigation, and drops motion entirely if the app never boots (failsafe).
+ */
+const bootScript = `(function(){var d=document.documentElement;d.classList.add("js");try{var n=performance.getEntriesByType("navigation")[0];if(n&&n.type==="back_forward")d.dataset.intro="done";}catch(e){}setTimeout(function(){if(!d.dataset.motion){d.classList.remove("js");d.dataset.intro="done";}},6000);})();`;
 
 const urbanist300 = localFont({ src: "./fonts/urbanist-latin-300.woff2", weight: "300", display: "swap", preload: false, variable: "--urbanist-300" });
 const urbanist400 = localFont({ src: "./fonts/urbanist-latin-400.woff2", weight: "400", display: "swap", preload: true, variable: "--urbanist-400" });
@@ -29,12 +38,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${urbanist300.variable} ${urbanist400.variable} ${urbanist500.variable} ${newsreader300.variable} ${newsreader400.variable}`}>
+    <html lang="pt-BR" suppressHydrationWarning className={`${urbanist300.variable} ${urbanist400.variable} ${urbanist500.variable} ${newsreader300.variable} ${newsreader400.variable}`}>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <link rel="preload" as="image" imageSrcSet={imageSrcSet("heroDesktop", "avif")} imageSizes="100vw" type="image/avif" media="(max-width: 767px)" fetchPriority="high" />
         <link rel="preload" as="image" imageSrcSet={imageSrcSet("heroDesktop", "avif")} imageSizes="100vw" type="image/avif" media="(min-width: 768px)" fetchPriority="high" />
       </head>
-      <body>{children}</body>
+      <body><Loader />{children}<MotionController /></body>
     </html>
   );
 }

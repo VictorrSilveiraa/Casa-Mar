@@ -9,3 +9,11 @@
 .icon::before { width: 16px; height: 1px; top: 8px; left: 1px; }
 .icon::after { width: 1px; height: 16px; top: 1px; left: 8px; transition: transform var(--dur-fast); }
 details[open] .icon::after { transform: rotate(90deg); }
+
+/* Answers open smoothly where the browser can animate to height:auto; elsewhere they open instantly (spec §7). */
+@supports (interpolate-size: allow-keywords) {
+  .list { interpolate-size: allow-keywords; }
+  .list details::details-content { height: 0; overflow: clip; transition: height 300ms var(--ease-out-strong), content-visibility 300ms allow-discrete; }
+  .list details[open]::details-content { height: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .list details::details-content { transition: none; } }

@@ -46,7 +46,7 @@ export function Footer() {
           <div className={styles.destination}>
             <p className={styles.label}>{content.footer.destinationLabel}</p>
             <p className={styles.location}>{content.footer.location}</p>
-            <ReserveLink className={styles.action} source="footer">
+            <ReserveLink className={styles.action} source="footer" fill>
               {content.footer.action}
             </ReserveLink>
           </div>

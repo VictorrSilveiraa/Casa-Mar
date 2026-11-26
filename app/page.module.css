@@ -4,12 +4,13 @@
 .paragraphs p { margin: 0 0 1.25rem; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 .paragraphs p:last-child { margin-bottom: 0; }
 .textLink { min-height: 52px; padding: .75rem 1.25rem; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; background: transparent; font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out); }
-.textLink:hover { background: var(--color-sand); }
+
 
 .essenceGrid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .82fr); grid-template-areas: "image copy"; gap: clamp(3rem, 8vw, 8rem); align-items: center; }
 .essenceCopy { grid-area: copy; max-width: 34rem; justify-self: end; padding-block: 2rem; }
 .essenceCopy .paragraphs { margin: 2.5rem 0; }
 .essenceImage { grid-area: image; height: clamp(520px, 55vw, 760px); overflow: hidden; }
+@media (min-width: 1024px) { .essenceImage { margin-left: calc((100vw - min(100vw - 2 * var(--gutter), var(--container))) / -2); } }
 
 .features { padding-block: var(--section-y); }
 .featuresLayout { display: grid; grid-template-columns: minmax(18rem, .7fr) minmax(0, 1.3fr); gap: clamp(3rem, 6vw, 7rem); align-items: start; }
@@ -17,7 +18,8 @@
 .featureContent { padding-top: clamp(.25rem, 1vw, 1rem); }
 .featureHeading { max-width: 700px; margin-bottom: clamp(3rem, 5vw, 4.75rem); }
 .featureGrid { border-top: 1px solid var(--color-line); }
-.feature { display: grid; grid-template-columns: minmax(11rem, .82fr) minmax(15rem, 1fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: start; padding: clamp(1.5rem, 2.3vw, 2.25rem) 0; border-bottom: 1px solid var(--color-line); }
+.feature { position: relative; display: grid; grid-template-columns: minmax(11rem, .82fr) minmax(15rem, 1fr); gap: clamp(1.5rem, 5vw, 5rem); align-items: start; padding: clamp(1.5rem, 2.3vw, 2.25rem) 0; }
+.feature::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 1px; background: var(--color-line); }
 .feature h3 { margin: 0; font-family: var(--font-display-regular); font-weight: 400; font-size: var(--text-h3); line-height: var(--leading-highlight); letter-spacing: -.005em; font-optical-sizing: auto; }
 .feature p { max-width: 31ch; margin: 0; font-family: var(--font-sans); font-size: var(--text-body); font-weight: 300; line-height: var(--leading-body); }
 
@@ -49,17 +51,18 @@
 .lifestyleCopy :global(h2) { max-width: 650px; color: var(--color-background); }
 .lifestyleDescription { max-width: 46ch; margin: 2rem 0 0; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
 .lifestyleAction { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.25rem; padding: .75rem 1.25rem; border: 1px solid var(--color-background); background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; transition: background var(--dur-fast) var(--ease-out); }
-.lifestyleAction:hover { background: var(--color-sand); }
+
 .lifestyle :focus-visible { outline-color: var(--color-background); }
 
 .location { background: var(--color-sand); }
 .locationGrid { display: grid; grid-template-columns: 1fr .82fr; gap: clamp(3rem, 9vw, 10rem); align-items: center; }
 .locationCopy { max-width: 650px; }
 .locationCopy .paragraphs { margin: 2.5rem 0 0; }
-.locationMeta { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 3rem; padding-top: 1.75rem; border-top: 1px solid var(--color-line); }
+.locationMeta { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 3rem; padding-top: 1.75rem; }
+.locationMeta::after { content: ""; position: absolute; top: 0; right: 0; left: 0; height: 1px; background: var(--color-line); }
 .locationMeta p { margin: 0; font-family: var(--font-display-regular); font-size: var(--text-h3); font-weight: 400; line-height: var(--leading-highlight); letter-spacing: -.005em; }
 .locationMeta .textLink { flex: 0 0 auto; }
-.locationMeta .textLink:hover { background: var(--color-background); }
+.locationMeta .textLink { --fill: var(--color-background); }
 .locationImage { height: clamp(550px, 58vw, 760px); overflow: hidden; }
 
 .faqGrid { display: grid; grid-template-columns: .8fr 1.15fr; gap: clamp(3rem, 8vw, 9rem); align-items: start; }
@@ -78,7 +81,7 @@
 .finalCopy p:not(.finalEyebrow) { max-width: 430px; margin: 0 auto; font-family: var(--font-sans); font-size: var(--text-lead); font-weight: 300; line-height: 1.55; }
 .finalCopy p:not(.finalEyebrow) + p { margin-top: 1.25rem; }
 .finalCopy a { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; margin-top: 2.2rem; padding: .8rem 1.25rem; background: var(--color-background); color: var(--color-ink); font-family: var(--font-sans); font-size: 1rem; font-weight: 300; letter-spacing: .12em; text-align: center; text-decoration: none; text-transform: uppercase; }
-.finalCopy a:hover { background: var(--color-sand); }
+
 .finalCopy :focus-visible { outline-color: var(--color-background); }
 
 @media (max-width: 1023px) {
