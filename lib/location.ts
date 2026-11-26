@@ -18,12 +18,12 @@ const { latitude, longitude } = siteConfig.coordinates;
 const destination = `${latitude},${longitude}`;
 
 /**
- * The map opens centred on the house (owner's request, 26/11/2026) at a zoom that still shows the
- * beach and the town of Acaraú; the "Centralizar" button returns to this same view.
+ * The map opens centred on the house (owner's request, 26/11/2026) at street level — the scale
+ * reads 100 m, as the owner asked. The "Centralizar" button returns to this same view.
  */
 export const mapView = {
   center: [longitude, latitude] as [number, number],
-  zoom: 12.2,
+  zoom: 15.2,
   minZoom: 8,
   maxZoom: 18,
 };
